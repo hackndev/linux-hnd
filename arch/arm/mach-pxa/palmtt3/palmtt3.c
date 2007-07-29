@@ -39,7 +39,7 @@
 #include <asm/arch/serial.h>
 
 #include <linux/input.h>
-#include <linux/soc/tsc2101.h>
+#include <linux/mfd/tsc2101.h>
 #include <asm/arch/pxa-pm_ll.h>
 #include <asm/arch/palmtt3-gpio.h>
 #include <asm/arch/palmtt3-init.h>

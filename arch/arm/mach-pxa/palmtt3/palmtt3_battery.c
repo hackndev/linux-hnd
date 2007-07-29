@@ -31,7 +31,7 @@
 #include <asm/arch/hardware.h>
 #include <asm/arch/pxa-regs.h>
 
-#include <linux/soc/tsc2101.h>
+#include <linux/mfd/tsc2101.h>
 #include <asm/arch/tps65010.h>
 
 #include <asm/arch/palmtt3-gpio.h>

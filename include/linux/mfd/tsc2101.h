@@ -29,7 +29,7 @@ struct tsc2101_data {
 	spinlock_t lock;
 	int pendown;
 	struct tsc2101_platform_info *platform;
-	struct input_dev inputdevice;
+	struct input_dev *inputdevice;
 	struct timer_list ts_timer;
 	struct timer_list misc_timer;
 	struct tsc2101_misc_data miscdata;

@@ -8,7 +8,8 @@ config PALMTT3_DISABLE_BORDER
 	bool "Disable display border"
 	depends on MACH_T3XSCALE
 	help
-	  Some displays can disable white border. This could allow it. This makes screen bigger for 4 pixels in both directions.
+	  Some displays can disable white border. This could allow it.
+	  This makes screen bigger for 4 pixels in both directions.
 
 config PALMTT3_BUTTONS
 	tristate "Buttons support"
