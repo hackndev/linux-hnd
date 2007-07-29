@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
-# Linux kernel version: 2.6.21-hnd2
-# Mon Jul 23 09:02:42 2007
+# Linux kernel version: 2.6.21-hnd3
+# Sun Jul 29 19:30:58 2007
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -192,6 +192,7 @@ CONFIG_GPIOED=m
 CONFIG_GPIOEDNG=m
 # CONFIG_MACH_GHI270HG is not set
 # CONFIG_MACH_GHI270 is not set
+# CONFIG_MACH_LOOXC550 is not set
 # CONFIG_PXA_SHARPSL is not set
 # CONFIG_MACH_TRIZEPS4 is not set
 CONFIG_PXA27x=y
@@ -922,11 +923,22 @@ CONFIG_APM_POWER=m
 # CONFIG_ADC is not set
 
 #
+# Compaq/iPAQ Drivers
+#
+
+#
+# Compaq/HP iPAQ Drivers
+#
+# CONFIG_IPAQ_SLEEVE is not set
+# CONFIG_SLEEVE_DEBUG is not set
+
+#
 # Multifunction device drivers
 #
 # CONFIG_MFD_SM501 is not set
 # CONFIG_HTC_ASIC2 is not set
 # CONFIG_HTC_ASIC3 is not set
+# CONFIG_HTC_PASIC3 is not set
 # CONFIG_HTC_EGPIO is not set
 # CONFIG_HTC_ASIC3_DS1WM is not set
 # CONFIG_SOC_SAMCOP is not set
@@ -956,6 +968,7 @@ CONFIG_LEDS_TRIGGER_TIMER=m
 CONFIG_LEDS_TRIGGER_HWTIMER=m
 CONFIG_LEDS_TRIGGER_IDE_DISK=y
 CONFIG_LEDS_TRIGGER_MMC_CARD=y
+# CONFIG_LEDS_TRIGGER_BACKLIGHT is not set
 CONFIG_LEDS_TRIGGER_HEARTBEAT=m
 # CONFIG_LEDS_TRIGGER_SHARED is not set
 
