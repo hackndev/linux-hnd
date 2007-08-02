@@ -326,7 +326,7 @@ static struct platform_device *devices[] __initdata = {
  * LCD
  *********************************************************/
 
-static struct pxafb_mode_info palmt650_lcd_mode __initdata = {
+static struct pxafb_mode_info palmt650_lcd_mode = {
 	/* pixclock is set by lccr3 below */
 	.pixclock		= 0,	
 	.xres			= 320,
