@@ -17,7 +17,7 @@
 #include <linux/platform_device.h>
 #include <linux/fb.h>
 #include <linux/input.h>
-//#include <linux/irq.h>
+#include <linux/irq.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -295,10 +295,7 @@ static struct platform_device *devices[] __initdata = {
  * LCD
  *********************************************************/
 
-/* when we upgrade to 2.6.19+ remote OLDLCD */
-#define OLDLCD
-#ifndef OLDLCD
-static struct pxafb_mode_info palmt680_lcd_mode __initdata = {
+static struct pxafb_mode_info palmt680_lcd_mode = {
 	/* pixclock is set by lccr3 below */
 	.pixclock		= 50000,	
 	.xres			= 320,
@@ -313,32 +310,12 @@ static struct pxafb_mode_info palmt680_lcd_mode __initdata = {
 	.lower_margin		= 5,
 	.sync			= FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
 };
-#endif
 
-static struct pxafb_mach_info palmt680_lcd __initdata = {
+static struct pxafb_mach_info palmt680_lcd = {
 	.lccr0			= 0x4000080,
 	.lccr3			= 0x4700003,
-	//.pxafb_backlight_power	= palm_backlight_power,
-	//
-	//
-#ifdef OLDLCD
-	/* pixclock is set by lccr3 below */
-	.pixclock		= 50000,	
-	.xres			= 320,
-	.yres			= 320,
-	.bpp			= 16,
-	.hsync_len		= 4,
-	.vsync_len		= 1,
-
-	.left_margin		= 20,
-	.right_margin		= 8,
-	.upper_margin		= 8,
-	.lower_margin		= 5,
-	.sync			= FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
-#else
 	.num_modes		= 1,
 	.modes			= &palmt680_lcd_mode,
-#endif
 };
 
 static struct map_desc palmt680_io_desc[] __initdata = {
