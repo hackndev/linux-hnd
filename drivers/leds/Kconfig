@@ -198,9 +198,8 @@ config LEDS_TRIGGER_IDE_DISK
 	  If unsure, say Y.
 
 config LEDS_TRIGGER_MMC_CARD
-	tristate "LED MMC Card Trigger"
+	bool "LED MMC Card Trigger"
 	depends LEDS_TRIGGERS 
-	default m
 	help
 	  This allows LEDs to be controlled by MMC card activity on Intel PXA 25x/26x/27x MMC interface .
 	  If unsure, say Y.
