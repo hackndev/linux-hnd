@@ -47,7 +47,7 @@
  *********************************************************/
 
 static int palmt680_mci_init(struct device *dev,
-		irqreturn_t (*palmt680_detect_int)(int, void *, struct pt_regs *), void *data)
+		irqreturn_t (*palmt680_detect_int)(int, void *), void *data)
 {
 	int err;
 	/* setup an interrupt for detecting card insert/remove events */
