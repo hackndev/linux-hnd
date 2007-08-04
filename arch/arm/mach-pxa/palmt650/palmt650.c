@@ -223,7 +223,7 @@ static struct pxa27x_keyboard_platform_data palmt650_kbd_data = {
 		KEY_L,			/* "L" */
 		KEY_A,			/* "A" */
 		KEY_Q,			/* "Q" */
-		KEY_RIGTCTRL,	 	/* "Right Shift" */
+		KEY_RIGHTCTRL,	 	/* "Right Shift" */
 	}, {	/* row 1 */
 		KEY_P,			/* "P" */
 		KEY_RIGHT,		/* "5-Way Right" */
