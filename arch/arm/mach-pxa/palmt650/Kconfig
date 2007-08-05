@@ -8,7 +8,7 @@ menuconfig MACH_XSCALE_PALMTREO650
 		for this PDA.
 
 config PALMT650_GSM
-	tristate "Palm Treo 650 GSM baseband processor"
+	bool "Palm Treo 650 GSM support"
 	depends on MACH_XSCALE_PALMTREO650
 	default y
 	help
