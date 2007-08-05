@@ -231,6 +231,7 @@ MACHINE_START(TUNGE2, "Palm Tungsten E2")
 
 	.phys_io	= 0x40000000,
 	.io_pg_offst	= (io_p2v(0x40000000) >> 18) & 0xfffc,
+	.boot_params    = 0xa0000100,
 	.map_io		= pxa_map_io,
 	.init_irq	= pxa_init_irq,
 	.timer		= &pxa_timer,
