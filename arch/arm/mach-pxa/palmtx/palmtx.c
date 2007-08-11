@@ -236,20 +236,14 @@ static struct pxaficp_platform_data palmtx_ficp_platform_data = {
 void bcm2035_bt_reset(int on)
 {
 	printk(KERN_NOTICE "Switch BT reset %d\n", on);
-	if (on)
-		SET_PALMTX_GPIO( BT_RESET, 1 );
-	else
-		SET_PALMTX_GPIO( BT_RESET, 0 );
+	SET_PALMTX_GPIO( BT_RESET, on ? 1 : 0 );
 }
 EXPORT_SYMBOL(bcm2035_bt_reset);
 
 void bcm2035_bt_power(int on)
 {
-	printk(KERN_NOTICE "Switch BT power %d\n", on);
-	if (on)
-		SET_PALMTX_GPIO( BT_POWER, 1 );
-	else
-		SET_PALMTX_GPIO( BT_POWER, 0 );
+	printk(KERN_NOTICE "Switch BT power %d\n", on ? 1 : 0);
+	SET_PALMTX_GPIO( BT_POWER, on ? 1 : 0 );
 }
 EXPORT_SYMBOL(bcm2035_bt_power);
 
@@ -314,8 +308,8 @@ static void palmtx_udc_command (int cmd){
 
 
 static struct pxa2xx_udc_mach_info palmtx_udc_mach_info __initdata = {
-	.udc_is_connected = palmtx_udc_is_connected,
-	.udc_command      = palmtx_udc_command,
+	.udc_is_connected	= palmtx_udc_is_connected,
+	.udc_command		= palmtx_udc_command,
 };
 
 
@@ -334,9 +328,11 @@ static pxa2xx_audio_ops_t palmtx_audio_ops = {
 };
 
 static struct platform_device palmtx_ac97 = {
-	.name = "pxa2xx-ac97",
-	.id   = -1,
-	.dev  = { .platform_data = &palmtx_audio_ops },
+	.name	= "pxa2xx-ac97",
+	.id	= -1,
+	.dev	= {
+	    .platform_data = &palmtx_audio_ops
+	},
 };
 
 /********************
@@ -348,7 +344,7 @@ struct platform_device palmtx_pm = {
 	.id = -1,
 	.dev = {
 		.platform_data = NULL,
-		},
+	},
 };
 
 static struct platform_device *devices[] __initdata = {
@@ -395,16 +391,21 @@ static struct pxafb_mode_info palmtx_lcd_modes[] = {
 static struct pxafb_mach_info palmtx_lcd_screen = {
 	.modes                  = palmtx_lcd_modes,
 	.num_modes              = ARRAY_SIZE(palmtx_lcd_modes),
-	.lccr0 = PALMTX_INIT_LCD_LLC0,
-	.lccr3 = PALMTX_INIT_LCD_LLC3,
+	.lccr0			= PALMTX_INIT_LCD_LLC0,
+	.lccr3			= PALMTX_INIT_LCD_LLC3,
 	.pxafb_backlight_power	= NULL,
 };
 
 static struct map_desc palmtx_io_desc[] __initdata = {
-	// PCMCIA socket 0
+	{
+		.virtual	= 0xf0000000,
+		.pfn		= __phys_to_pfn(0x20000000),
+		.length		= 0x00100000,
+		.type		= MT_DEVICE
+	},
 	{
 		.virtual	= 0xf1000000,
-		.pfn		= __phys_to_pfn(0x20000000),
+		.pfn		= __phys_to_pfn(0x30000000),
 		.length		= 0x00100000,
 		.type		= MT_DEVICE
 	},

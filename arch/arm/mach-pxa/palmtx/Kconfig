@@ -4,7 +4,7 @@ menuconfig MACH_XSCALE_PALMTX
 	help
 	  This enables support for Palm TX handheld.
 
-config PALMTX_DEBUG
+config  PALMTX_DEBUG
 	bool "Debug output for Palm TX"
 	depends on MACH_XSCALE_PALMTX
 	default n 
@@ -26,4 +26,10 @@ config  PALMTX_PM
 	default y if MACH_PALMTX
 	help
 	    Enable support for suspend/resume the Palm TX PDA.
+
+config  PALMTX_PCMCIA
+        tristate "Palm TX PCMCIA driver"
+        depends on MACH_XSCALE_PALMTX
+        help
+            This driver handles the CF/PCCARD/PCMCIA bus.
 
