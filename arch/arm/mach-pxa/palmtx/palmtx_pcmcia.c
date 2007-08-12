@@ -58,7 +58,7 @@
 
 static int palmtx_pcmcia_hw_init (struct soc_pcmcia_socket *skt)
 {
-	set_irq_type(PALMTX_PCMCIA_IRQ, IRQT_FALLING);
+/*	set_irq_type(PALMTX_PCMCIA_IRQ, IRQT_FALLING);*/ /* turns off backlight :-/ */
 	skt->irq = IRQ_GPIO(PALMTX_PCMCIA_IRQ);
 
 	palmtx_pcmcia_dbg("%s:%i, Socket:%d\n", __FUNCTION__, __LINE__, skt->nr);
