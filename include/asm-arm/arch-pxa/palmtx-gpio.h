@@ -6,7 +6,7 @@
  * Based on palmld-gpio.h by Alex Osborne
  * 
  * Authors: Cristiano P. <cristianop AT users DOT sourceforge DOT net>
- *          Jan Herman   <2hp@seznam.cz>
+ *          Jan Herman   <2hp AT seznam DOT cz>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -30,19 +30,19 @@
 /* GPIOs */
 #define GPIO_NR_PALMTX_GPIO_RESET		1
 
-#define GPIO_NR_PALMTX_POWER_DETECT             90
+#define GPIO_NR_PALMTX_POWER_DETECT             12
 #define GPIO_NR_PALMTX_HOTSYNC_BUTTON_N         10
 #define GPIO_NR_PALMTX_EARPHONE_DETECT          107
 #define GPIO_NR_PALMTX_SD_DETECT_N              14
 
-#define GPIO_NR_PALMTX_KP_MKIN3         	97    // left, right
-#define GPIO_NR_PALMTX_KP_MKIN0         	100   // center, power, home
-#define GPIO_NR_PALMTX_KP_MKIN1         	101   // web, contact, calendar
-#define GPIO_NR_PALMTX_KP_MKIN2         	102   // up, down
+#define GPIO_NR_PALMTX_KP_MKIN3         	97	/* left, right */
+#define GPIO_NR_PALMTX_KP_MKIN0         	100	/* center, power, home */
+#define GPIO_NR_PALMTX_KP_MKIN1         	101	/* web, contact, calendar */
+#define GPIO_NR_PALMTX_KP_MKIN2         	102	/* up, down */
 
-#define GPIO_NR_PALMTX_KP_MKOUT0        	103   // up, power, right, calendar
-#define GPIO_NR_PALMTX_KP_MKOUT1        	104   // home, contact
-#define GPIO_NR_PALMTX_KP_MKOUT2        	105   // center, down, left, web
+#define GPIO_NR_PALMTX_KP_MKOUT0        	103	/* up, power, right, calendar */
+#define GPIO_NR_PALMTX_KP_MKOUT1        	104	/* home, contact */
+#define GPIO_NR_PALMTX_KP_MKOUT2        	105	/* center, down, left, web */
 
 #define GPIO_NR_PALMTX_KP_MKIN3_MD              (GPIO_NR_PALMTX_KP_MKIN3 | GPIO_ALT_FN_3_IN)
 #define GPIO_NR_PALMTX_KP_MKIN0_MD              (GPIO_NR_PALMTX_KP_MKIN0 | GPIO_ALT_FN_1_IN)
@@ -55,14 +55,14 @@
 
 #define GPIO_NR_PALMTX_WM9712_IRQ               27
 
-#define GPIO_NR_PALMTX_ICP_RXD                  46      // Infrared receive  pin
-#define GPIO_NR_PALMTX_ICP_TXD                  47	// Infrared transmit pin
-#define GPIO_NR_PALMTX_IR_DISABLE		40	// connected to SD pin of tranceiver (TFBS4710?) ?
+#define GPIO_NR_PALMTX_ICP_RXD                  46	/* Infrared receive  pin */
+#define GPIO_NR_PALMTX_ICP_TXD                  47	/* Infrared transmit pin */
+#define GPIO_NR_PALMTX_IR_DISABLE		40	/* connected to SD pin of tranceiver (TFBS4710?) */
 
 #define GPIO_NR_PALMTX_ICP_RXD_MD               (GPIO_NR_PALMTX_ICP_RXD | GPIO_ALT_FN_1_IN)
 #define GPIO_NR_PALMTX_ICP_TXD_MD               (GPIO_NR_PALMTX_ICP_TXD | GPIO_ALT_FN_2_OUT)
 
-#define GPIO_NR_PALMTX_USB_DETECT               13
+#define GPIO_NR_PALMTX_USB_DETECT               90
 #define GPIO_NR_PALMTX_USB_POWER		95
 #define GPIO_NR_PALMTX_USB_PULLUP		93
 
@@ -71,23 +71,23 @@
 
 /* Bluetooth */
 
-#define GPIO_NR_PALMTX_BT_RXD				42
-#define GPIO_NR_PALMTX_BT_TXD				43
-#define GPIO_NR_PALMTX_BT_CTS				44
-#define GPIO_NR_PALMTX_BT_RTS				45
-#define GPIO_NR_PALMTX_BT_RESET				83
-#define GPIO_NR_PALMTX_BT_POWER				17
+#define GPIO_NR_PALMTX_BT_RXD			42
+#define GPIO_NR_PALMTX_BT_TXD			43
+#define GPIO_NR_PALMTX_BT_CTS			44
+#define GPIO_NR_PALMTX_BT_RTS			45
+#define GPIO_NR_PALMTX_BT_RESET			83
+#define GPIO_NR_PALMTX_BT_POWER			17
 
-#define GPIO_NR_PALMTX_BT_RXD_MD			(GPIO_NR_PALMTX_BT_RXD | GPIO_ALT_FN_1_IN)
-#define GPIO_NR_PALMTX_BT_TXD_MD			(GPIO_NR_PALMTX_BT_TXD | GPIO_ALT_FN_2_OUT)
-#define GPIO_NR_PALMTX_BT_UART_CTS_MD			(GPIO_NR_PALMTX_BT_CTS | GPIO_ALT_FN_1_IN)
-#define GPIO_NR_PALMTX_BT_UART_RTS_MD			(GPIO_NR_PALMTX_BT_RTS | GPIO_ALT_FN_2_OUT)
+#define GPIO_NR_PALMTX_BT_RXD_MD		(GPIO_NR_PALMTX_BT_RXD | GPIO_ALT_FN_1_IN)
+#define GPIO_NR_PALMTX_BT_TXD_MD		(GPIO_NR_PALMTX_BT_TXD | GPIO_ALT_FN_2_OUT)
+#define GPIO_NR_PALMTX_BT_UART_CTS_MD		(GPIO_NR_PALMTX_BT_CTS | GPIO_ALT_FN_1_IN)
+#define GPIO_NR_PALMTX_BT_UART_RTS_MD		(GPIO_NR_PALMTX_BT_RTS | GPIO_ALT_FN_2_OUT)
 
 /* WiFi */
 
-#define GPIO_NR_PALMTX_WIFI_POWER			94
-#define GPIO_NR_PALMTX_WIFI_RESET				108
-#define GPIO_NR_PALMTX_PCMCIA_READY			116
+#define GPIO_NR_PALMTX_WIFI_POWER		94
+#define GPIO_NR_PALMTX_WIFI_RESET		108
+#define GPIO_NR_PALMTX_PCMCIA_READY		116
 
 /* INTERRUPTS */
 
