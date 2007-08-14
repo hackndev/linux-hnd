@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
-# Linux kernel version: 2.6.21-hnd2
-# Tue Jul 17 09:33:05 2007
+# Linux kernel version: 2.6.21-hnd3
+# Tue Aug 14 17:01:07 2007
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -184,6 +184,7 @@ CONFIG_MACH_XSCALE_PALMTX=y
 # CONFIG_PALMTX_DEBUG is not set
 CONFIG_PALMTX_BATTERY=m
 CONFIG_PALMTX_PM=y
+CONFIG_PALMTX_PCMCIA=m
 # CONFIG_MACH_PALMZ72 is not set
 # CONFIG_MACH_OMAP_PALMTC is not set
 # CONFIG_MACH_ZIRE31 is not set
@@ -191,6 +192,7 @@ CONFIG_GPIOED=m
 CONFIG_GPIOEDNG=m
 # CONFIG_MACH_GHI270HG is not set
 # CONFIG_MACH_GHI270 is not set
+# CONFIG_MACH_LOOXC550 is not set
 # CONFIG_PXA_SHARPSL is not set
 # CONFIG_MACH_TRIZEPS4 is not set
 CONFIG_PXA27x=y
@@ -229,7 +231,16 @@ CONFIG_XSCALE_PMU=y
 #
 # PCCARD (PCMCIA/CardBus) support
 #
-# CONFIG_PCCARD is not set
+CONFIG_PCCARD=m
+# CONFIG_PCMCIA_DEBUG is not set
+CONFIG_PCMCIA=m
+CONFIG_PCMCIA_LOAD_CIS=y
+CONFIG_PCMCIA_IOCTL=y
+
+#
+# PC-card bridges
+#
+CONFIG_PCMCIA_PXA2XX=m
 
 #
 # Kernel Features
@@ -432,7 +443,11 @@ CONFIG_BT_HIDP=m
 CONFIG_BT_HCIUART=m
 CONFIG_BT_HCIUART_H4=y
 # CONFIG_BT_HCIUART_BCSP is not set
+# CONFIG_BT_HCIDTL1 is not set
+# CONFIG_BT_HCIBT3C is not set
 CONFIG_BT_BCM2035UART=m
+# CONFIG_BT_HCIBLUECARD is not set
+# CONFIG_BT_HCIBTUART is not set
 # CONFIG_BT_HCIVHCI is not set
 # CONFIG_IEEE80211 is not set
 
@@ -445,7 +460,7 @@ CONFIG_BT_BCM2035UART=m
 #
 CONFIG_STANDALONE=y
 CONFIG_PREVENT_FIRMWARE_BUILD=y
-# CONFIG_FW_LOADER is not set
+CONFIG_FW_LOADER=m
 # CONFIG_SYS_HYPERVISOR is not set
 
 #
@@ -557,6 +572,11 @@ CONFIG_MII=y
 #
 # CONFIG_NET_RADIO is not set
 # CONFIG_LIBERTAS is not set
+
+#
+# PCMCIA network device support
+#
+# CONFIG_NET_PCMCIA is not set
 
 #
 # Wan interfaces
@@ -686,6 +706,13 @@ CONFIG_HW_RANDOM=m
 # CONFIG_DTLK is not set
 # CONFIG_R3964 is not set
 # CONFIG_TIHTC is not set
+
+#
+# PCMCIA character devices
+#
+# CONFIG_SYNCLINK_CS is not set
+# CONFIG_CARDMAN_4000 is not set
+# CONFIG_CARDMAN_4040 is not set
 # CONFIG_RAW_DRIVER is not set
 
 #
@@ -753,11 +780,22 @@ CONFIG_APM_POWER=m
 # CONFIG_ADC is not set
 
 #
+# Compaq/iPAQ Drivers
+#
+
+#
+# Compaq/HP iPAQ Drivers
+#
+# CONFIG_IPAQ_SLEEVE is not set
+# CONFIG_SLEEVE_DEBUG is not set
+
+#
 # Multifunction device drivers
 #
 # CONFIG_MFD_SM501 is not set
 # CONFIG_HTC_ASIC2 is not set
 # CONFIG_HTC_ASIC3 is not set
+# CONFIG_HTC_PASIC3 is not set
 # CONFIG_HTC_EGPIO is not set
 # CONFIG_HTC_ASIC3_DS1WM is not set
 # CONFIG_SOC_SAMCOP is not set
@@ -780,6 +818,7 @@ CONFIG_APM_POWER=m
 #
 # LED Triggers
 #
+# CONFIG_LEDS_TRIGGER_BACKLIGHT is not set
 
 #
 # Multimedia devices
@@ -886,6 +925,12 @@ CONFIG_SND_AC97_CODEC=y
 # CONFIG_SND_PXA2xx_I2SOUND is not set
 CONFIG_SND_PXA2XX_PCM=y
 CONFIG_SND_PXA2XX_AC97=y
+
+#
+# PCMCIA devices
+#
+# CONFIG_SND_VXPOCKET is not set
+# CONFIG_SND_PDAUDIOCF is not set
 
 #
 # SoC audio support
