@@ -399,23 +399,16 @@ static struct pxafb_mach_info palmtx_lcd_screen = {
 static struct map_desc palmtx_io_desc[] __initdata = {
 	{
 		.virtual	= 0xf0000000,
-		.pfn		= __phys_to_pfn(0x20000000),
-		.length		= 0x00100000,
-		.type		= MT_DEVICE
-	},
-	{
-		.virtual	= 0xf1000000,
-		.pfn		= __phys_to_pfn(0x30000000),
+		.pfn		= __phys_to_pfn(0x28000000),
 		.length		= 0x00100000,
 		.type		= MT_DEVICE
 	},
 };
-	
+
 
 static void __init palmtx_map_io(void)
 {
 	pxa_map_io();
-			
 	iotable_init(palmtx_io_desc, ARRAY_SIZE(palmtx_io_desc));
 }
 

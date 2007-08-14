@@ -7,6 +7,7 @@
  * 
  * Authors: Cristiano P. <cristianop AT users DOT sourceforge DOT net>
  *          Jan Herman   <2hp AT seznam DOT cz>
+ *          Marek Vasut  <marek.vasut AT gmail DOT com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -83,10 +84,10 @@
 #define GPIO_NR_PALMTX_BT_UART_CTS_MD		(GPIO_NR_PALMTX_BT_CTS | GPIO_ALT_FN_1_IN)
 #define GPIO_NR_PALMTX_BT_UART_RTS_MD		(GPIO_NR_PALMTX_BT_RTS | GPIO_ALT_FN_2_OUT)
 
-/* WiFi */
-
-#define GPIO_NR_PALMTX_WIFI_POWER		94
-#define GPIO_NR_PALMTX_WIFI_RESET		108
+/* PCMCIA (WiFi) */
+#define GPIO_NR_PALMTX_PCMCIA_POWER1		94
+#define GPIO_NR_PALMTX_PCMCIA_POWER2		108
+#define GPIO_NR_PALMTX_PCMCIA_RESET		79
 #define GPIO_NR_PALMTX_PCMCIA_READY		116
 
 /* INTERRUPTS */
