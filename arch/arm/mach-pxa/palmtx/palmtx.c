@@ -150,6 +150,17 @@ static struct platform_device palmtx_keypad = {
 	},
 };
 
+/**************
+ * LCD Border *
+ **************/
+
+struct platform_device palmtx_border = {
+        .name = "palmtx-border",
+        .id = -1,
+        .dev = {
+            .platform_data = NULL,
+        },
+};
 
 /*************
  * Backlight *
@@ -353,6 +364,7 @@ static struct platform_device *devices[] __initdata = {
 	 &palmtx_pm,
 	 &palmtx_backlight,
 	 &bcm2035_bt,
+	 &palmtx_border,
 };
 
 /***************
