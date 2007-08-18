@@ -33,3 +33,8 @@ config  PALMTX_PCMCIA
         help
             This driver handles the CF/PCCARD/PCMCIA bus.
 
+config PALMTX_BORDER
+        tristate "Palm TX Display border switch"
+	depends on MACH_XSCALE_PALMTX
+	help
+            Enable support for turning LCD border on/off

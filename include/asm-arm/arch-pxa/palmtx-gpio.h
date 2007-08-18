@@ -1,6 +1,4 @@
 /*
- * $Id$
- * 
  * GPIOs and interrupts for Palm TX Handheld Computer
  *
  * Based on palmld-gpio.h by Alex Osborne
@@ -23,6 +21,7 @@
 /*
  *   WORK IN PROGRESS
  */
+#include <asm/arch/pxa-regs.h>
 
 #ifndef _INCLUDE_PALMTX_GPIO_H_ 
 
