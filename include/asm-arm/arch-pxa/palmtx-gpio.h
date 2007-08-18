@@ -63,10 +63,13 @@
 #define GPIO_NR_PALMTX_ICP_RXD_MD               (GPIO_NR_PALMTX_ICP_RXD | GPIO_ALT_FN_1_IN)
 #define GPIO_NR_PALMTX_ICP_TXD_MD               (GPIO_NR_PALMTX_ICP_TXD | GPIO_ALT_FN_2_OUT)
 
+/* USB */
 #define GPIO_NR_PALMTX_USB_DETECT               90
 #define GPIO_NR_PALMTX_USB_POWER		95
 #define GPIO_NR_PALMTX_USB_PULLUP		93
 
+/* LCD */
+#define GPIO_NR_PALMTX_SCREEN			19	/* screen goes white if set low */
 #define GPIO_NR_PALMTX_BL_POWER			84
 #define GPIO_NR_PALMTX_LCD_POWER		96
 
