@@ -73,8 +73,11 @@
 #define GPIO_NR_PALMTX_BL_POWER			84
 #define GPIO_NR_PALMTX_LCD_POWER		96
 
-/* Bluetooth */
+/* LCD Border */
+#define GPIO_NR_PALMTX_BORDER_SWITCH		98
+#define GPIO_NR_PALMTX_BORDER_SELECT		22
 
+/* Bluetooth */
 #define GPIO_NR_PALMTX_BT_RXD			42
 #define GPIO_NR_PALMTX_BT_TXD			43
 #define GPIO_NR_PALMTX_BT_CTS			44
