@@ -30,8 +30,6 @@
 #include <asm/memory.h>
 #include <asm/mach-types.h>
 
-#define PALMTX_NAND_BASE 0x08000000
-
 /*
  * MTD structure
  */
@@ -93,7 +91,7 @@ static int __init palmtx_init(void)
 	if (!machine_is_xscale_palmtx())
 		return -ENODEV;
 
-	nandaddr = ioremap(PALMTX_NAND_BASE, 0x1000);
+	nandaddr = ioremap(PALMTX_PHYS_NAND_START, 0x1000);
 	if (!nandaddr) {
 		printk("Failed to ioremap NAND flash.\n");
 		return -ENOMEM;
