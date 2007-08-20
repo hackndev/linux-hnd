@@ -25,6 +25,7 @@
 #include <asm/io.h>
 #include <asm/sizes.h>
 #include <asm/arch/palmtx-gpio.h>
+#include <asm/arch/palmtx-init.h>
 #include <asm/arch/pxa-regs.h>
 #include <asm/setup.h>
 #include <asm/memory.h>
