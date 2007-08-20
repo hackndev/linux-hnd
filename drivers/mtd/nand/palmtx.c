@@ -67,7 +67,7 @@ static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 	struct nand_chip *chip = mtd->priv;
 
 	if (cmd != NAND_CMD_NONE)
-		writeb(cmd, (void __iomem *)((unsigned long)chip->IO_ADDR_W | ((ctrl & 0x6) << 1)));
+		writeb(cmd, (void __iomem *)((unsigned long)chip->IO_ADDR_W));
 }
 
 /*
@@ -118,9 +118,11 @@ static int __init palmtx_init(void)
 	palmtx_nand_mtd->owner = THIS_MODULE;
 
 	/*
-	 * Enable VPEN
+	 * Enable VPEN ... isnt it on all the time?
 	 */
+#if 0
 	SET_PALMTX_GPIO(NAND_POWER, 1);
+#endif
 
 	/* insert callbacks */
 	this->IO_ADDR_R = nandaddr;

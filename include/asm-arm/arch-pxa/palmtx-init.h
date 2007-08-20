@@ -19,10 +19,12 @@
 
 #define _INCLUDE_PALMTX_INIT_H_
 
+#include <asm/arch/pxa-regs.h>
+
 /* Various addresses */
 
-#define PALMTX_PHYS_FLASH_START	0x00000000 /* ChipSelect 0 */
-#define PALMTX_PHYS_NAND_START	0x04000000 /* ChipSelect 1 */
+#define PALMTX_PHYS_FLASH_START	PXA_CS0_PHYS	/* ChipSelect 0 */
+#define PALMTX_PHYS_NAND_START	PXA_CS1_PHYS	/* ChipSelect 1 */
 
 #define PALMTX_PHYS_RAM_START	0xa0000000
 #define PALMTX_PHYS_IO_START	0x40000000
