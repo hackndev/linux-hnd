@@ -31,6 +31,19 @@
 #include <asm/memory.h>
 #include <asm/mach-types.h>
 
+/* Select the chip by setting nCE to low */
+#define NAND_CTL_SETNCE		1
+/* Deselect the chip by setting nCE to high */
+#define NAND_CTL_CLRNCE		2
+/* Select the command latch by setting CLE to high */
+#define NAND_CTL_SETCLE		3
+/* Deselect the command latch by setting CLE to low */
+#define NAND_CTL_CLRCLE		4
+/* Select the address latch by setting ALE to high */
+#define NAND_CTL_SETALE		5
+/* Deselect the address latch by setting ALE to low */
+#define NAND_CTL_CLRALE		6
+
 /*
  * MTD structure
  */
@@ -56,16 +69,34 @@ static struct mtd_partition partition_info[] = {
 
 /*
  *	hardware specific access to control-lines
- *
- *	NAND_NCE: bit 0 - don't care
- *	NAND_CLE: bit 1 - address bit 2
- *	NAND_ALE: bit 2 - address bit 3
  */
 static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 			    unsigned int ctrl)
 {
 	struct nand_chip *chip = mtd->priv;
 
+        if (ctrl & NAND_CTRL_CHANGE) {
+                switch (cmd) {
+                case NAND_CTL_SETCLE:
+                        SET_PALMTX_GPIO(NAND_CLE,1);
+                        break;
+                case NAND_CTL_CLRCLE:
+                        SET_PALMTX_GPIO(NAND_CLE,0);
+                        break;
+                case NAND_CTL_SETALE:
+                        SET_PALMTX_GPIO(NAND_ALE,1);
+                        break;
+                case NAND_CTL_CLRALE:
+                        SET_PALMTX_GPIO(NAND_ALE,0);
+                        break;
+                case NAND_CTL_SETNCE:
+                        SET_PALMTX_GPIO(NAND_NCE,1);
+                        break;
+                case NAND_CTL_CLRNCE:
+                        SET_PALMTX_GPIO(NAND_NCE,0);
+                        break;
+                }
+        }
 	if (cmd != NAND_CMD_NONE)
 		writeb(cmd, (void __iomem *)((unsigned long)chip->IO_ADDR_W));
 }

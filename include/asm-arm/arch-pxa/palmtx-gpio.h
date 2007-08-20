@@ -97,7 +97,10 @@
 
 /* NAND Flash ... these GPIOs are probably incorrect! */
 #define GPIO_NR_PALMTX_NAND_POWER		19
-#define GPIO_NR_PALMTX_NAND_READY		37
+#define GPIO_NR_PALMTX_NAND_READY		115
+#define GPIO_NR_PALMTX_NAND_CLE			79
+#define GPIO_NR_PALMTX_NAND_ALE			113
+#define GPIO_NR_PALMTX_NAND_NCE			114
 
 
 /* INTERRUPTS */
