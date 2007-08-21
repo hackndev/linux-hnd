@@ -33,8 +33,13 @@
 
 #include "../generic.h"
 
+#ifdef CONFIG_HTCSABLE_BT
 #include "htcsable_bt.h"
+#endif
+
+#ifdef CONFIG_HTCSABLE_PHONE
 #include "htcsable_phone.h"
+#endif
 
 /*
  *  * Bluetooth - Relies on other loadable modules, like ASIC3 and Core,
@@ -43,6 +48,7 @@
  *     * bluetooth (obviously).
  *      */
 
+#ifdef CONFIG_HTCSABLE_BT
 static struct htcsable_bt_funcs bt_funcs;
 
 static void
@@ -51,7 +57,9 @@ htcsable_bt_configure( int state )
   if (bt_funcs.configure != NULL)
     bt_funcs.configure( state );
 }
+#endif
 
+#ifdef CONFIG_HTCSABLE_PHONE
 static struct htcsable_phone_funcs phone_funcs;
 
 static void
@@ -60,6 +68,7 @@ htcsable_phone_configure( int state )
   if (phone_funcs.configure != NULL)
     phone_funcs.configure( state );
 }
+#endif
 
 static struct pxafb_mode_info htcsable_lcd_modes[] = {
 {
@@ -102,6 +111,7 @@ static struct platform_device htcsable_lcd        = { .name = "htcsable_lcd", };
 
 /* Bluetooth */
 
+#ifdef CONFIG_HTCSABLE_BT
 static struct platform_device htcsable_bt = {
 	.name = "htcsable_bt",
 	.id = -1,
@@ -109,7 +119,9 @@ static struct platform_device htcsable_bt = {
 		.platform_data = &bt_funcs,
 	},
 };
+#endif
 
+#ifdef CONFIG_HTCSABLE_PHONE
 static struct platform_device htcsable_phone = {
 	.name = "htcsable_phone",
 	.id = -1,
@@ -117,7 +129,7 @@ static struct platform_device htcsable_phone = {
 		.platform_data = &phone_funcs,
 	},
 };
-
+#endif
 
 static struct platform_device *htcsable_asic3_devices[] __initdata = {
 	&htcsable_ts,
@@ -128,8 +140,12 @@ static struct platform_device *htcsable_asic3_devices[] __initdata = {
 #ifdef CONFIG_HTCSABLE_BACKLIGHT
 	&htcsable_bl,
 #endif
+#ifdef CONFIG_HTCSABLE_BT
 	&htcsable_bt,
+#endif
+#ifdef CONFIG_HTCSABLE_PHONE
 	&htcsable_phone,
+#endif
 	&htcsable_udc,
 };
 
@@ -231,15 +247,20 @@ static struct platform_device *devices[] __initdata = {
   &htcsable_core,
 };
 
+#ifdef CONFIG_HTCSABLE_BT
 static struct platform_pxa_serial_funcs htcsable_pxa_bt_funcs = {
   .configure = htcsable_bt_configure,
 };
+#endif
+
+#ifdef CONFIG_HTCSABLE_PHONE
 static struct platform_pxa_serial_funcs htcsable_pxa_phone_funcs = {
   .configure = htcsable_phone_configure,
 #if 0
   .ioctl = htcsable_phone_ioctl,
 #endif
 };
+#endif
 
 static void __init htcsable_map_io(void)
 {
@@ -248,8 +269,12 @@ static void __init htcsable_map_io(void)
   pxa_map_io();
 
   /* Is this correct? If yes, please add comment, that vendor was drunk when did soldering. */
+#ifdef CONFIG_HTCSABLE_BT
   pxa_set_ffuart_info(&htcsable_pxa_bt_funcs);
+#endif
+#ifdef CONFIG_HTCSABLE_PHONE
   pxa_set_btuart_info(&htcsable_pxa_phone_funcs);
+#endif
 
 //  sport = platform_get_drvdata(&ffuart device);
 //  printk("sport=0x%x\n", (unsigned int)sport);
@@ -272,6 +297,18 @@ static void __init htcsable_init(void)
 	platform_add_devices( devices, ARRAY_SIZE(devices) );
 }
 
+#ifdef CONFIG_MACH_HTCBEETLES
+MACHINE_START(HTCBEETLES, "HTC Beetles")
+	.phys_io	= 0x40000000,
+	.io_pg_offst    = (io_p2v(0x40000000) >> 18) & 0xfffc,
+	.boot_params	= 0xa0000100,
+	.map_io 	= htcsable_map_io,
+	.init_irq	= pxa_init_irq,
+	.timer  	= &pxa_timer,
+	.init_machine	= htcsable_init,
+MACHINE_END
+#endif
+#ifdef CONFIG_MACH_HW6900
 MACHINE_START(HW6900, "HTC Sable")
 	.phys_io	= 0x40000000,
 	.io_pg_offst    = (io_p2v(0x40000000) >> 18) & 0xfffc,
@@ -281,4 +318,4 @@ MACHINE_START(HW6900, "HTC Sable")
 	.timer  	= &pxa_timer,
 	.init_machine	= htcsable_init,
 MACHINE_END
-
+#endif

@@ -37,10 +37,8 @@ static int sable_rom_init (void)
 {
 	int retval = 0;
 
-#if defined(CONFIG_MACH_BLUEANGEL)
-	if (! machine_is_sable() )
+	if (!(machine_is_hw6900() || machine_is_htcbeetles()))
 		return -ENODEV;
-#endif
 
 	sable_map.virt = ioremap(sable_map.phys, sable_map.size);
 	if (!sable_map.virt) {
