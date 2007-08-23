@@ -47,17 +47,17 @@ obj-y                           += rover/
 obj-$(CONFIG_MACH_RECON)	+= plat-recon/
 obj-$(CONFIG_MACH_LOOXC550)	+= looxc550/
 obj-$(CONFIG_MACH_X50)			+= aximx50/
-obj-$(CONFIG_MACH_XSCALE_PALMLD)	+= palmld/
-obj-$(CONFIG_MACH_XSCALE_PALMTREO650)	+= palmt650/
-obj-$(CONFIG_MACH_XSCALE_TREO680)	+= palmt680/
-obj-$(CONFIG_MACH_T700WX)		+= palmt700wx/
+obj-$(CONFIG_MACH_TUNGE2)		+= palmte2/
+obj-$(CONFIG_MACH_OMAP_PALMTC)		+= ssp.o palmtc/
 obj-$(CONFIG_MACH_T3XSCALE)		+= ssp.o palmtt3/
 obj-$(CONFIG_MACH_XSCALE_PALMTT5)	+= palmtt5/
 obj-$(CONFIG_MACH_XSCALE_PALMTX)	+= palmtx/
-obj-$(CONFIG_MACH_PALMZ72)		+= palmz72/
-obj-$(CONFIG_MACH_TUNGE2)		+= palmte2/
-obj-$(CONFIG_MACH_OMAP_PALMTC)		+= ssp.o palmtc/
+obj-$(CONFIG_MACH_XSCALE_PALMLD)	+= palmld/
 obj-$(CONFIG_MACH_ZIRE31)		+= palmz31/
+obj-$(CONFIG_MACH_PALMZ72)		+= palmz72/
+obj-$(CONFIG_MACH_XSCALE_PALMTREO650)	+= palmt650/
+obj-$(CONFIG_MACH_XSCALE_TREO680)	+= palmt680/
+obj-$(CONFIG_MACH_T700WX)		+= palmt700wx/
 
 # Support for blinky lights
 led-y := leds.o
