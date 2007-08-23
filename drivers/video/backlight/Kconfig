@@ -78,14 +78,6 @@ config BACKLIGHT_H2200
 
           If you have an iPAQ h2200, say Y to enable the backlight driver.
 
-config BACKLIGHT_PXAPWM
-	tristate "PXA PWM Backlight Driver (deprecated)"
-	depends on BACKLIGHT_CLASS_DEVICE && ARCH_PXA
-	default n
-	help
-	  If your backlight is driven by the PXA PWM, say y to enable the backlight
-	  driver.
-
 config BACKLIGHT_S3C2410
 	tristate "Samsung S3C2410 Backlight Driver"
 	depends on (BACKLIGHT_CLASS_DEVICE || LCD_CLASS_DEVICE) && ARCH_S3C2410
