@@ -121,7 +121,6 @@
 
 struct sx2_dev {
         struct device   		*dev;
-	struct sx2_udc_mach_info 	*mach;
         spinlock_t      		lock;
         /*
          * EP0 write thread.

@@ -33,7 +33,6 @@
 #include <asm/arch/palmld-init.h>
 #include <asm/arch/pxa27x_keyboard.h>
 #include <asm/arch/pxa-pm_ll.h>
-#include <asm/arch/sx2.h>
 #include <asm/arch/serial.h>
 
 #include <sound/driver.h>
@@ -208,37 +207,17 @@ static struct platform_device palmldled_device = {
 /*********************************************************
  * Cypress EZUSB SX2 USB2.0 Controller
  *********************************************************/
-static struct sx2_udc_mach_info palmldusb2_platform_data = {
-	.virt_base	= PALMLD_USB_VIRT,
-	
-	.ready_pin	= GPIO_NR_PALMLD_USB_READY,
-	.int_pin	= 0, // gotta detect it
-	.reset_pin	= GPIO_NR_PALMLD_USB_RESET,
-	.power_pin	= GPIO_NR_PALMLD_USB_POWER,
-	
-	.sloe_pin	= 0, // gotta detect it
-	.slrd_pin	= 0, // gotta detect it
-	.slwr_pin	= 0, // gotta detect it
-};
-
 static struct platform_device palmldusb2_device = {
         .name		= "sx2-udc",
         .id		= -1,
-	.dev		= {
-	    .platform_data	= &palmldusb2_platform_data,
-	},
 };
 		  
 /*********************************************************
  * LCD Border
  *********************************************************/
-
 struct platform_device palmld_border = {
 	.name = "palmld-border",
 	.id = -1,
-	.dev = {
-	    .platform_data = NULL,
-	},
 };
 
 /*********************************************************

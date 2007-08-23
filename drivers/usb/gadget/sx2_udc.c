@@ -1,8 +1,11 @@
 /*
  * linux/drivers/usb/gadget/sx2_udc.c
- * Cypress EZUSB SX2 high speed USB device controller
+ * Cypress EZUSB SX2 high speed USB device controller driver for
+ * Palm LifeDrive
  *
- * Copyright (C) 2007 Marek Vasut
+ * !! THIS IS JUST A DEMO !!
+ *
+ * Copyright (C) 2007 Marek Vasut <marek.vasut@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,16 +50,12 @@
 #include <asm/unaligned.h>
 #include <asm/hardware.h>
 
-#include <asm/arch/gpio.h>
+#include <asm/arch/palmld-gpio.h>
 
 #include <linux/usb/ch9.h>
 #include <linux/usb_gadget.h>
 
-#include <asm/arch/sx2.h>
-
 #include "sx2_udc.h"
-
-struct sx2_udc_mach_info sx2_mach;
 
 /*
  TESTING STUFF
@@ -266,7 +265,7 @@ u16 sx2_cmd_read(int reg)
 
 	printk("READING 0x%02x\n",reg);
 	writeb(data,SX2_ADDR_CMD);
-/*	while((gpio_get_value(sx2_mach.ready_pin)?1:0)==0) {
+/*	while(!GET_PALMLD_GPIO(USB_READY)) {
 	    msleep(1);
 	};
 */
@@ -282,7 +281,7 @@ int sx2_cmd_set_reg(int reg)
 	printk("SETTING 0x%02x\n",(reg | SX2_CMD_ADDR));
 	writeb((reg | SX2_CMD_ADDR),(SX2_ADDR_CMD));
 	/* wait for READY line */	
-	while((gpio_get_value(sx2_mach.ready_pin)?1:0)==0) {
+	while(!GET_PALMLD_GPIO(USB_READY)) {
 	};
 
 	return 0;
@@ -298,13 +297,13 @@ int sx2_cmd_write(u8 data)
 	printk("UPPER NIBBLE %02x\n",(data1 | SX2_CMD_WRITE));
 	writeb((data1 | SX2_CMD_WRITE),(SX2_ADDR_CMD));
 	/* wait for READY line */	
-	while((gpio_get_value(sx2_mach.ready_pin)?1:0)==0) {
+	while(!GET_PALMLD_GPIO(USB_READY)) {
 	};
 
 	printk("LOWER NIBBLE %02x\n",(data2 | SX2_CMD_WRITE));
 	writeb((data2 | SX2_CMD_WRITE),(SX2_ADDR_CMD));
 	/* wait for READY line */	
-	while((gpio_get_value(sx2_mach.ready_pin)?1:0)==0) {
+	while(!GET_PALMLD_GPIO(USB_READY)) {
 	};
 
 	return 0;
@@ -317,33 +316,33 @@ void sx2_hwtest(void)
 	for (;;) {
 	writeb(0x05,SX2_ADDR_CMD);
 	printk("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
-	(gpio_get_value(0)?"X":"-"),	//  1   1   1
-	(gpio_get_value(9)?"X":"-"),	//  0   0   0
-	(gpio_get_value(11)?"X":"-"),	//  0   0   0
-	(gpio_get_value(18)?"X":"-"),	//  1   1   1
-	(gpio_get_value(20)?"X":"-"),	//  0   1   1
-	(gpio_get_value(23)?"X":"-"),	//  1   1   1
-	(gpio_get_value(24)?"X":"-"),	//  1   1   1
-	(gpio_get_value(34)?"X":"-"),	//  1   1   1
-	(gpio_get_value(37)?"X":"-"),	//  1   1   1
-	(gpio_get_value(39)?"X":"-"),	//  1   1   1
-	(gpio_get_value(53)?"X":"-"),	//  1   0   0
-	(gpio_get_value(82)?"X":"-"),	//  1   1   1
-	(gpio_get_value(86)?"X":"-"),	//  1   1   X
-	(gpio_get_value(87)?"X":"-"),	//  0   0   0
-	(gpio_get_value(88)?"X":"-"),	//  1   1   1
-	(gpio_get_value(90)?"X":"-"),	//  0   0   0
-	(gpio_get_value(93)?"X":"-"),	//  1   1   1
-	(gpio_get_value(99)?"X":"-"),	//  0   0   0
-	(gpio_get_value(106)?"X":"-"),	//  0   0   0
-	(gpio_get_value(107)?"X":"-"),	//  0   0   0
-	(gpio_get_value(113)?"X":"-"),	//  1   1   1
-	(gpio_get_value(114)?"X":"-"),	//  0   0   0
-	(gpio_get_value(116)?"X":"-"),	//  1   1   1
-	(gpio_get_value(117)?"X":"-"),	//  1   1   1
-	(gpio_get_value(118)?"X":"-"),	//  1   1   1
-	(gpio_get_value(119)?"X":"-"),	//  1   1   1
-	(gpio_get_value(120)?"X":"-")	//  1   1   1
+	(GET_GPIO(0)?"X":"-"),	//  1   1   1
+	(GET_GPIO(9)?"X":"-"),	//  0   0   0
+	(GET_GPIO(11)?"X":"-"),	//  0   0   0
+	(GET_GPIO(18)?"X":"-"),	//  1   1   1
+	(GET_GPIO(20)?"X":"-"),	//  0   1   1
+	(GET_GPIO(23)?"X":"-"),	//  1   1   1
+	(GET_GPIO(24)?"X":"-"),	//  1   1   1
+	(GET_GPIO(34)?"X":"-"),	//  1   1   1
+	(GET_GPIO(37)?"X":"-"),	//  1   1   1
+	(GET_GPIO(39)?"X":"-"),	//  1   1   1
+	(GET_GPIO(53)?"X":"-"),	//  1   0   0
+	(GET_GPIO(82)?"X":"-"),	//  1   1   1
+	(GET_GPIO(86)?"X":"-"),	//  1   1   X
+	(GET_GPIO(87)?"X":"-"),	//  0   0   0
+	(GET_GPIO(88)?"X":"-"),	//  1   1   1
+	(GET_GPIO(90)?"X":"-"),	//  0   0   0
+	(GET_GPIO(93)?"X":"-"),	//  1   1   1
+	(GET_GPIO(99)?"X":"-"),	//  0   0   0
+	(GET_GPIO(106)?"X":"-"),	//  0   0   0
+	(GET_GPIO(107)?"X":"-"),	//  0   0   0
+	(GET_GPIO(113)?"X":"-"),	//  1   1   1
+	(GET_GPIO(114)?"X":"-"),	//  0   0   0
+	(GET_GPIO(116)?"X":"-"),	//  1   1   1
+	(GET_GPIO(117)?"X":"-"),	//  1   1   1
+	(GET_GPIO(118)?"X":"-"),	//  1   1   1
+	(GET_GPIO(119)?"X":"-"),	//  1   1   1
+	(GET_GPIO(120)?"X":"-")	//  1   1   1
 	);				// def rst wrt
 	}
 /*	printk("REG 0x%02x %02x %02x %02x %02x %02x\n",0x05,readb(SX2_ADDR_FIFO2),readb(SX2_ADDR_FIFO4),
@@ -354,22 +353,22 @@ void sx2_hwtest(void)
 
 
 /*
- GADGET LEVEL HANDLING STUFF
+ * GADGET LEVEL HANDLING STUFF
  */
 
 static const char driver_name [] = "sx2_udc";
 
 int usb_gadget_register_driver(struct usb_gadget_driver *driver)
 {
-printk("SX2: usb_gadget_register_driver\n");
-return 0;
+	printk("SX2: usb_gadget_register_driver\n");
+        return 0;
 }
 EXPORT_SYMBOL(usb_gadget_register_driver);
 
 int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
 {
-printk("SX2: usb_gadget_unregister_driver\n");
-return 0;
+	printk("SX2: usb_gadget_unregister_driver\n");
+        return 0;
 }
 EXPORT_SYMBOL(usb_gadget_unregister_driver);
 
@@ -382,14 +381,14 @@ EXPORT_SYMBOL(usb_gadget_unregister_driver);
 
 
 /*
- HARDWARE LEVEL HANDLING STUFF
+ * HARDWARE LEVEL HANDLING STUFF
  */
 static int sx2_udc_probe(struct platform_device *pdev)
 {
 	static struct sx2_dev *usb;
 /*	
-INIT THE CONTROLLER - POWER UP ETC
-*/
+ * INIT THE CONTROLLER - POWER UP ETC
+ */
 	/* FIXME - this cant be static :-E */
 	if(!request_mem_region(SX2_ADDR_BASE, 0x10000, "sx2-udc"))
 		return -EBUSY;
@@ -402,13 +401,11 @@ INIT THE CONTROLLER - POWER UP ETC
 	platform_set_drvdata(pdev, usb);
 	
 	usb->dev = &(pdev->dev);
-	usb->mach = pdev->dev.platform_data;
-	sx2_mach = *(usb->mach);
 	
 /* Now power down and up the chip */
-	gpio_set_value(usb->mach->power_pin,0);
+	SET_PALMLD_GPIO(USB_POWER,0);
 	udelay(100);
-	gpio_set_value(usb->mach->power_pin,1);
+	SET_PALMLD_GPIO(USB_POWER,1);
 	udelay(500);
 /*	sx2_hwtest(); */
 	sx2_enum();
@@ -450,5 +447,5 @@ static void __exit udc_exit(void)
 module_exit(udc_exit);
 
 MODULE_DESCRIPTION("Cypress EZUSB SX2 Peripheral Controller");
-MODULE_AUTHOR("Marek Vasut");
+MODULE_AUTHOR("Marek Vasut <marek.vasut@gmail.com>");
 MODULE_LICENSE("GPL");
