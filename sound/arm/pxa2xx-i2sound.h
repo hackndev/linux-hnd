@@ -55,15 +55,15 @@ struct snd_pxa2xx_i2sound_board {
 
 #ifdef CONFIG_PM
 	/* Power Management */
-	int (*suspend)(pm_message_t state);
-	int (*resume)(void);
+	int (*suspend) (pm_message_t state);
+	int (*resume) (void);
 #endif
 };
 
 #define SND_PXA2xx_I2SOUND_INFO_CLOCK_FROM_PXA	1 << 0
-#define SND_PXA2xx_I2SOUND_INFO_SYSCLOCK_DISABLE	1 << 3
 #define SND_PXA2xx_I2SOUND_INFO_CAN_CAPTURE	1 << 1
 #define SND_PXA2xx_I2SOUND_INFO_HALF_DUPLEX	1 << 2
+#define SND_PXA2xx_I2SOUND_INFO_SYSCLOCK_DISABLE	1 << 3
 
 void snd_pxa2xx_i2sound_i2slink_get(void);
 void snd_pxa2xx_i2sound_i2slink_free(void);
