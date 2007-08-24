@@ -80,6 +80,7 @@ int pxa_pm_enter(suspend_state_t state)
 {
 	unsigned long sleep_save[SLEEP_SAVE_SIZE];
 	unsigned long checksum = 0;
+	struct timespec delta, rtc;
 	int i;
 	extern void pxa_cpu_pm_enter(suspend_state_t state);
 	extern void pxa_cpu_resume(void);
@@ -89,6 +90,11 @@ int pxa_pm_enter(suspend_state_t state)
 	if (elf_hwcap & HWCAP_IWMMXT)
 		iwmmxt_task_disable(NULL);
 #endif
+
+	/* preserve current time */
+	rtc.tv_sec = RCNR;
+	rtc.tv_nsec = 0;
+	save_time_delta(&delta, &rtc);
 
 	SAVE(GPLR0); SAVE(GPLR1); SAVE(GPLR2);
 	SAVE(GPDR0); SAVE(GPDR1); SAVE(GPDR2);
@@ -192,6 +198,10 @@ int pxa_pm_enter(suspend_state_t state)
 	RESTORE(ICMR);
 
 	RESTORE(PSTR);
+
+	/* restore current time */
+	rtc.tv_sec = RCNR;
+	restore_time_delta(&delta, &rtc);
 
 #ifdef DEBUG
 	printk(KERN_DEBUG "*** made it back from resume\n");

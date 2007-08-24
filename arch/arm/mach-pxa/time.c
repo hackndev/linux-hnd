@@ -29,6 +29,7 @@
 #include <asm/mach/time.h>
 #include <asm/arch/pxa-regs.h>
 
+
 static inline unsigned long pxa_get_rtc_time(void)
 {
 	return RCNR;
@@ -180,7 +181,6 @@ static struct dyn_tick_timer pxa_dyn_tick = {
 
 #ifdef CONFIG_PM
 static unsigned long osmr[4], oier;
-static struct timespec delta, rtc;
 
 static void pxa_timer_suspend(void)
 {
@@ -189,19 +189,10 @@ static void pxa_timer_suspend(void)
 	osmr[2] = OSMR2;
 	osmr[3] = OSMR3;
 	oier = OIER;
-
-	/* preserve current time */
-	rtc.tv_sec = RCNR;
-	rtc.tv_nsec = 0;
-	save_time_delta(&delta, &rtc);
 }
 
 static void pxa_timer_resume(void)
 {
-	/* restore current time */
-	rtc.tv_sec = RCNR;
-	restore_time_delta(&delta, &rtc);
-
 	OSMR0 = osmr[0];
 	OSMR1 = osmr[1];
 	OSMR2 = osmr[2];
