@@ -16,15 +16,6 @@ static int orig_fgconsole, orig_kmsg;
 
 int pm_prepare_console(void)
 {
-	/* <Alex>
-	 * OPIE locks the console so we can't switch vts, this means we hang when 
-	 * trying to suspend. I'm not sure how we're supposed to get around it,
-	 * other than this. The suspend console is ugly, anyhow. ;-)
-	 */
-#ifndef CONFIG_MACH_PALMZ72
-#ifndef CONFIG_MACH_XSCALE_PALMLD
-#ifndef CONFIG_MACH_T3XSCALE
-
 	acquire_console_sem();
 
 	orig_fgconsole = fg_console;
@@ -53,24 +44,15 @@ int pm_prepare_console(void)
 	}
 	orig_kmsg = kmsg_redirect;
 	kmsg_redirect = SUSPEND_CONSOLE;
-#endif
-#endif
-#endif
 	return 0;
 }
 
 void pm_restore_console(void)
 {
-#ifndef CONFIG_MACH_PALMZ72
-#ifndef CONFIG_MACH_XSCALE_PALMLD
-#ifndef CONFIG_MACH_T3XSCALE
 	acquire_console_sem();
 	set_console(orig_fgconsole);
 	release_console_sem();
 	kmsg_redirect = orig_kmsg;
-#endif
-#endif
-#endif
 	return;
 }
 #endif
