@@ -104,10 +104,12 @@ static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 /*
  * read device ready pin
  */
+#if 0
 static int palmtx_device_ready(struct mtd_info *mtd)
 {
 	return GET_PALMTX_GPIO(NAND_READY);
 }
+#endif
 
 /*
  * Main initialization routine
