@@ -19,28 +19,10 @@
 
 static inline void putc(char c)
 {
-/*
 #ifdef CONFIG_SERIAL_PXA_CONSOLE
 	while (!(UART[5] & 0x20))
 		barrier();
 	UART[0] = c;
-#endif
-*/
-#if !defined(CONFIG_MACH_PALMZ72) && !defined(CONFIG_MACH_T3XSCALE)
-#ifdef CONFIG_LL_PXA_JTAG
-__asm__ ("1001: mrc p14, 0, r15, c14, c0, 0\n"
-         "bvs 1001b\n"
-         "mcr p14, 0, %0, c8, c0, 0\n"
-         :
-         : "r"(c)
-         : "r15"
-         );
-#else
-/*
-+       if (machine_is_h1900())
-+               return;
-+ */
-#endif
 #endif
 }
 
