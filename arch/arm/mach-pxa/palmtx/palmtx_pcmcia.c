@@ -55,6 +55,17 @@ static struct pcmcia_irqs palmtx_socket_state_irqs[] = {
 
 static int palmtx_pcmcia_hw_init (struct soc_pcmcia_socket *skt)
 {
+        GPSR(GPIO48_nPOE_MD) = GPIO_bit(GPIO48_nPOE_MD) |
+        GPIO_bit(GPIO49_nPWE_MD) |
+        GPIO_bit(GPIO50_nPIOR_MD) |
+        GPIO_bit(GPIO51_nPIOW_MD) |
+        GPIO_bit(GPIO85_nPCE_1_MD) |
+        GPIO_bit(GPIO53_nPCE_2_MD) |
+        GPIO_bit(GPIO54_pSKTSEL_MD) |
+        GPIO_bit(GPIO55_nPREG_MD) |
+        GPIO_bit(GPIO56_nPWAIT_MD) |
+        GPIO_bit(GPIO57_nIOIS16_MD) |
+
         pxa_gpio_mode(GPIO48_nPOE_MD);
         pxa_gpio_mode(GPIO49_nPWE_MD);
         pxa_gpio_mode(GPIO50_nPIOR_MD);
