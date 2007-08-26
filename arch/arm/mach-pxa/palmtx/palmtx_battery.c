@@ -100,7 +100,7 @@ int palmtx_battery_get_capacity(struct power_supply *b)
 int palmtx_battery_get_status(struct power_supply *b)
 {
         int ac_connected  = GET_PALMTX_GPIO(POWER_DETECT);
-        int usb_connected = !GET_PALMTX_GPIO(USB_DETECT);
+        int usb_connected = !GET_PALMTX_GPIO(USB_DETECT_N);
 
         if ( (ac_connected || usb_connected) &&
         ( ( bat.current_voltage > bat.previous_voltage ) ||
@@ -208,13 +208,7 @@ static struct device_driver  palmtx_wm97xx_driver = {
 
 static int palmtx_ac_is_connected (void){
 	/* when charger is plugged in, then status is ONLINE */
-	int ret = ((GET_GPIO(GPIO_NR_PALMTX_POWER_DETECT))||(!GET_GPIO(GPIO_NR_PALMTX_USB_DETECT)));;
-	if (ret) 
-		ret = 1;
-	else 
-		ret = 0;
-
-	return ret;
+	return GET_PALMTX_GPIO(POWER_DETECT)||(!GET_PALMTX_GPIO(USB_DETECT_N));
 }
 
 #if defined(CONFIG_APM_EMULATION) || defined(CONFIG_APM_MODULE)
