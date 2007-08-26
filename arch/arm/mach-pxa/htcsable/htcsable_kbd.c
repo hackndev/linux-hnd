@@ -37,7 +37,7 @@ static irqreturn_t htcsable_pwr_btn(int irq, void* data)
 
 static int __init htcsable_kbd_probe(struct platform_device * pdev)
 {
-	if (!machine_is_hw6900())
+	if (!(machine_is_hw6900() || machine_is_htcbeetles()))
 		return -ENODEV;
 
 	if (!(htcsable_kbd = input_allocate_device()))

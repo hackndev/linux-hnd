@@ -50,7 +50,7 @@ static struct platform_driver htcsable_buttons_driver = {
 
 static int __init htcsable_buttons_init(void)
 {
-	if (!machine_is_hw6900())
+	if (!(machine_is_hw6900() || machine_is_htcbeetles()))
 		return -ENODEV;
 
 	return platform_driver_register(&htcsable_buttons_driver);
