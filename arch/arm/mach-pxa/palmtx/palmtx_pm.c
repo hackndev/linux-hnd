@@ -91,8 +91,8 @@ static void palmtx_pxa_ll_pm_resume(void)
 }
 
 struct pxa_ll_pm_ops palmtx_ll_pm_ops = {
-	.suspend = palmtx_pxa_ll_pm_suspend,
-	.resume = palmtx_pxa_ll_pm_resume,
+	.suspend	= palmtx_pxa_ll_pm_suspend,
+	.resume		= palmtx_pxa_ll_pm_resume,
 };
 
 static int palmtx_pm_probe(struct device *dev)
@@ -102,11 +102,11 @@ static int palmtx_pm_probe(struct device *dev)
 }
 
 struct device_driver palmtx_pm_driver = {
-	.name = "palmtx-pm",
-	.bus = &platform_bus_type,
-	.probe = palmtx_pm_probe,
-	.suspend = palmtx_suspend,
-	.resume = palmtx_resume,
+	.name		= "palmtx-pm",
+	.bus		= &platform_bus_type,
+	.probe		= palmtx_pm_probe,
+	.suspend	= palmtx_suspend,
+	.resume		= palmtx_resume,
 };
 
 static int __init palmtx_pm_init(void)

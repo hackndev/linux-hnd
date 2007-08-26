@@ -156,10 +156,10 @@ static struct platform_device palmtx_keypad = {
  **************/
 
 struct platform_device palmtx_border = {
-        .name = "palmtx-border",
-        .id = -1,
-        .dev = {
-            .platform_data = NULL,
+        .name	= "palmtx-border",
+        .id	= -1,
+        .dev	= {
+        	.platform_data	= NULL,
         },
 };
 
@@ -169,23 +169,23 @@ struct platform_device palmtx_border = {
 
 static void palmtx_bl_power(int on)
 {
-    if(GET_PALMTX_GPIO(BL_POWER)!=on) {
-    	SET_PALMTX_GPIO(LCD_POWER, on);
-    	SET_PALMTX_GPIO(BL_POWER, on);
-    	pxa_set_cken(CKEN0_PWM0, on);
-    	pxa_set_cken(CKEN1_PWM1, on);
-    	mdelay(50);
-    }
+	if(GET_PALMTX_GPIO(BL_POWER)!=on) {
+		SET_PALMTX_GPIO(LCD_POWER, on);
+		SET_PALMTX_GPIO(BL_POWER, on);
+		pxa_set_cken(CKEN0_PWM0, on);
+		pxa_set_cken(CKEN1_PWM1, on);
+		mdelay(50);
+        }
 }
 
 static void palmtx_set_bl_intensity(int intensity)
 {
-    palmtx_bl_power(intensity ? 1 : 0);
-    if(intensity) {
-        PWM_CTRL0   = 0x7;
-        PWM_PERVAL0 = PALMTX_PERIOD;
-        PWM_PWDUTY0 = intensity;
-    }
+	palmtx_bl_power(intensity ? 1 : 0);
+	if(intensity) {
+		PWM_CTRL0   = 0x7;
+		PWM_PERVAL0 = PALMTX_PERIOD;
+		PWM_PWDUTY0 = intensity;
+	}
 }
 
 static struct corgibl_machinfo palmtx_bl_machinfo = {
@@ -333,7 +333,7 @@ static struct platform_device palmtx_ac97 = {
 	.name	= "pxa2xx-ac97",
 	.id	= -1,
 	.dev	= {
-	    .platform_data = &palmtx_audio_ops
+		.platform_data = &palmtx_audio_ops
 	},
 };
 
@@ -342,9 +342,9 @@ static struct platform_device palmtx_ac97 = {
  ********************/
 
 struct platform_device palmtx_pm = {
-	.name = "palmtx-pm",
-	.id = -1,
-	.dev = {
+	.name	= "palmtx-pm",
+	.id	= -1,
+	.dev	= {
 		.platform_data = NULL,
 	},
 };
@@ -377,18 +377,18 @@ static struct platform_device *devices[] __initdata = {
 static struct pxafb_mode_info palmtx_lcd_modes[] = {
     {
 	.pixclock		= 0,	
-	.xres			= 320,	// PPL + 1
-	.yres			= 480,	// LPP + 1
-	.bpp			= 16,	// BPP
+	.xres			= 320,	/* PPL + 1 */
+	.yres			= 480,	/* LPP + 1 */
+	.bpp			= 16,	/* BPP */
 
-					// linux    palmos
-	.left_margin		= 32,	// BLW + 1  (BLW=31) 
-	.right_margin		= 1,	// ELW + 1  (ELW=3)  *
-	.upper_margin		= 7,	// BFW + 1  (BFW=7)  *
-	.lower_margin		= 1,	// EFW + 1  (EFW=8)  *
+					/* linux    palmos */
+	.left_margin		= 32,	/* BLW + 1  (BLW=31) */
+	.right_margin		= 1,	/* ELW + 1  (ELW=3) */
+	.upper_margin		= 7,	/* BFW + 1  (BFW=7) */
+	.lower_margin		= 1,	/* EFW + 1  (EFW=8) */
 
-	.hsync_len              = 4,	// HSW + 1  (HSW=3)
-	.vsync_len              = 1,	// VSW + 1  (VSW=0)
+	.hsync_len              = 4,	/* HSW + 1  (HSW=3) */
+	.vsync_len              = 1,	/* VSW + 1  (VSW=0) */
     },
 };
 
@@ -422,11 +422,11 @@ static void __init palmtx_map_io(void)
 
 static void __init palmtx_init(void)
 {
-	// disable primary codec interrupt to prevent WM9712 constantly interrupting the CPU
-	// and preventing the boot process to complete (Thanx Alex & Shadowmite!)
+	/* disable primary codec interrupt to prevent WM9712 constantly interrupting the CPU
+	   and preventing the boot process to complete (Thanx Alex & Shadowmite!) */
 	GCR &= ~GCR_PRIRDY_IEN;
 
-	// configure AC97's GPIOs
+	/* configure AC97's GPIOs */
 	pxa_gpio_mode(GPIO28_BITCLK_AC97_MD);
 	pxa_gpio_mode(GPIO29_SDATA_IN_AC97_MD);
 	pxa_gpio_mode(GPIO30_SDATA_OUT_AC97_MD);

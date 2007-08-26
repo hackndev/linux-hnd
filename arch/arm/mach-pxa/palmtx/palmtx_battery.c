@@ -73,13 +73,12 @@ int palmtx_battery_max_voltage(struct power_supply *b)
 
 int palmtx_battery_get_voltage(struct power_supply *b)
 {
-    if (bat.battery_registered){
+    if (bat.battery_registered) {
     	bat.previous_voltage = bat.current_voltage;
     	bat.current_voltage = wm97xx_read_aux_adc(bat.wm,  WM97XX_AUX_ID3);
 	bat.last_battery_update = jiffies;
     	return bat.current_voltage * 1889/1000 + 7678/10;
-    }
-    else{
+    } else {
     	printk("palmtx_battery: cannot get voltage -> battery driver unregistered\n");
     	return 0;
     }
@@ -87,10 +86,9 @@ int palmtx_battery_get_voltage(struct power_supply *b)
 
 int palmtx_battery_get_capacity(struct power_supply *b)
 {
-    if (bat.battery_registered){
+    if (bat.battery_registered)
         return (((palmtx_battery_get_voltage(b)-palmtx_battery_min_voltage(b))
         /(palmtx_battery_max_voltage(b)-palmtx_battery_min_voltage(b)))*100);
-    }
     else{
         printk("palmtx_battery: cannot get capacity -> battery driver unregistered\n");
         return 0;
@@ -196,14 +194,14 @@ palmtx_wm97xx_resume(struct device *dev)
 
 
 static struct device_driver  palmtx_wm97xx_driver = {
-    .name = "wm97xx-touchscreen",
-    .bus = &wm97xx_bus_type,
-    .owner = THIS_MODULE,
-    .probe = palmtx_wm97xx_probe,
-    .remove = palmtx_wm97xx_remove,
-    .suspend = palmtx_wm97xx_suspend,
-    .resume = palmtx_wm97xx_resume,
-    .shutdown = palmtx_wm97xx_shutdown
+    .name	= "wm97xx-touchscreen",
+    .bus	= &wm97xx_bus_type,
+    .owner	= THIS_MODULE,
+    .probe	= palmtx_wm97xx_probe,
+    .remove	= palmtx_wm97xx_remove,
+    .suspend	= palmtx_wm97xx_suspend,
+    .resume	= palmtx_wm97xx_resume,
+    .shutdown	= palmtx_wm97xx_shutdown
 };
 
 static int palmtx_ac_is_connected (void){
@@ -232,9 +230,9 @@ static void palmtx_apm_get_power_status(struct apm_power_info *info)
 
 	info->ac_line_status = palmtx_ac_is_connected() ? APM_AC_ONLINE : APM_AC_OFFLINE;
 
-	if (info->ac_line_status) {
+	if (info->ac_line_status)
 		info->battery_status = APM_BATTERY_STATUS_CHARGING;
-	} else {
+	else {
 		if (percent > 50)
 			info->battery_status = APM_BATTERY_STATUS_HIGH;
 		else if (percent < 5)
@@ -256,9 +254,8 @@ static int __init palmtx_wm97xx_init(void)
     /* register battery to APM layer */
     bat.battery_registered = 0;
 
-    if(power_supply_register(NULL, &palmtx_battery)) {
+    if(power_supply_register(NULL, &palmtx_battery))
 	printk(KERN_ERR "palmtx_ac97_probe: could not register battery class\n");
-    }
     else {
 	bat.battery_registered = 1;
 	printk("Battery registered\n");
