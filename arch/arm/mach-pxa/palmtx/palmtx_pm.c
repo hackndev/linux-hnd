@@ -49,9 +49,10 @@ static int palmtx_suspend(struct device *dev, pm_message_t state)
 
 	/* Turn off USB power */
 	SET_PALMTX_GPIO(USB_POWER,0);
-
         
-	/* disable GPIO reset - DO NOT REMOVE!!!!!!!! Palm totally hangs on reset without disabling GPIO reset during sleep */
+	/* disable GPIO reset - DO NOT REMOVE !!!!!!!!
+	   Palm totally hangs on reset without disabling
+	   GPIO reset during sleep */
 	PCFR = PCFR_GPROD;
 
     	return 0;
@@ -59,16 +60,15 @@ static int palmtx_suspend(struct device *dev, pm_message_t state)
 
 static int palmtx_resume(struct device *dev)
 {
-		
 	/* Disabled Deep-Sleep mode */
 	PCFR &= PCFR_DS;
 
-	/* Re-enable GPIO reset */
-	PCFR |= PCFR_GPR_EN; /* !! DO NOT REMOVE !! THIS IS NECCESARY FOR ENABLE PALM RESET !! */
+	/* Re-enable GPIO reset
+	   !! DO NOT REMOVE !!
+	   !! THIS IS NECCESARY TO ENABLE PALM RESET !! */
+	PCFR |= PCFR_GPR_EN;
 
-
-	/* Here are all of special to resume Palm TX  */
-
+	/* Below is all the special stuff to resume Palm TX */
 	/* Turn on USB power */
 	SET_PALMTX_GPIO(USB_POWER,1);
 	
