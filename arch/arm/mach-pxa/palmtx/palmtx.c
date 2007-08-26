@@ -44,6 +44,7 @@
 #include <asm/arch/pxa27x_keyboard.h>
 #include <asm/arch/palmtx-init.h>
 #include <asm/arch/palmtx-gpio.h>
+#include <asm/arch/pxa2xx_udc_gpio.h>
 
 #include "../generic.h"
 
@@ -287,43 +288,33 @@ static struct platform_device bcm2035_bt = {
 /*******
  * USB *
  *******/
- 
-static int palmtx_udc_is_connected (void){
-	int ret = !(GET_GPIO(GPIO_NR_PALMTX_USB_DETECT));
-	if (ret)
-		printk (KERN_INFO "palmtx_udc: device detected [USB_DETECT: %d]\n",ret);
-	else
-		printk (KERN_INFO "palmtx_udc: no device detected [USB_DETECT: %d]\n",ret);
-		
-	return ret;
-}
-
-
-static void palmtx_udc_command (int cmd){
-	
-	switch (cmd) {
-		case PXA2XX_UDC_CMD_DISCONNECT:
-			SET_GPIO(GPIO_NR_PALMTX_USB_PULLUP, 0);
-			SET_GPIO(GPIO_NR_PALMTX_USB_POWER, 0);
-			printk(KERN_INFO "palmtx_udc: got command PXA2XX_UDC_CMD_DISCONNECT\n");
-			break;
-		case PXA2XX_UDC_CMD_CONNECT:
-			SET_GPIO(GPIO_NR_PALMTX_USB_POWER, 1);
-			SET_GPIO(GPIO_NR_PALMTX_USB_PULLUP, 1);
-			printk(KERN_INFO "palmtx_udc: got command PXA2XX_UDC_CMD_CONNECT\n");
-			break;
-	default:
-			printk("palmtx_udc: unknown command '%d'\n", cmd);
+static int palmtx_udc_power( int power )
+{
+	if (power) {
+		SET_PALMTX_GPIO(USB_POWER, 1);
+		SET_PALMTX_GPIO(USB_PULLUP, 1);
+	} else {
+		SET_PALMTX_GPIO(USB_PULLUP, 0);
+		SET_PALMTX_GPIO(USB_POWER, 0);
 	}
+	
+	return power;
 }
 
-
-static struct pxa2xx_udc_mach_info palmtx_udc_mach_info __initdata = {
-	.udc_is_connected	= palmtx_udc_is_connected,
-	.udc_command		= palmtx_udc_command,
+struct pxa2xx_udc_gpio_info palmtx_udc_info = {
+	.detect_gpio		= {&pxagpio_device.dev, GPIO_NR_PALMTX_USB_DETECT_N},
+	.detect_gpio_negative	= 1,
+	.power_ctrl		= {
+		.power		= &palmtx_udc_power,
+	},
 };
 
-
+static struct platform_device palmtx_udc = {
+	.name	= "pxa2xx-udc-gpio",
+	.dev	= {
+		.platform_data	= &palmtx_udc_info
+	}
+};
 
 /*************************
  * AC97 audio controller *
@@ -365,6 +356,7 @@ static struct platform_device *devices[] __initdata = {
 	 &palmtx_backlight,
 	 &bcm2035_bt,
 	 &palmtx_border,
+	 &palmtx_udc,
 };
 
 /***************
@@ -443,7 +435,6 @@ static void __init palmtx_init(void)
 	set_pxa_fb_info   ( &palmtx_lcd_screen );
 	pxa_set_btuart_info(&bcm2035_pxa_bt_funcs);
 	pxa_set_mci_info  ( &palmtx_mci_platform_data );
-	pxa_set_udc_info  ( &palmtx_udc_mach_info );
 	pxa_set_ficp_info ( &palmtx_ficp_platform_data );	
 
 	platform_add_devices( devices, ARRAY_SIZE(devices) );
