@@ -14,10 +14,6 @@ config PALMLD_PCMCIA
 		This driver handles the CF/PCCARD/PCMCIA bus which is not used to
 		connect the microdrive.
 
-config PALMLD_USB
-        tristate "Palm LifeDrive USB driver"
-        depends on MACH_XSCALE_PALMLD
-
 config PALMLD_IDE
 	tristate "Palm LifeDrive IDE driver"
 	depends on MACH_XSCALE_PALMLD
