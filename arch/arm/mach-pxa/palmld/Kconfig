@@ -21,6 +21,7 @@ config PALMLD_IDE
 config PALMLD_BATTERY
 	tristate "Palm LifeDrive Battery support"
 	select TOUCHSCREEN_WM97XX
+	select POWER_SUPPLY
 	depends on MACH_XSCALE_PALMLD
 	default m
 	help
