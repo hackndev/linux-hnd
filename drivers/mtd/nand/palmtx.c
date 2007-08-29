@@ -31,19 +31,6 @@
 #include <asm/memory.h>
 #include <asm/mach-types.h>
 
-/* Select the chip by setting nCE to low */
-#define NAND_CTL_SETNCE		1
-/* Deselect the chip by setting nCE to high */
-#define NAND_CTL_CLRNCE		2
-/* Select the command latch by setting CLE to high */
-#define NAND_CTL_SETCLE		3
-/* Deselect the command latch by setting CLE to low */
-#define NAND_CTL_CLRCLE		4
-/* Select the address latch by setting ALE to high */
-#define NAND_CTL_SETALE		5
-/* Deselect the address latch by setting ALE to low */
-#define NAND_CTL_CLRALE		6
-
 /*
  * MTD structure
  */
@@ -74,42 +61,24 @@ static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 			    unsigned int ctrl)
 {
 	struct nand_chip *chip = mtd->priv;
+	unsigned long bits = 0;
 
         if (ctrl & NAND_CTRL_CHANGE) {
-                switch (cmd) {
-                case NAND_CTL_SETCLE:
-                        SET_PALMTX_GPIO(NAND_CLE,1);
-                        break;
-                case NAND_CTL_CLRCLE:
-                        SET_PALMTX_GPIO(NAND_CLE,0);
-                        break;
-                case NAND_CTL_SETALE:
-                        SET_PALMTX_GPIO(NAND_ALE,1);
-                        break;
-                case NAND_CTL_CLRALE:
-                        SET_PALMTX_GPIO(NAND_ALE,0);
-                        break;
-                case NAND_CTL_SETNCE:
-                        SET_PALMTX_GPIO(NAND_NCE,1);
-                        break;
-                case NAND_CTL_CLRNCE:
-                        SET_PALMTX_GPIO(NAND_NCE,0);
-                        break;
-                }
-        }
-	if (cmd != NAND_CMD_NONE)
-		writeb(cmd, (void __iomem *)((unsigned long)chip->IO_ADDR_W));
-}
+	    /* Select chip */
+	    SET_PALMTX_GPIO(NAND_CS1_N, (ctrl & NAND_NCE) ? 0 : 1);
 
-/*
- * read device ready pin
- */
-#if 0
-static int palmtx_device_ready(struct mtd_info *mtd)
-{
-	return GET_PALMTX_GPIO(NAND_READY);
+	    /* Set control lines */
+	    if (ctrl & NAND_CLE)
+		bits |= 1<<25;
+	    if (ctrl & NAND_ALE)
+		bits |= 1<<24;
+	    iowrite32(bits, chip->IO_ADDR_W);
+        }
+
+	/* If there is a command for the chip, send it */
+        if (cmd != NAND_CMD_NONE)
+	    iowrite32((cmd & 0xff) | bits, chip->IO_ADDR_W);
 }
-#endif
 
 /*
  * Main initialization routine
@@ -125,17 +94,18 @@ static int __init palmtx_init(void)
 	if (!machine_is_xscale_palmtx())
 		return -ENODEV;
 
-	nandaddr = ioremap(PALMTX_PHYS_NAND_START, 0x1000);
-	if (!nandaddr) {
-		printk("Failed to ioremap NAND flash.\n");
-		return -ENOMEM;
-	}
-
 	/* Allocate memory for MTD device structure and private data */
 	palmtx_nand_mtd = kmalloc(sizeof(struct mtd_info) + sizeof(struct nand_chip), GFP_KERNEL);
 	if (!palmtx_nand_mtd) {
 		printk("Unable to allocate palmtx NAND MTD device structure.\n");
 		iounmap((void *)nandaddr);
+		return -ENOMEM;
+	}
+
+	/* Remap physical address of flash */
+	nandaddr = ioremap(PALMTX_PHYS_NAND_START, 0x1000);
+	if (!nandaddr) {
+		printk("Failed to ioremap NAND flash.\n");
 		return -ENOMEM;
 	}
 
@@ -150,24 +120,14 @@ static int __init palmtx_init(void)
 	palmtx_nand_mtd->priv = this;
 	palmtx_nand_mtd->owner = THIS_MODULE;
 
-	/*
-	 * Enable VPEN ... isnt it on all the time?
-	 */
-#if 0
-	SET_PALMTX_GPIO(NAND_POWER, 1);
-#endif
-
 	/* insert callbacks */
 	this->IO_ADDR_R = nandaddr;
 	this->IO_ADDR_W = nandaddr;
 	this->cmd_ctrl = palmtx_hwcontrol;
-#if 0
-	this->dev_ready = palmtx_device_ready;
-#else
+	/* For the time being ... */
 	this->dev_ready = NULL;
-#endif
 	/* 15 us command delay time */
-	this->chip_delay = 50;
+	this->chip_delay = 15;
 	this->ecc.mode = NAND_ECC_SOFT;
 	this->options = NAND_NO_AUTOINCR;
 
