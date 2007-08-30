@@ -66,8 +66,6 @@ static struct mtd_partition partition_info[] = {
 static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 			    unsigned int ctrl)
 {
-	struct nand_chip *chip = mtd->priv;
-
 	/* If there is a command for the chip, send it */
         if (cmd != NAND_CMD_NONE) {
 	    switch ((ctrl & 0x6) >> 1) {
@@ -78,7 +76,7 @@ static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 		    writeb(cmd, nand_ale);
 		    break;
 		default:
-		    printk("PalmTX NAND: invalid bit\n");
+		    printk("PalmTX NAND: invalid control bit\n");
 		    break;
 	    }
 	}
