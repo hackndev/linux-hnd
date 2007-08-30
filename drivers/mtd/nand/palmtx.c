@@ -70,10 +70,10 @@ static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
         if (cmd != NAND_CMD_NONE) {
 	    switch ((ctrl & 0x6) >> 1) {
 		case 1: /* CLE */
-		    writeb(cmd, nand_cle);
+		    iowrite8(cmd, nand_cle);
 		    break;
 		case 2: /* ALE */
-		    writeb(cmd, nand_ale);
+		    iowrite8(cmd, nand_ale);
 		    break;
 		default:
 		    printk("PalmTX NAND: invalid control bit\n");
@@ -115,11 +115,16 @@ static int __init palmtx_init(void)
 	nand_ale = ioremap(PALMTX_PHYS_NAND_START | 1<<24, 0x1000);
 	if (!nand_ale) {
 		printk("Failed to ioremap NAND flash.\n");
+		iounmap((void *)palmtx_nand_mtd);
+		iounmap((void *)nandaddr);
 		return -ENOMEM;
 	}
 	nand_cle = ioremap(PALMTX_PHYS_NAND_START | 1<<25, 0x1000);
 	if (!nand_cle) {
 		printk("Failed to ioremap NAND flash.\n");
+		iounmap((void *)palmtx_nand_mtd);
+		iounmap((void *)nandaddr);
+		iounmap((void *)nand_ale);
 		return -ENOMEM;
 	}
 
