@@ -36,6 +36,12 @@
  */
 static struct mtd_info *palmtx_nand_mtd = NULL;
 
+/* 
+ * Control lines
+ */
+void __iomem *nand_ale = NULL;
+void __iomem *nand_cle = NULL;
+
 /*
  * Module stuff
  */
@@ -55,29 +61,27 @@ static struct mtd_partition partition_info[] = {
 #endif
 
 /*
- *	hardware specific access to control-lines
+ * Hardware specific access to control-lines
  */
 static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 			    unsigned int ctrl)
 {
 	struct nand_chip *chip = mtd->priv;
-	unsigned long bits = 0;
-
-        if (ctrl & NAND_CTRL_CHANGE) {
-	    /* Select chip */
-	    SET_PALMTX_GPIO(NAND_CS1_N, (ctrl & NAND_NCE) ? 0 : 1);
-
-	    /* Set control lines */
-	    if (ctrl & NAND_CLE)
-		bits |= 1<<25;
-	    if (ctrl & NAND_ALE)
-		bits |= 1<<24;
-	    iowrite32(bits, chip->IO_ADDR_W);
-        }
 
 	/* If there is a command for the chip, send it */
-        if (cmd != NAND_CMD_NONE)
-	    iowrite32((cmd & 0xff) | bits, chip->IO_ADDR_W);
+        if (cmd != NAND_CMD_NONE) {
+	    switch ((ctrl & 0x6) >> 1) {
+		case 1: /* CLE */
+		    writeb(cmd, nand_cle);
+		    break;
+		case 2: /* ALE */
+		    writeb(cmd, nand_ale);
+		    break;
+		default:
+		    printk("PalmTX NAND: invalid bit\n");
+		    break;
+	    }
+	}
 }
 
 /*
@@ -98,13 +102,25 @@ static int __init palmtx_init(void)
 	palmtx_nand_mtd = kmalloc(sizeof(struct mtd_info) + sizeof(struct nand_chip), GFP_KERNEL);
 	if (!palmtx_nand_mtd) {
 		printk("Unable to allocate palmtx NAND MTD device structure.\n");
-		iounmap((void *)nandaddr);
 		return -ENOMEM;
 	}
 
 	/* Remap physical address of flash */
 	nandaddr = ioremap(PALMTX_PHYS_NAND_START, 0x1000);
 	if (!nandaddr) {
+		printk("Failed to ioremap NAND flash.\n");
+		iounmap((void *)palmtx_nand_mtd);
+		return -ENOMEM;
+	}
+
+	/* Remap physical address of control lines */
+	nand_ale = ioremap(PALMTX_PHYS_NAND_START | 1<<24, 0x1000);
+	if (!nand_ale) {
+		printk("Failed to ioremap NAND flash.\n");
+		return -ENOMEM;
+	}
+	nand_cle = ioremap(PALMTX_PHYS_NAND_START | 1<<25, 0x1000);
+	if (!nand_cle) {
 		printk("Failed to ioremap NAND flash.\n");
 		return -ENOMEM;
 	}
