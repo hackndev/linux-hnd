@@ -82,6 +82,11 @@ static void palmtx_hwcontrol(struct mtd_info *mtd, int cmd,
 	}
 }
 
+static int palmtx_device_ready(struct mtd_info *mtd)
+{
+	return GET_PALMTX_GPIO(NAND_READY);
+}
+
 /*
  * Main initialization routine
  */
@@ -143,8 +148,7 @@ static int __init palmtx_init(void)
 	this->IO_ADDR_R = nandaddr;
 	this->IO_ADDR_W = nandaddr;
 	this->cmd_ctrl = palmtx_hwcontrol;
-	/* For the time being ... */
-	this->dev_ready = NULL;
+	this->dev_ready = palmtx_device_ready;
 	/* 15 us command delay time */
 	this->chip_delay = 15;
 	this->ecc.mode = NAND_ECC_SOFT;
@@ -154,7 +158,10 @@ static int __init palmtx_init(void)
 	if (nand_scan(palmtx_nand_mtd, 1)) {
 		printk(KERN_NOTICE "No NAND device - returning -ENXIO\n");
 		kfree(palmtx_nand_mtd);
+		iounmap((void *)palmtx_nand_mtd);
 		iounmap((void *)nandaddr);
+		iounmap((void *)nand_ale);
+		iounmap((void *)nand_cle);
 		return -ENXIO;
 	}
 #ifdef CONFIG_MTD_CMDLINE_PARTS
