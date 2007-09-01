@@ -21,18 +21,12 @@
 
 static void palmldled_amber_set(struct led_classdev *led_cdev, enum led_brightness value)
 {
-	if (value)
-		SET_PALMLD_GPIO(ORANGE_LED,1);
-	else
-		SET_PALMLD_GPIO(ORANGE_LED,0);
+	SET_PALMLD_GPIO(ORANGE_LED, value ? 1 : 0);
 }
 
 static void palmldled_green_set(struct led_classdev *led_cdev, enum led_brightness value)
 {
-	if (value)
-		SET_PALMLD_GPIO(GREEN_LED,1);
-	else
-		SET_PALMLD_GPIO(GREEN_LED,0);
+	SET_PALMLD_GPIO(GREEN_LED, value ? 1 : 0);
 }
 
 static struct led_classdev palmld_amber_led = {
