@@ -149,8 +149,8 @@ static int __init palmtx_init(void)
 	this->IO_ADDR_W = nandaddr;
 	this->cmd_ctrl = palmtx_hwcontrol;
 	this->dev_ready = palmtx_device_ready;
-	/* 15 us command delay time */
-	this->chip_delay = 15;
+	/* 10 us command delay time */
+	this->chip_delay = 10;
 	this->ecc.mode = NAND_ECC_SOFT;
 	this->options = NAND_NO_AUTOINCR;
 
