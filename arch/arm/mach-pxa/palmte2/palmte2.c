@@ -19,6 +19,7 @@
 #include <linux/device.h>
 #include <linux/platform_device.h>
 #include <linux/fb.h>
+#include <linux/corgi_bl.h>
 
 #include <asm/arch/audio.h>
 #include <asm/arch/hardware.h>
@@ -27,9 +28,9 @@
 #include <asm/arch/pxa-regs.h>
 #include <asm/arch/udc.h>
 #include <asm/arch/mmc.h>
-#include <asm/arch/pxapwm-bl.h>
 #include <asm/arch/serial.h>
 #include <asm/arch/palmte2-gpio.h>
+#include <asm/arch/palmte2-init.h>
 
 #include <linux/gpio_keys.h>
 #include <sound/driver.h>
@@ -66,20 +67,29 @@ static struct platform_device palmte2_ac97 = {
 /*
  * Backlight
  */
-static struct pxapwmbl_platform_data palmte2_backlight_data = {
-        .pwm                    = 0,
-        .max_intensity          = 0x160,
-        .default_intensity      = 0x11a,
-        .limit_mask             = 0x7f,
-        .prescaler              = 7,
-        .period                 = 0x16c,
+
+static void palmte2_set_bl_intensity(int intensity)
+{
+        if(intensity) {
+                PWM_CTRL0   = 0x7;
+                PWM_PERVAL0 = PALMTE2_PERIOD;
+                PWM_PWDUTY0 = intensity;
+        }
+}
+
+static struct corgibl_machinfo palmte2_bl_machinfo = {
+    .max_intensity      = PALMTE2_MAX_INTENSITY,
+    .default_intensity  = PALMTE2_MAX_INTENSITY,
+    .set_bl_intensity   = palmte2_set_bl_intensity,
+    .limit_mask         = PALMTE2_LIMIT_MASK,
 };
 
 static struct platform_device palmte2_backlight = {
-        .name		= "pxapwm-bl",
-        .dev 		= {
-	    .platform_data 	= &palmte2_backlight_data,
-	},
+    .name       = "corgi-bl",
+    .id         = 0,
+    .dev        = {
+            .platform_data = &palmte2_bl_machinfo,
+    },
 };
 
 /*
@@ -89,20 +99,14 @@ static struct platform_device palmte2_backlight = {
 void bcm2035_bt_reset(int on)
 {
 	printk(KERN_NOTICE "Switch BT reset %d\n", on);
-	if (on)
-		SET_PALMTE2_GPIO(BT_RESET, 1);
-	else
-		SET_PALMTE2_GPIO(BT_RESET, 0);
+	SET_PALMTE2_GPIO(BT_RESET, on ? 1 : 0);
 }
 EXPORT_SYMBOL(bcm2035_bt_reset);
 
 void bcm2035_bt_power(int on)
 {
 	printk(KERN_NOTICE "Switch BT power %d\n", on);
-	if (on)
-		SET_PALMTE2_GPIO(BT_POWER, 1);
-	else
-		SET_PALMTE2_GPIO(BT_POWER, 0);
+	SET_PALMTE2_GPIO(BT_POWER, on ? 1 : 0);
 }
 EXPORT_SYMBOL(bcm2035_bt_power);
 
