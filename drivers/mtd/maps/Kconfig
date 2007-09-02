@@ -513,6 +513,14 @@ config MTD_PALMTC
 	  write into device's FlashROM memory (DANGEROUS, use with
 	  caution!).
 
+config MTD_PALMTX
+	tristate "Palm T|X flash driver !UNTESTED, DANGEROUS!"
+	depends on MTD_CFI && MACH_XSCALE_PALMTX
+	help
+	  This MTD map describes how flash memory on Palm T|X is organized.
+	  With this driver you can read and probably also write into device's
+	  FlashROM memory (DANGEROUS, use with caution!).
+
 config MTD_MPC1211
 	tristate "CFI Flash device mapped on Interface MPC-1211"
 	depends on SH_MPC1211 && MTD_CFI

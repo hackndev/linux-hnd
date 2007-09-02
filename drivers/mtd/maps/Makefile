@@ -62,6 +62,7 @@ obj-$(CONFIG_MTD_WALNUT)        += walnut.o
 obj-$(CONFIG_MTD_H720X)		+= h720x-flash.o
 obj-$(CONFIG_MTD_PALMT3)	+= palmt3-flash.o
 obj-$(CONFIG_MTD_PALMTC)	+= palmtc-flash.o
+obj-$(CONFIG_MTD_PALMTX)	+= palmtx-flash.o
 obj-$(CONFIG_MTD_SBC8240)	+= sbc8240.o
 obj-$(CONFIG_MTD_NOR_TOTO)	+= omap-toto-flash.o
 obj-$(CONFIG_MTD_MPC1211)	+= mpc1211.o
