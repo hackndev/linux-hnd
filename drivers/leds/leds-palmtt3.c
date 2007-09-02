@@ -35,49 +35,40 @@ static void tps650101_scheduled_leds(struct work_struct *work)
 	tps65010_set_vib(palmtt3led_work.vibra);
 }
 
-static void palmtt3led_red_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmtt3led_red_set(struct led_classdev *led_cdev,
+			       enum led_brightness value)
 {
-	if (value)
-		palmtt3led_work.led2 = ON;
-		else
-		palmtt3led_work.led2 = OFF;
+	palmtt3led_work.led2 = value ? ON : OFF;
 	schedule_work(&(palmtt3led_work.work));
 }
 
-static void palmtt3led_green_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmtt3led_green_set(struct led_classdev *led_cdev,
+				 enum led_brightness value)
 {
-	if (value)
-		palmtt3led_work.led1 = ON;
-		else
-/* NOTE: This is set to OFF, not to OFF... It shows charging status - plugged/unplugged... */
-		palmtt3led_work.led1 = UNDER_CHG_CTRL;
+	/* NOTE: This is set to OFF, not to OFF... 
+	   It shows charging status - plugged/unplugged... */
+	palmtt3led_work.led1 = value ? ON : UNDER_CHG_CTRL;
 	schedule_work(&(palmtt3led_work.work));
 }
 
-static void palmtt3led_red_blink_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmtt3led_red_blink_set(struct led_classdev *led_cdev,
+				     enum led_brightness value)
 {
-	if (value)
-		palmtt3led_work.led2 = BLINK;
-		else
-		palmtt3led_work.led2 = OFF;
+	palmtt3led_work.led2 = value ? BLINK : OFF;
 	schedule_work(&(palmtt3led_work.work));
 }
 
-static void palmtt3led_green_blink_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmtt3led_green_blink_set(struct led_classdev *led_cdev,
+				       enum led_brightness value)
 {
-	if (value)
-		palmtt3led_work.led1 = BLINK;
-		else
-		palmtt3led_work.led1 = OFF;
+	palmtt3led_work.led1 = value ? BLINK : OFF;
 	schedule_work(&(palmtt3led_work.work));
 }
 
-static void palmtt3_vibra_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmtt3_vibra_set(struct led_classdev *led_cdev,
+			      enum led_brightness value)
 {
-	if (value)
-		palmtt3led_work.vibra = ON;
-		else
-		palmtt3led_work.vibra = OFF;
+	palmtt3led_work.vibra = value ? ON : OFF;
 	schedule_work(&(palmtt3led_work.work));
 }
 
@@ -110,7 +101,8 @@ static struct led_classdev palmtt3_vibra = {
 
 
 #ifdef CONFIG_PM
-static int palmtt3led_suspend(struct platform_device *dev, pm_message_t state)
+static int palmtt3led_suspend(struct platform_device *dev,
+			      pm_message_t state)
 {
 	led_classdev_suspend(&palmtt3_red_led);
 	led_classdev_suspend(&palmtt3_green_led);
@@ -120,7 +112,8 @@ static int palmtt3led_suspend(struct platform_device *dev, pm_message_t state)
 	return 0;
 }
 
-static int palmtt3led_suspend_late(struct platform_device *dev, pm_message_t state)
+static int palmtt3led_suspend_late(struct platform_device *dev,
+				   pm_message_t state)
 {
 	tps65010_set_led(LED1, OFF);
 	tps65010_set_led(LED2, OFF);
