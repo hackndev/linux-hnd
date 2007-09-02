@@ -17,14 +17,15 @@
 #include <asm/arch/palmld-gpio.h>
 #include <asm/arch/hardware.h>
 #include <asm/arch/pxa-regs.h>
-#include <asm/hardware/scoop.h>
 
-static void palmldled_amber_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmldled_amber_set(struct led_classdev *led_cdev,
+				enum led_brightness value)
 {
 	SET_PALMLD_GPIO(ORANGE_LED, value ? 1 : 0);
 }
 
-static void palmldled_green_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmldled_green_set(struct led_classdev *led_cdev,
+				enum led_brightness value)
 {
 	SET_PALMLD_GPIO(GREEN_LED, value ? 1 : 0);
 }
