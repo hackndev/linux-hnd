@@ -18,7 +18,7 @@
 
 #define _INCLUDE_PALMZ72_INIT_H_
 
-// BACKLIGHT
+/* BACKLIGHT */
 
 #define PALMZ72_MAX_INTENSITY      	0xFE
 #define PALMZ72_DEFAULT_INTENSITY  	0x7E
@@ -27,16 +27,16 @@
 #define PALMZ72_PERIOD			0x112
 
 
-// BATTERY 
+/* BATTERY */
 
-#define PALMZ72_BAT_MAX_VOLTAGE 	4100	// 4.09V current voltage at max charge as from PalmOS
-#define PALMZ72_BAT_MIN_VOLTAGE  	3670	// 3.67V critical voltage as from Zlauncher
-#define PALMZ72_BAT_MAX_CURRENT     	0	// unknokn
-#define PALMZ72_BAT_MIN_CURRENT     	0	// unknown
-#define PALMZ72_BAT_MAX_CHARGE      	1	// unknown
-#define PALMZ72_BAT_MIN_CHARGE      	1	// unknown
-#define PALMZ72_BAT_MEASURE_DELAY (HZ * 1)
-#define PALMZ72_MAX_LIFE_MINS		240     // my Zire72 on-life in minutes
+#define PALMZ72_BAT_MAX_VOLTAGE 	4100	/* 4.09V current voltage at max charge as from PalmOS */
+#define PALMZ72_BAT_MIN_VOLTAGE  	3670	/* 3.67V critical voltage as from Zlauncher */
+#define PALMZ72_BAT_MAX_CURRENT     	0	/* unknokn */
+#define PALMZ72_BAT_MIN_CURRENT     	0	/* unknown */
+#define PALMZ72_BAT_MAX_CHARGE      	1	/* unknown */
+#define PALMZ72_BAT_MIN_CHARGE      	1	/* unknown */
+#define PALMZ72_BAT_MEASURE_DELAY	(HZ * 1)
+#define PALMZ72_MAX_LIFE_MINS		240     /* my Zire72 on-life in minutes */
 
 
 #endif
