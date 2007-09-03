@@ -13,8 +13,8 @@
 #include <linux/input_pda.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
-#include <asm/arch/h4000-gpio.h>
-#include <asm/arch/h4000-asic.h>
+#include <asm/arch/htcsable-gpio.h>
+#include <asm/arch/htcsable-asic.h>
 #include <asm/arch/pxa-regs.h>
 #include <asm/hardware.h>
 #include <asm/arch/bitfield.h>
@@ -27,7 +27,7 @@ static struct input_dev *htcsable_kbd;
 static irqreturn_t htcsable_pwr_btn(int irq, void* data)
 {
 	int pressed;
-	pressed = !GET_H4000_GPIO(POWER_BUTTON_N);
+	pressed = !GET_HTCSABLE_GPIO(KEY_ON_N);
 
 	input_report_key(htcsable_kbd, KEY_POWER, pressed);
 	input_sync(htcsable_kbd);
@@ -47,9 +47,9 @@ static int __init htcsable_kbd_probe(struct platform_device * pdev)
 	htcsable_kbd->evbit[0]    = BIT(EV_KEY) | BIT(EV_REP);
 
 	set_bit(KEY_POWER, htcsable_kbd->keybit);
-	request_irq(IRQ_GPIO(GPIO_NR_H4000_POWER_BUTTON_N), htcsable_pwr_btn,
-			IRQF_SAMPLE_RANDOM, "Power button", NULL);
-	set_irq_type(IRQ_GPIO(GPIO_NR_H4000_POWER_BUTTON_N), IRQT_BOTHEDGE);
+	request_irq(IRQ_GPIO(GPIO_NR_HTCSABLE_KEY_ON_N), htcsable_pwr_btn,
+		    IRQF_SAMPLE_RANDOM, "Power button", NULL);
+	set_irq_type(IRQ_GPIO(GPIO_NR_HTCSABLE_KEY_ON_N), IRQT_BOTHEDGE);
 
 	input_register_device(htcsable_kbd);
 
@@ -59,7 +59,7 @@ static int __init htcsable_kbd_probe(struct platform_device * pdev)
 static int htcsable_kbd_remove(struct platform_device * pdev)
 {       
 	input_unregister_device(htcsable_kbd);
-	free_irq(IRQ_GPIO(GPIO_NR_H4000_POWER_BUTTON_N), NULL);
+	free_irq(IRQ_GPIO(GPIO_NR_HTCSABLE_KEY_ON_N), NULL);
 
 	return 0;
 }

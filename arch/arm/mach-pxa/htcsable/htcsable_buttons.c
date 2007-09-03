@@ -42,9 +42,9 @@ static int __init htcsable_buttons_probe(struct platform_device *dev)
 }
 
 static struct platform_driver htcsable_buttons_driver = {
-  .driver = {
-    .name           = "htcsable_buttons",
-  },
+	.driver = {
+		.name	= "htcsable_buttons",
+	},
 	.probe          = htcsable_buttons_probe,
 };
 
