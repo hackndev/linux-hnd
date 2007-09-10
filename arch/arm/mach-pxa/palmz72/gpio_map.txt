@@ -20,8 +20,8 @@ GPIO_17 	1 	O 	00 Bluetooth: 1 when enabled in POS
 GPIO_18 	0 	O 	00
 GPIO_19 	1 	O 	00 Screen goes white when 0
 GPIO_20 	1 	O 	00 BL_POWER // Backlight goes off when 0
-GPIO_21 	0 	O 	00
-GPIO_22 	0 	O 	00
+GPIO_21 	0 	O 	00 LCD border switch
+GPIO_22 	0 	O 	00 LCD border select
 GPIO_23 	0 	O 	02 SSPSCLK
 GPIO_24 	1 	O 	02 SSPSFRM
 GPIO_25 	0 	O 	02 SSPSTXD

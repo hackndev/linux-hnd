@@ -21,3 +21,9 @@ config  PALMZ72_BATTERY
 	help
 	    Enable support for PalmOne Zire 72 battery to APM.
 	    ATM use it only as module, otherwise it hangs.
+
+config PALMZ72_BORDER
+	tristate "Palm Zire 72 Display border switch"
+	depends on MACH_PALMZ72
+	help
+		Enable support for turning LCD border on/off

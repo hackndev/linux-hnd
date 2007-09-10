@@ -316,6 +316,14 @@ static struct platform_device palmz72_ac97 = {
 	.dev		= { .platform_data = &palmz72_audio_ops },
 };
 
+/**************
+ * LCD Border *
+ **************/
+struct platform_device palmz72_border = {
+	.name = "palmz72-border",
+	.id = -1,
+};
+
 /*************
  * Backlight *
  *************/
@@ -457,6 +465,7 @@ static struct platform_device *devices[] __initdata = {
 #if 0
 	&ov9640,
 #endif
+	&palmz72_border,
 };
 
 /***********************************************************************

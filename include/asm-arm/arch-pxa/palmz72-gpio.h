@@ -89,6 +89,11 @@
 
 #define GPIO_NR_PALMZ72_BL_POWER		20
 
+/* LCD Border */
+
+#define GPIO_NR_PALMZ72_BORDER_SWITCH	21
+#define GPIO_NR_PALMZ72_BORDER_SELECT	22
+
 /* Others */
 
 #define GPIO_NR_PALMZ72_GPIO_RESET		1

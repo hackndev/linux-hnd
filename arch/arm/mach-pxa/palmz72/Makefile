@@ -5,3 +5,4 @@
 obj-$(CONFIG_MACH_PALMZ72)	+= palmz72.o
 obj-$(CONFIG_PALMZ72_PM)	+= palmz72_pm.o
 obj-$(CONFIG_PALMZ72_BATTERY)	+= palmz72_battery.o
+obj-$(CONFIG_PALMZ72_BORDER)	+= palmz72_border.o
