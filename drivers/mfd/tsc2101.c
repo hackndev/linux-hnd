@@ -687,19 +687,22 @@ static void ts_interrupt_main(struct tsc2101_data *devdata, int isTimer, struct 
 
 	spin_lock_irqsave(&devdata->lock, flags);
 
-	//if (!tsc2101_ts_penup(devdata)) {
 	if (devdata->platform->pendown()) {
+		/* if touchscreen is just touched */
 		devdata->pendown = 1;
 		tsc2101_readdata(devdata, &ts_data);
-		tsc2101_ts_report(devdata, ts_data.x, ts_data.y, ts_data.p, 1);
+		tsc2101_ts_report(devdata, ts_data.x, ts_data.y, ts_data.p, /*1*/ !!ts_data.p);
 		mod_timer(&(devdata->ts_timer), jiffies + HZ / 100);
 	} else if (devdata->pendown > 0 && devdata->pendown < 3) {
+		/* if touchscreen was touched short time ago and it's possible that it's only surface indirectness */
 		mod_timer(&(devdata->ts_timer), jiffies + HZ / 100);
 		devdata->pendown++;
 	} else {
-		if (devdata->pendown) 
+		/* if touchscreen was touched long time ago - it was probably released */
+		if (devdata->pendown) {
+			tsc2101_readdata(devdata, &ts_data);
 			tsc2101_ts_report(devdata, 0, 0, 0, 0);
-
+			}
 		devdata->pendown = 0;
 
 		set_irq_type(devdata->platform->irq,IRQT_FALLING);
