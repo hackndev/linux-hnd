@@ -41,6 +41,7 @@
 #include <asm/arch/palmz72-gpio.h>
 #include <asm/arch/palmz72-init.h>
 #include <asm/arch/pxa_camera.h>
+#include <asm/arch/pxa2xx_udc_gpio.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -103,37 +104,32 @@ static struct platform_device palmz72_led_device = {
  * USB *
  *******/
 
-static int palmz72_udc_is_connected(void)
+static int palmz72_udc_power( int power )
 {
-         int ret = !(GET_GPIO(GPIO_NR_PALMZ72_USB_DETECT));
-         if (ret)
-		printk (KERN_INFO "palmz72_udc: device detected [USB_DETECT: %d]\n",ret);
-	else
-		printk (KERN_INFO "palmz72_udc: no device detected [USB_DETECT: %d]\n",ret);
-		
-	return ret;
-}
-static void palmz72_udc_command (int cmd)
-{
-	     switch (cmd) {
-              case PXA2XX_UDC_CMD_DISCONNECT:
-                   SET_GPIO(GPIO_NR_PALMZ72_USB_PULLUP, 0);
-                   SET_GPIO(GPIO_NR_PALMZ72_USB_POWER, 0);
-	           printk(KERN_INFO "palmz72_udc: got command PXA2XX_UDC_CMD_DISCONNECT\n");
-                   break;
-              case PXA2XX_UDC_CMD_CONNECT:
-                   SET_GPIO(GPIO_NR_PALMZ72_USB_POWER, 1);
-                   SET_GPIO(GPIO_NR_PALMZ72_USB_PULLUP, 1);
-                   printk(KERN_INFO "palmz72_udc: got command PXA2XX_UDC_CMD_CONNECT\n");
-                   break;
-           default:
-                     printk("palmz72_udc: unknown command '%d'\n", cmd);
-          }
+	if (power) {
+		SET_GPIO(GPIO_NR_PALMZ72_USB_POWER, 1);
+		SET_GPIO(GPIO_NR_PALMZ72_USB_PULLUP, 1);
+	} else {
+		SET_GPIO(GPIO_NR_PALMZ72_USB_PULLUP, 0);
+		SET_GPIO(GPIO_NR_PALMZ72_USB_POWER, 0);
+	}
+	
+	return power;
 }
 
-static struct pxa2xx_udc_mach_info palmz72_udc_mach_info __initdata = {
-                 .udc_is_connected = palmz72_udc_is_connected,
-                 .udc_command      = palmz72_udc_command,
+struct pxa2xx_udc_gpio_info palmz72_udc_info = {
+	.detect_gpio		= {&pxagpio_device.dev, GPIO_NR_PALMZ72_USB_DETECT},
+	.detect_gpio_negative	= 1,
+	.power_ctrl		= {
+		.power		= &palmz72_udc_power,
+	},
+};
+
+static struct platform_device palmz72_udc = {
+	.name	= "pxa2xx-udc-gpio",
+	.dev	= {
+		.platform_data	= &palmz72_udc_info
+	}
 };
 
 /**********
@@ -453,6 +449,7 @@ static struct platform_device *devices[] __initdata = {
 	&ov9640,
 #endif
 	&palmz72_border,
+	&palmz72_udc,
 };
 
 /***********************************************************************
@@ -518,7 +515,6 @@ static void __init palmz72_init(void)
 	set_pxa_fb_info( &palmz72_lcd_screen );
 	pxa_set_btuart_info(&bcm2035_pxa_bt_funcs);
 	pxa_set_mci_info( &palmz72_mci_platform_data );
-	pxa_set_udc_info( &palmz72_udc_mach_info );
 	pxa_set_ficp_info( &palmz72_ficp_platform_data );
         platform_add_devices( devices, ARRAY_SIZE(devices) );
 }
