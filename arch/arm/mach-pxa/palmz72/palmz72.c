@@ -328,21 +328,37 @@ struct platform_device palmz72_border = {
  * Backlight *
  *************/
 
-static void palmz72_bl_on(void)
+static void palmz72_bl_power(int on)
 {
 	SET_PALMZ72_GPIO(BL_POWER, 1);
 	pxa_set_cken(CKEN0_PWM0, 1);
 	pxa_set_cken(CKEN1_PWM1, 1);
-	mdelay(50);
 }
 
-static void palmz72_bl_off(void)
+static void palmz72_set_bl_intensity(int intensity)
 {
-	SET_PALMZ72_GPIO(BL_POWER, 0);
-	pxa_set_cken(CKEN0_PWM0, 0);
-	pxa_set_cken(CKEN1_PWM1, 0);
-	mdelay(50);
+	palmz72_bl_power(intensity ? 1 : 0);
+	if(intensity) {
+	    PWM_CTRL0   = 0x3f;
+	    PWM_PERVAL0 = PALMZ72_PERIOD;
+	    PWM_PWDUTY0 = intensity;
+	}
 }
+
+static struct corgibl_machinfo palmz72_bl_machinfo = {
+	.max_intensity		= PALMZ72_MAX_INTENSITY,
+	.default_intensity	= PALMZ72_MAX_INTENSITY,
+	.set_bl_intensity	= palmz72_set_bl_intensity,
+	.limit_mask		= PALMZ72_LIMIT_MASK,
+};
+
+static struct platform_device palmz72_backlight = {
+	.name		= "corgi-bl",
+	.id		= 0,
+	.dev		= {
+		    .platform_data = &palmz72_bl_machinfo,
+	},
+};
 
 /***************
  * framebuffer *
@@ -409,35 +425,6 @@ static struct platform_device ov9640 = {
 	},
 };
 #endif
-
-/* LCD backlight */
-
-static void palmz72_set_bl_intensity(int intensity)
-{
-	if(intensity) {
-		palmz72_bl_on();
-		PWM_CTRL0   = 0x3f;
-		PWM_PERVAL0 = PALMZ72_PERIOD;
-		PWM_PWDUTY0 = intensity;
-	} else {
-		palmz72_bl_off();
-	}
-}
-
-static struct corgibl_machinfo palmz72_bl_machinfo = {
-	.max_intensity		= PALMZ72_MAX_INTENSITY,
-	.default_intensity	= PALMZ72_MAX_INTENSITY,
-	.set_bl_intensity	= palmz72_set_bl_intensity,
-	.limit_mask = PALMZ72_LIMIT_MASK
-};
-
-static struct platform_device palmz72_backlight = {
-	.name		= "corgi-bl",
-	.id		= 0,
-	.dev		= {
-		    .platform_data = &palmz72_bl_machinfo,
-	},
-};
 
 static struct platform_device palmz72_ci = {
 	.name		= "pxacif",
