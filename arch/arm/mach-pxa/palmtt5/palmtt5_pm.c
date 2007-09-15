@@ -41,10 +41,6 @@ static int palmtt5_suspend(struct device *dev, pm_message_t state)
 	while(!(OSCC & OSCC_OOK)) 
 	    {}
 
-	/* Turn off LCD power */
-	SET_PALMTT5_GPIO(LCD_POWER,0);
-	/* Turn screen off */
-	SET_PALMTT5_GPIO(BL_POWER,0);
 	/* Turn off USB power */
 	SET_PALMTT5_GPIO(USB_POWER,0);
 
@@ -67,10 +63,6 @@ static int palmtt5_resume(struct device *dev)
 
 	/* Here are all of special to resume Palm T5  */
 
-	/* Turn on LCD power */
-	SET_PALMTT5_GPIO(LCD_POWER,1);
-	/* Turn screen on */
-	SET_PALMTT5_GPIO(BL_POWER,1);
 	/* Turn on USB power */
 	SET_PALMTT5_GPIO(USB_POWER,1);
 	

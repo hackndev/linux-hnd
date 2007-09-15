@@ -151,10 +151,12 @@ static struct platform_device palmtt5_keypad = {
 
 static void palmtt5_bl_power(int on)
 {
-    SET_PALMTT5_GPIO(BL_POWER, on);
-    pxa_set_cken(CKEN0_PWM0, on);
-    pxa_set_cken(CKEN1_PWM1, on);
-    mdelay(50);
+	if(GET_PALMTT5_GPIO(BL_POWER)!=on) {
+		SET_PALMTT5_GPIO(LCD_POWER, on);
+		SET_PALMTT5_GPIO(BL_POWER, on);
+		pxa_set_cken(CKEN0_PWM0, on);
+		pxa_set_cken(CKEN1_PWM1, on);
+    	}
 }
 
 static void palmtt5_set_bl_intensity(int intensity)
