@@ -42,6 +42,7 @@
 #include <asm/arch/palmz72-init.h>
 #include <asm/arch/pxa_camera.h>
 #include <asm/arch/pxa2xx_udc_gpio.h>
+#include <asm/arch/palmlcd-border.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -315,9 +316,17 @@ static struct platform_device palmz72_ac97 = {
 /**************
  * LCD Border *
  **************/
+static struct palmlcd_border_pdata border_machinfo = {
+	.select_gpio	= GPIO_NR_PALMZ72_BORDER_SELECT,
+	.switch_gpio	= GPIO_NR_PALMZ72_BORDER_SWITCH,
+};
+
 struct platform_device palmz72_border = {
-	.name = "palmz72-border",
-	.id = -1,
+	.name	= "palmlcd-border",
+	.id	= -1,
+	.dev	= {
+		.platform_data  = &border_machinfo,
+	},
 };
 
 /*************
