@@ -17,6 +17,7 @@ obj-$(CONFIG_SONY_LAPTOP)	+= sony-laptop.o
 obj-$(CONFIG_BATTCHARGE_MONITOR)		+= battchargemon.o
 obj-$(CONFIG_GPIOED)				+= gpioed.o
 obj-$(CONFIG_GPIOEDNG)				+= gpioed-ng.o
+obj-$(CONFIG_PALMLCD_BORDER)			+= palmlcd_border.o
 
 obj-$(CONFIG_MCP_UCB1x00_AUDIO)			+= ucb1x00-audio.o
 obj-$(CONFIG_MCP_UCB1x00_SIMPAD_SWITCHES)	+= simpad-switches.o

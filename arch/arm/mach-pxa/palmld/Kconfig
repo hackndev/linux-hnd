@@ -34,9 +34,3 @@ config PALMLD_PM
 	default y if MACH_XSCALE_PALMLD
 	help
 		Enable support for suspend/resume the PalmOne LifeDrive PDA.
-
-config PALMLD_BORDER
-	tristate "Palm LifeDrive Display border switch"
-	depends on MACH_XSCALE_PALMLD
-	help
-		Enable support for turning LCD border on/off

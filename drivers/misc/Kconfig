@@ -48,6 +48,12 @@ config GPIOEDNG
 	help
 	  Gpioed-ng: only for debuging and testing!
 
+config PALMLCD_BORDER
+	tristate "Palm LCD Display border switch"
+	depends on ARCH_PXA
+	help
+	    Enable support for turning LCD border on/off
+
 menu "Multimedia Capabilities Port drivers"
 
 config MCP_UCB1x00_AUDIO

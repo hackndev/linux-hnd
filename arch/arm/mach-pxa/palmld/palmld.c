@@ -34,6 +34,7 @@
 #include <asm/arch/pxa27x_keyboard.h>
 #include <asm/arch/pxa-pm_ll.h>
 #include <asm/arch/serial.h>
+#include <asm/arch/palmlcd-border.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -215,9 +216,17 @@ static struct platform_device palmldusb2_device = {
 /*********************************************************
  * LCD Border
  *********************************************************/
+static struct palmlcd_border_pdata border_machinfo = {
+    .select_gpio	= GPIO_NR_PALMLD_BORDER_SELECT,
+    .switch_gpio	= GPIO_NR_PALMLD_BORDER_SWITCH,
+};
+
 struct platform_device palmld_border = {
-	.name = "palmld-border",
-	.id = -1,
+	.name	= "palmlcd-border",
+	.id	= 0,
+	.dev	= {
+		.platform_data = &border_machinfo,
+	},
 };
 
 /*********************************************************
