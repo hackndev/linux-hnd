@@ -69,28 +69,25 @@ int palmld_battery_max_voltage(struct power_supply *b)
 
 int palmld_battery_get_voltage(struct power_supply *b)
 {
-    if (bat.battery_registered){
+    if (bat.battery_registered) {
     	bat.previous_voltage = bat.current_voltage;
     	bat.current_voltage = wm97xx_read_aux_adc(bat.wm,  WM97XX_AUX_ID3);
 	bat.last_battery_update = jiffies;
     	return bat.current_voltage * 1889/1000 + 7678/10;
     }
-    else{
-    	printk("palmld_battery: cannot get voltage -> battery driver unregistered\n");
-    	return 0;
-    }
+
+    printk("palmld_battery: cannot get voltage -> battery driver unregistered\n");
+    return 0;
 }
 
 int palmld_battery_get_capacity(struct power_supply *b)
 {
-    if (bat.battery_registered){
-	return (((palmld_battery_get_voltage(b)-palmld_battery_min_voltage(b))
-	/(palmld_battery_max_voltage(b)-palmld_battery_min_voltage(b)))*100);
-    }
-    else{
-    	printk("palmld_battery: cannot get capacity -> battery driver unregistered\n");
-    	return 0;
-    }
+    if (bat.battery_registered)
+	return (((palmld_battery_get_voltage(b)-palmld_battery_min_voltage(b))/
+	(palmld_battery_max_voltage(b)-palmld_battery_min_voltage(b)))*100);
+
+    printk("palmld_battery: cannot get capacity -> battery driver unregistered\n");
+    return 0;
 }
 
 int palmld_battery_get_status(struct power_supply *b)
@@ -105,8 +102,6 @@ int palmld_battery_get_status(struct power_supply *b)
 	else
 		return POWER_SUPPLY_STATUS_NOT_CHARGING;
 }
-
-int tmp;
 
 static int palmld_battery_get_property(struct power_supply *b,
 				enum power_supply_property psp,
@@ -247,9 +242,8 @@ static int __init palmld_wm97xx_init(void)
 
     /* register battery to APM layer */
     bat.battery_registered = 0;
-    if(power_supply_register(NULL, &palmld_battery)) {
+    if(power_supply_register(NULL, &palmld_battery))
 	printk(KERN_ERR "palmld_ac97_probe: could not register battery class\n");
-    }
     else {
 	bat.battery_registered = 1;
 	printk("Battery registered\n");
