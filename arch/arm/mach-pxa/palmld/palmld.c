@@ -98,20 +98,14 @@ static struct pxamci_platform_data palmld_mci_platform_data = {
 void bcm2035_bt_reset(int on)
 {
         printk(KERN_NOTICE "Switch BT reset %d\n", on);
-        if (on)
-                SET_PALMLD_GPIO( BT_RESET, 1 );
-        else
-                SET_PALMLD_GPIO( BT_RESET, 0 );
+        SET_PALMLD_GPIO( BT_RESET, on ? 1 : 0 );
 }
 EXPORT_SYMBOL(bcm2035_bt_reset);
 
 void bcm2035_bt_power(int on)
 {
         printk(KERN_NOTICE "Switch BT power %d\n", on);
-        if (on)
-                SET_PALMLD_GPIO( BT_POWER, 1 );
-        else
-                SET_PALMLD_GPIO( BT_POWER, 0 );
+        SET_PALMLD_GPIO( BT_POWER, on ? 1 : 0 );
 }
 EXPORT_SYMBOL(bcm2035_bt_power);
 
