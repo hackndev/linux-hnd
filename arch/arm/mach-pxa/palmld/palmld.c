@@ -223,7 +223,7 @@ static struct palmlcd_border_pdata border_machinfo = {
 
 struct platform_device palmld_border = {
 	.name	= "palmlcd-border",
-	.id	= 0,
+	.id	= -1,
 	.dev	= {
 		.platform_data = &border_machinfo,
 	},

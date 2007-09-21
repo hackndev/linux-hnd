@@ -45,6 +45,7 @@
 #include <asm/arch/palmtx-init.h>
 #include <asm/arch/palmtx-gpio.h>
 #include <asm/arch/pxa2xx_udc_gpio.h>
+#include <asm/arch/palmlcd-border.h>
 
 #include "../generic.h"
 
@@ -154,12 +155,16 @@ static struct platform_device palmtx_keypad = {
 /**************
  * LCD Border *
  **************/
+static struct palmlcd_border_pdata border_machinfo = {
+	.select_gpio	= GPIO_NR_PALMTX_BORDER_SELECT,
+	.switch_gpio	= GPIO_NR_PALMTX_BORDER_SWITCH,
+};
 
 struct platform_device palmtx_border = {
-        .name	= "palmtx-border",
+        .name	= "palmlcd-border",
         .id	= -1,
         .dev	= {
-        	.platform_data	= NULL,
+        	.platform_data	= &border_machinfo,
         },
 };
 
