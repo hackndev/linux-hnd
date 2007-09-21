@@ -102,7 +102,6 @@ static int i2c_ov96xx_detect_client(struct i2c_adapter *adapter, int address,  i
 {
 	struct i2c_client *new_client;
 	int err = 0;
-	char res = -1;
 	struct ov96xx_data *data;
     
 	if (g_client != NULL) {
@@ -158,7 +157,8 @@ static int i2c_ov96xx_detect_client(struct i2c_adapter *adapter, int address,  i
 
 	printk("trying to attach the client\n");
 	/* Tell the i2c layer a new client has arrived */
-	if (err = i2c_attach_client(new_client))
+	err = i2c_attach_client(new_client);
+	if (err)
 		goto ERROR3;
 
     /* This function can write default values to the client registers, if
@@ -184,7 +184,8 @@ int i2c_ov96xx_detach_client(struct i2c_client *client)
 	int err;
 
 	/* Try to detach the client from i2c space */
-	if (err = i2c_detach_client(client)) {
+	err = i2c_detach_client(client);
+	if (err) {
 		DPRINTK("i2c-ov96xx.o: Client deregistration failed, client not detached.\n");
 		return err;
 	}
@@ -211,6 +212,17 @@ static struct i2c_driver ov96xx_i2c_driver  =
 	.detach_client  = &i2c_ov96xx_detach_client,
 };
 
+void i2c_ov96xx_cleanup(void)
+{
+	if (ov96xx_initialized == 1) {
+		if (i2c_del_driver(&ov96xx_i2c_driver)) {
+			DPRINTK("i2c-ov96xx: Driver registration failed, module not removed.\n");
+			return;
+		}
+		ov96xx_initialized --;
+	}
+}
+
 int i2c_ov96xx_init(void)
 {
 	int res;
@@ -219,8 +231,9 @@ int i2c_ov96xx_init(void)
 		return 0;
 
 	DPRINTK("I2C: driver for device ov96xx.\n");
-
-	if (res = i2c_add_driver(&ov96xx_i2c_driver)) {
+	
+	res = i2c_add_driver(&ov96xx_i2c_driver);
+	if (res) {
 		DPRINTK("i2c-ov96xx: Driver registration failed, module not inserted.\n");
 		i2c_ov96xx_cleanup();
 		return res;
@@ -232,17 +245,6 @@ int i2c_ov96xx_init(void)
            DPRINTK("I2C: driver for device unregisted!.\n");
 	}
 	return 0;
-}
-
-void i2c_ov96xx_cleanup(void)
-{
-	if (ov96xx_initialized == 1) {
-		if (i2c_del_driver(&ov96xx_i2c_driver)) {
-			DPRINTK("i2c-ov96xx: Driver registration failed, module not removed.\n");
-			return;
-		}
-		ov96xx_initialized --;
-	}
 }
 
 EXPORT_SYMBOL(i2c_ov96xx_read);
