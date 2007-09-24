@@ -21,13 +21,10 @@
 #include <asm/arch/pxa-regs.h>
 #include <asm/hardware/scoop.h>
 
-
-static void palmz72led_green_set(struct led_classdev *led_cdev, enum led_brightness value)
+static void palmz72led_green_set(struct led_classdev *led_cdev,
+				 enum led_brightness value)
 {
-	if (value)
-		SET_PALMZ72_GPIO(LED,1);
-	else
-		SET_PALMZ72_GPIO(LED,0);
+	SET_PALMZ72_GPIO(LED, value ? 1 : 0);
 }
 
 static struct led_classdev palmz72_green_led = {
