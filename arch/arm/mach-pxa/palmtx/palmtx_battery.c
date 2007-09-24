@@ -66,6 +66,11 @@ int palmtx_battery_max_voltage(struct power_supply *b)
     return PALMTX_BAT_MAX_VOLTAGE; /* mV */
 }
 
+static int palmtx_ac_is_connected (void){
+	/* when charger is plugged in, then status is ONLINE */
+	return GET_PALMTX_GPIO(POWER_DETECT)||(!GET_PALMTX_GPIO(USB_DETECT_N));
+}
+
 /*
  This formula is based on battery life of my battery 1100mAh. Original battery in Zire72 is Li-On 920mAh
  V_batt = ADCSEL_BMON * 1,889 + 767,8 [mV]
@@ -97,18 +102,13 @@ int palmtx_battery_get_capacity(struct power_supply *b)
 
 int palmtx_battery_get_status(struct power_supply *b)
 {
-        int ac_connected  = GET_PALMTX_GPIO(POWER_DETECT);
-        int usb_connected = !GET_PALMTX_GPIO(USB_DETECT_N);
-
-        if ( (ac_connected || usb_connected) &&
+        if ( palmtx_ac_is_connected() &&
         ( ( bat.current_voltage > bat.previous_voltage ) ||
-        (bat.current_voltage <= PALMTX_BAT_MAX_VOLTAGE) ) )
+        (bat.current_voltage <= palmtx_battery_max_voltage(b)) ) )
                 return POWER_SUPPLY_STATUS_CHARGING;
         else
                 return POWER_SUPPLY_STATUS_NOT_CHARGING;
 }
-
-int tmp;
 
 static int palmtx_battery_get_property(struct power_supply *b,
                                 enum power_supply_property psp,
@@ -204,10 +204,6 @@ static struct device_driver  palmtx_wm97xx_driver = {
     .shutdown	= palmtx_wm97xx_shutdown
 };
 
-static int palmtx_ac_is_connected (void){
-	/* when charger is plugged in, then status is ONLINE */
-	return GET_PALMTX_GPIO(POWER_DETECT)||(!GET_PALMTX_GPIO(USB_DETECT_N));
-}
 
 #if defined(CONFIG_APM_EMULATION) || defined(CONFIG_APM_MODULE)
 
