@@ -186,15 +186,15 @@ palmld_wm97xx_resume(struct device *dev)
 }
 
 
-static struct device_driver  palmld_wm97xx_driver = {
-    .name = "wm97xx-touchscreen",
-    .bus = &wm97xx_bus_type,
-    .owner = THIS_MODULE,
-    .probe = palmld_wm97xx_probe,
-    .remove = palmld_wm97xx_remove,
-    .suspend = palmld_wm97xx_suspend,
-    .resume = palmld_wm97xx_resume,
-    .shutdown = palmld_wm97xx_shutdown
+static struct device_driver palmld_wm97xx_driver = {
+    .name	= "wm97xx-touchscreen",
+    .bus	= &wm97xx_bus_type,
+    .owner	= THIS_MODULE,
+    .probe	= palmld_wm97xx_probe,
+    .remove	= palmld_wm97xx_remove,
+    .suspend	= palmld_wm97xx_suspend,
+    .resume	= palmld_wm97xx_resume,
+    .shutdown	= palmld_wm97xx_shutdown
 };
 
 #if defined(CONFIG_APM_EMULATION) || defined(CONFIG_APM_MODULE)
