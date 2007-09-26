@@ -46,6 +46,7 @@
 #include <asm/arch/palmtx-gpio.h>
 #include <asm/arch/pxa2xx_udc_gpio.h>
 #include <asm/arch/palmlcd-border.h>
+#include <asm/arch/palm-battery.h>
 
 #include "../generic.h"
 
