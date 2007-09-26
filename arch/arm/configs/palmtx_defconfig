@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.21-hnd3
-# Sat Aug 25 00:55:16 2007
+# Wed Sep 26 18:05:22 2007
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -178,10 +178,8 @@ CONFIG_ARCH_PXA=y
 # CONFIG_MACH_XSCALE_PALMTT5 is not set
 CONFIG_MACH_XSCALE_PALMTX=y
 # CONFIG_PALMTX_DEBUG is not set
-CONFIG_PALMTX_BATTERY=m
 CONFIG_PALMTX_PM=y
 CONFIG_PALMTX_PCMCIA=m
-CONFIG_PALMTX_BORDER=m
 # CONFIG_MACH_XSCALE_PALMLD is not set
 # CONFIG_MACH_ZIRE31 is not set
 CONFIG_GPIOED=m
@@ -571,7 +569,6 @@ CONFIG_MII=y
 # Wireless LAN (non-hamradio)
 #
 # CONFIG_NET_RADIO is not set
-# CONFIG_LIBERTAS is not set
 
 #
 # PCMCIA network device support
@@ -761,6 +758,7 @@ CONFIG_POWER_SUPPLY=m
 # CONFIG_POWER_SUPPLY_DEBUG is not set
 CONFIG_PDA_POWER=m
 CONFIG_APM_POWER=m
+CONFIG_BATTERY_PALM=m
 # CONFIG_BATTERY_DS2760 is not set
 
 #
@@ -772,6 +770,7 @@ CONFIG_APM_POWER=m
 # Misc devices
 #
 # CONFIG_BATTCHARGE_MONITOR is not set
+CONFIG_PALMLCD_BORDER=m
 
 #
 # Multimedia Capabilities Port drivers
