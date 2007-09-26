@@ -169,6 +169,25 @@ struct platform_device palmtx_border = {
 };
 
 /*************
+ * Batery    *
+ *************/
+
+int palmtx_ac_is_connected (void){
+	/* when charger is plugged in, then status is ONLINE */
+	return GET_PALMTX_GPIO(POWER_DETECT)||(!GET_PALMTX_GPIO(USB_DETECT_N));
+}
+
+static struct palm_battery_data palm_battery_info = {
+	.bat_min_voltage	= PALMTX_BAT_MIN_VOLTAGE,
+	.bat_max_voltage	= PALMTX_BAT_MAX_VOLTAGE,
+	.bat_max_life_mins	= PALMTX_MAX_LIFE_MINS,
+	.ac_connected		= &palmtx_ac_is_connected,
+};
+
+EXPORT_SYMBOL_GPL(palm_battery_info);
+
+
+/*************
  * Backlight *
  *************/
 
