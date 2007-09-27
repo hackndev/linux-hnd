@@ -43,6 +43,7 @@
 #include <asm/arch/pxa_camera.h>
 #include <asm/arch/pxa2xx_udc_gpio.h>
 #include <asm/arch/palmlcd-border.h>
+#include <asm/arch/palm-battery.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -328,6 +329,24 @@ struct platform_device palmz72_border = {
 		.platform_data  = &border_machinfo,
 	},
 };
+
+/*************
+ * Batery    *
+ *************/
+
+int palmz72_ac_is_connected (void){
+	/* when charger is plugged in and USB is not connected, then status is ONLINE */
+	return (!(GET_GPIO(GPIO_NR_PALMZ72_USB_PULLUP)) && !(GET_GPIO(GPIO_NR_PALMZ72_USB_DETECT)));
+}
+
+static struct palm_battery_data palm_battery_info = {
+	.bat_min_voltage	= PALMZ72_BAT_MIN_VOLTAGE,
+	.bat_max_voltage	= PALMZ72_BAT_MAX_VOLTAGE,
+	.bat_max_life_mins	= PALMZ72_MAX_LIFE_MINS,
+	.ac_connected		= &palmz72_ac_is_connected,
+};
+
+EXPORT_SYMBOL_GPL(palm_battery_info);
 
 /*************
  * Backlight *
