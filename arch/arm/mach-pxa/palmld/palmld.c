@@ -35,6 +35,7 @@
 #include <asm/arch/pxa-pm_ll.h>
 #include <asm/arch/serial.h>
 #include <asm/arch/palmlcd-border.h>
+#include <asm/arch/palm-battery.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -222,6 +223,26 @@ struct platform_device palmld_border = {
 		.platform_data = &border_machinfo,
 	},
 };
+
+/*********************************************************
+ * Battery
+ *********************************************************/
+
+int palmld_ac_is_connected (void){
+	/* when charger is plugged in and USB is not connected,
+	   then status is ONLINE */
+	return ((GET_PALMLD_GPIO(POWER_DETECT)) &&
+		!(GET_PALMLD_GPIO(USB_DETECT_N)));
+}
+
+static struct palm_battery_data palm_battery_info = {
+	.bat_min_voltage	= PALMLD_BAT_MIN_VOLTAGE,
+	.bat_max_voltage	= PALMLD_BAT_MAX_VOLTAGE,
+	.bat_max_life_mins	= PALMLD_MAX_LIFE_MINS,
+	.ac_connected		= &palmld_ac_is_connected,
+};
+
+EXPORT_SYMBOL_GPL(palm_battery_info);
 
 /*********************************************************
  * Backlight

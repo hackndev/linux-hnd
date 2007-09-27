@@ -18,16 +18,6 @@ config PALMLD_IDE
 	tristate "Palm LifeDrive IDE driver"
 	depends on MACH_XSCALE_PALMLD
 
-config PALMLD_BATTERY
-	tristate "Palm LifeDrive Battery support"
-	select TOUCHSCREEN_WM97XX
-	select POWER_SUPPLY
-	depends on MACH_XSCALE_PALMLD
-	default m
-	help
-		Enable support for PalmOne LifeDrive battery to APM.
-		ATM use it only as module, otherwise it hangs.
-
 config PALMLD_PM
 	tristate "Palm LifeDrive Power Management support"
 	depends on MACH_XSCALE_PALMLD
