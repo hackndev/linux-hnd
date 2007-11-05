@@ -85,10 +85,25 @@ static void palmz72_mci_exit(struct device *dev, void *data)
 	free_irq(IRQ_GPIO_PALMZ72_SD_DETECT_N, data);
 }
 
+static void palmz72_mci_setpower(struct device *dev, unsigned int vdd)
+{
+    struct pxamci_platform_data* p_d = dev->platform_data;
+
+    if (( 1 << vdd) & p_d->ocr_mask)
+    {
+    SET_GPIO(GPIO_NR_PALMZ72_MMC_POWER, 0);
+    }
+    else
+    {
+	SET_GPIO(GPIO_NR_PALMZ72_MMC_POWER, 1);
+    }
+}
+
+
 static struct pxamci_platform_data palmz72_mci_platform_data = {
 	.ocr_mask	= MMC_VDD_32_33|MMC_VDD_33_34,
 	.init 		= palmz72_mci_init,
-	/* .setpower 	= palmz72_mci_setpower,	*/
+	.setpower 	= palmz72_mci_setpower,
 	.exit		= palmz72_mci_exit,
 
 };
