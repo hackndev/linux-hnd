@@ -1,0 +1,14 @@
+menuconfig ARCH_AXIMX3
+	bool "Dell Axim X3 (non-functional)"
+	select PXA25x
+	help
+	  Enable this if you plan to boot the kernel on the Dell Axim X3
+	  series of PDAs. Currently there is only basic support for this
+	  type of PDAs.
+
+config AXIMX3_LCD
+	tristate "Dell Axim X3 LCD"
+	depends on ARCH_AXIMX3 && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for changing power, brightness
+	  and contrast on Dell Axim X3 LCD display.

@@ -1,0 +1,18 @@
+[18:40:17] <joshua_> higher priority things would be -- (in no particular order)
+[18:40:29] <joshua_> *) A splash screen that will not get us sued
+[18:40:44] <joshua_> *) Instruc5tions for the user as to how to get LAB installed
+[18:41:05] <joshua_> *) Support for LAB to keep its original image in RAM, so that it can be run from HaRET, and then have it be able to install itself?
+[18:41:58] <joshua_> mreimer, in the end, I'd like to revamp the lab command system. predication would be a little difficult in the world of immediates that we have right now
+[18:42:33] <joshua_> *) A command interpreter that isn't awful
+[18:42:52] <joshua_> *) An API for commands to blit text or graphics to the screen (a generalization of bootlogo), so one could have a serial/usb-free install
+[18:43:00] <mreimer> yes, that would be nice
+[18:43:03] <joshua_> (insert CF, press button, system reflashes, shows you its status)
+[18:43:41] <joshua_> *) old-style command support (wrappers for "load root", etc)
+[18:43:57] <koen> *) easter egg
+[18:44:04] <mreimer> :-)
+[18:44:15] <joshua_> *) an intelligence boost for autoboot so that it knows that partition to mount
+[18:44:17] <joshua_> koen, we have one of those
+[18:44:27] <joshua_> it's accessed with copy fs:/dev/urandom nand:0
+[18:49:09] * joshua_ adds another thing that may be needed to the TODO -- "set"/"show" variable
+[18:49:17] <mreimer> ls would be nice too
+[18:49:22] <mreimer> as would winceboot

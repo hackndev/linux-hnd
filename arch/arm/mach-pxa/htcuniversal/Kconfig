@@ -1,0 +1,80 @@
+menuconfig MACH_HTCUNIVERSAL
+	bool "HTC Universal"
+	select PXA27x
+	select BOARD_IRQ_MAP_BIG
+	help
+		Say Y here if you intend to run this kernel on a
+		HTC Universal. Currently there is only basic support
+		for this PDA.
+
+config HTCUNIVERSAL_CORE
+        tristate "HTC Universal core"
+        depends on MACH_HTCUNIVERSAL
+        help
+          This selection enables HTC Universal core support.
+
+config HTCUNIVERSAL_UDC
+        bool "USB Device Controller support"
+        depends on MACH_HTCUNIVERSAL && HTC_ASIC3 && USB_PXA27X
+        help
+          Enables HTC Universal specific USB detection
+
+config HTCUNIVERSAL_POWER
+        tristate "HTC Universal power"
+        depends on MACH_HTCUNIVERSAL && HTC_ASIC3
+        help
+          This selection enables HTC Universal power monitoring
+	            hardware support (through ASIC3).
+
+config HTCUNIVERSAL_BACKLIGHT
+	bool "HTC Universal Backlight"
+	depends on MACH_HTCUNIVERSAL && HTC_ASIC3 && BACKLIGHT_CLASS_DEVICE
+	help
+	  This driver provides support for changing power and brightness
+	  on HTC Universal LCD backlight.
+
+config HTCUNIVERSAL_LCD
+	tristate "HTC Universal LCD"
+	depends on MACH_HTCUNIVERSAL && HTC_ASIC3 && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for changing power and brightness
+	  on HTC Universal LCD display.
+
+config HTCUNIVERSAL_TS2
+	tristate "HTC Universal Touchscreen (old)"
+	depends on MACH_HTCUNIVERSAL && HTC_ASIC3 
+	help
+	  Enable support for the HTC Universal Touchscreen Panel.
+
+config HTCUNIVERSAL_BUTTONS
+        tristate "HTC Universal buttons support"
+        depends on MACH_HTCUNIVERSAL && HTC_ASIC3
+
+config HTCUNIVERSAL_BLUETOOTH
+	tristate "HTC Universal Bluetooth"
+	depends on MACH_HTCUNIVERSAL && HTCUNIVERSAL_CORE && HTC_ASIC3
+	help
+	  Enables support for the TI BRF6150 Bluetooth Module
+	  in the HTC Universal.
+
+config HTCUNIVERSAL_ASIC3_LEDS
+	tristate "HTC Universal ASIC3 LED support"
+	select LEDS_ASIC3
+	depends on MACH_HTCUNIVERSAL && HTCUNIVERSAL_CORE && HTC_ASIC3
+	---help---
+	Support for right (colors red+green+(amber)) and left (green+blue) led
+	Off/on hook keys LED backlight
+	Keyboard backlight
+	Vibra
+	Flashlight
+
+config HTCUNIVERSAL_PHONE
+	tristate "HTC Universal Phone"
+	depends on MACH_HTCUNIVERSAL && HTCUNIVERSAL_CORE && HTC_ASIC3
+	help
+	  Enables support for the Qualcomm MSM6520 Phone Module
+	  in the HTC Universal.
+
+config HTCUNIVERSAL_AK4641
+	depends on SND && I2C
+	tristate

@@ -1,0 +1,26 @@
+menuconfig ARCH_H5400
+        bool "HP iPAQ h5400"
+        depends on ARCH_PXA
+        select PXA25x
+	select BOARD_IRQ_MAP_BIG
+	select DMABOUNCE
+
+config IPAQ_H5400_BT
+	tristate "HP iPAQ h5400 Bluetooth"
+	depends on ARCH_H5400 && SOC_SAMCOP
+
+config IPAQ_H5400_LCD
+	tristate "HP iPAQ h5400 LCD"
+	depends on ARCH_H5400 && LCD_CLASS_DEVICE && FB_MQ1100
+
+config IPAQ_H5400_BL
+	tristate "HP iPAQ h5400 Backlight"
+	depends on ARCH_H5400 && IPAQ_H5400_LCD && BACKLIGHT_CORGI
+
+config IPAQ_H5400_WIFI
+	tristate "HP iPAQ h5400 wifi"
+	depends on ARCH_H5400 && USB && USB_OHCI_HCD
+
+config IPAQ_H5400_AUDIO
+	tristate "HP iPAQ h5400 audio"
+	depends on ARCH_H5400 && SND_H5XXX_AK4535

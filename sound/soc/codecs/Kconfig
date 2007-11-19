@@ -1,0 +1,102 @@
+config SND_SOC_AC97_CODEC
+	tristate "SoC generic AC97 support"
+	depends SND_SOC
+	help
+	  Say Y or M if you want generic AC97 support. This is not required
+	  for the AC97 codecs listed below.
+
+config SND_SOC_WM8711
+	tristate "SoC driver for the WM8711 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8711 codec.
+
+config SND_SOC_WM8510
+	tristate "SoC driver for the WM8510 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8711 codec.
+
+config SND_SOC_WM8731
+	tristate "SoC driver for the WM8731 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8731 codec.
+
+config SND_SOC_WM8750
+	tristate "SoC driver for the WM8750 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8750 codec.
+
+config SND_SOC_WM8753
+	tristate "SoC driver for the WM8753 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8753 codec.
+
+config SND_SOC_WM8772
+	tristate "SoC driver for the WM8772 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8772 codec.
+
+config SND_SOC_WM8971
+	tristate "SoC driver for the WM8971 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8971 codec.
+
+config SND_SOC_WM8956
+	tristate "SoC driver for the WM8956 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8956 codec.
+
+config SND_SOC_WM8960
+	tristate "SoC driver for the WM8960 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8960 codec.
+
+config SND_SOC_WM8976
+	tristate "SoC driver for the WM8976 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8976 codec.
+
+config SND_SOC_WM8974
+	tristate "SoC driver for the WM8974 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8974 codec.
+
+config SND_SOC_WM8980
+	tristate "SoC driver for the WM8980 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM8980 codec.
+
+config SND_SOC_WM9713
+	tristate "SoC driver for the WM9713 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM9713 codec.
+
+config SND_SOC_WM9712
+	tristate "SoC driver for the WM9712 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the WM9712 codec.
+
+config SND_SOC_UDA1380
+	tristate "SoC driver for the UDA1380 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the UDA1380 codec.
+
+config SND_SOC_AK4535
+	tristate "SoC driver for the AK4535 codec"
+	depends SND_SOC
+	help
+	  Say Y or M if you want to support the AK4535 codec.

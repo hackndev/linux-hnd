@@ -1,0 +1,84 @@
+menuconfig MACH_BLUEANGEL
+        bool "HTC Blueangel"
+        depends on ARCH_PXA
+        select PXA25x
+        select PXA26x
+	select BOARD_IRQ_MAP_BIG
+        select PXA_SSP
+	select HTC_ASIC3
+	select TOUCHSCREEN_TSC2200
+	select KEYBOARD_TSC2200
+
+config MACH_BLUEANGEL_LCD
+	tristate "HTC Blueangel LCD support"
+	depends on MACH_BLUEANGEL && HTC_ASIC3
+
+config MACH_BLUEANGEL_BACKLIGHT
+	bool "HTC Blueangel Backlight support"
+	depends on MACH_BLUEANGEL && HTC_ASIC3
+
+config MACH_BLUEANGEL_DS1WM
+	tristate "HTC Blueangel ds1wm on HTC AIC2 (PASIC2) support"
+	depends on MACH_BLUEANGEL
+	---help---
+	Provide ds1wm controller interface (needed for battery)
+	
+config MACH_BLUEANGEL_PCMCIA
+	tristate "HTC Blueangel PCMCIA support"
+	depends on MACH_BLUEANGEL
+	---help---
+	Required for wireless lan
+
+config MACH_BLUEANGEL_SUSPEND
+	tristate "HTC Blueangel suspend support"
+	depends on MACH_BLUEANGEL
+	---help---
+
+config MACH_BLUEANGEL_LEDS
+	tristate "HTC Blueangel LED support"
+	depends on MACH_BLUEANGEL
+	---help---
+	Support for left led (wifi+bt)
+	Off/on hook keys ilumination
+	Keyboard ilumination
+	Vibra on/off
+
+config MACH_BLUEANGEL_ASIC3_LEDS
+	tristate "HTC Blueangel ASIC3 LED support"
+	depends on MACH_BLUEANGEL
+	select LEDS_ASIC3
+	---help---
+	Support for right led (red+green+(=yellow))
+	Off/on hook keys ilumination
+	Keyboard ilumination
+	Phone key ilumination
+	Vibra on/off
+
+config MACH_BLUEANGEL_KEYPAD
+	tristate "HTC Blueangel keypad support"
+	depends on MACH_BLUEANGEL
+	---help---
+	Support for function keys and pull-out keyboard
+
+config MACH_BLUEANGEL_POWER
+	tristate "HTC Blueangel battery support"
+	depends on MACH_BLUEANGEL
+	---help---
+
+config MACH_BLUEANGEL_ROM
+	tristate "HTC Blueangel flash rom support"
+	depends on MACH_BLUEANGEL
+	---help---
+	Read and write (was never tested!) support of the pxa flash rom
+
+config MACH_BLUEANGEL_DPRAM
+	tristate "HTC Blueangel dpram asic support"
+	depends on MACH_BLUEANGEL
+	---help---
+	Required for using data transfer via GPRS, CSD and FAX
+
+config MACH_BLUEANGEL_PHONE
+	tristate "HTC Blueangel Phone"
+	depends on MACH_BLUEANGEL
+	help
+	  Enables support for TI Calypso Phone Module

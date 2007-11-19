@@ -1,0 +1,13 @@
+menuconfig MACH_A730
+        bool "Asus MyPal A730(W)"
+        depends on ARCH_PXA
+        select PXA27x
+        select IWMMXT
+	select I2C
+	select SENSORS_PCA9535
+	help
+           Asus MyPal A730(W) kernel support
+
+config ASUS730_WM9712
+        tristate "Asus730 WM9712 driver"
+        depends on MACH_A730

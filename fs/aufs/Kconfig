@@ -1,0 +1,154 @@
+config AUFS
+ tristate "Another unionfs"
+ help
+ Aufs is a stackable unification filesystem such as Unionfs,
+ which unifies several directories and provides a merged single
+ directory.
+ In the early days, aufs was entirely re-designed and
+ re-implemented Unionfs Version 1.x series. After many original
+ ideas, approaches and improvements, it becomes totally
+ different from Unionfs while keeping the basic features.
+ See Unionfs for the basic features.
+if AUFS
+config AUFS_NWKQ_DEF
+ int "Number of aufs kernel threads"
+ depends on AUFS
+ default "4"
+ help
+  Those  threads  stay  in  the  system  and handle the special  I/O  requests
+  from  aufs.   The default value is 4.  If you enable CONFIG_SYSFS, you can
+  check  this  value  through <sysfs>/module/aufs/parameters/nwkq.  So   how
+  many   threads   is  enough?  You  can  check  it  by <sysfs>/fs/aufs/stat,
+  if you enable CONFIG_AUFS_SUSAUFS too.  It shows  the maximum  number of the
+  enqueued work at a time per a thread. Usually they are all small numbers or
+  0. If  your  work- load is heavy and you feel the response is low, then check
+  these values. If there are no zero and any of them is larger than 2 or 3,
+  you  should  set  'nwkq'  module  parameter greater then the default value.
+  But the reason of the bad response  is  in your branch  filesystem,  to
+  increase the number of aufs thread will not help you.  The last number in
+  <sysfs>/fs/aufs/stat after comma is the maxi- mum  number of  the  'no-wait'
+  enqueued  work  at a time. Aufs enqueues  such  work  to the  system  global
+  workqueue  called 'events', but doesn't wait for its completion. Usually they
+  does no harm the time-performance of aufs.
+config AUFS_FAKE_DM
+ bool "Use simplified (fake) nameidata"
+ depends on AUFS
+ default y
+ help
+ Faking nameidata (VFS internal data), you can get better performance
+ in some cases.
+choice
+ prompt "Maximum number of branches"
+ depends on AUFS
+ default AUFS_BRANCH_MAX_127
+ help
+ Specifies the maximum number of branches (or member directories) in a single aufs. The larger value consumes more system resources and has an impact to performance.
+config AUFS_BRANCH_MAX_127
+ bool "127"
+ help
+ Specifies the maximum number of branches (or member directories) in a single aufs. The larger value consumes more system resources and has an impact to performance.
+config AUFS_BRANCH_MAX_511
+ bool "511"
+ help
+ Specifies the maximum number of branches (or member directories) in a single aufs. The larger value consumes more system resources and has an impact to performance.
+config AUFS_BRANCH_MAX_1023
+ bool "1023"
+ help
+ Specifies the maximum number of branches (or member directories) in a single aufs. The larger value consumes more system resources and has an impact to performance.
+config AUFS_BRANCH_MAX_32767
+ bool "32767"
+ help
+ Specifies the maximum number of branches (or member directories) in a single aufs. The larger value consumes more system resources and has an impact to performance.
+endchoice
+config AUFS_SYSAUFS
+ bool "Use <sysfs>/fs/aufs"
+ depends on AUFS
+ depends on SYSFS
+ default y
+ help
+ Aufs creates some files under sysfs for various purposes.
+ If the number of your branches is large or their path is long
+ and you meet the limitation of mount(8), /etc/mtab or
+ /proc/mount, you need to enable this option and set aufs
+ module parameter brs=1.
+ See detail in aufs.5.
+comment "SYSAUFS and AUFS_SYSAUFS are disabled"
+ depends on SYSFS = n
+config AUFS_HINOTIFY
+ bool "Use inotify to detect actions on a branch"
+ depends on AUFS
+ depends on INOTIFY
+ default n
+ help
+ If you want to modify files on branches directly, eg. bypassing aufs,
+ and want aufs to detect the changes of them fully, then enable this
+ option and use 'udba=inotify' mount option.
+ It will damage the performance.
+ See detail in aufs.5.
+comment "INOTIFY and AUFS_HINOTIFY are disabled"
+ depends on INOTIFY = n
+config AUFS_EXPORT
+ bool "NFS-exportable aufs"
+ depends on AUFS
+ depends on (AUFS = y && EXPORTFS = y) || (AUFS = m && EXPORTFS)
+ default n
+ help
+ If you want to export your mounted aufs, then enable this
+ option. There are several requirements to export aufs.
+ See detail in aufs.5.
+comment "EXPORTFS and AUFS_EXPORT are disabled"
+ depends on AUFS
+ depends on EXPORTFS = n
+comment "AUFS_EXPORT is disabled since EXPORTFS is a module but AUFS"
+ depends on AUFS
+ depends on EXPORTFS = m && AUFS = y
+config AUFS_KSIZE_PATCH
+ bool "ksize.patch was applied or not"
+ depends on AUFS
+ depends on AUFS = m
+ default n
+ help
+ Aufs sometimes needs to re-allocate memory. If 'ksize' kernel internal
+ function is exported to modules, aufs runs efficiently in some cases.
+ If you applied 'CVS_TREE/aufs/ksize.patch' to your kernel and you are
+ compiling aufs as a module, then enable this option.
+ The ksize.patch does nothing but export the function.
+config AUFS_LHASH_PATCH
+ bool "lhash.patch for NFS branch was applied or not"
+ depends on AUFS
+ depends on NFS_FS
+ default n
+ help
+ If you use mounted NFS as an aufs branch filesystem, then you need to
+ apply the patch 'CVS_TREE/aufs/lhash.patch' to your kernel source, and
+ enable this configuration.
+ The lhash.patch makes the kernel function __lookup_hash() global and
+ exports it to modules.
+comment "NFS_FS and AUFS_LHASH_PATCH are disabled"
+ depends on AUFS
+ depends on NFS_FS = n
+config AUFS_DEBUG
+ bool "Debug aufs"
+ depends on AUFS
+ default y
+ help
+ Enable this to compile aufs internal debug code.
+ The performance will be damaged.
+config AUFS_COMPAT
+ bool "Compatibility with Unionfs (obsolete)"
+ depends on AUFS
+ default n
+ help
+ This makes aufs compatible with unionfs-style mount options and some
+ behaviours.
+ The dirs= mount option and =nfsro branch permission flag are always
+ interpreted as br: mount option and =ro flag respectively. The
+ 'debug', 'delete' and 'imap' mount options are ignored.
+ If you disable this option, you will get,
+ - aufs issues a warning about the ignored mount options
+ - the default branch permission flag is set. RW for the first branch,
+   and RO for the rests.
+ - the name of a internal file which represents the directory is
+   'opaque', becomes '.wh..wh..opq'
+ - the 'diropq=w' mount option is set by default
+endif

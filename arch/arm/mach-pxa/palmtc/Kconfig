@@ -1,0 +1,30 @@
+menuconfig MACH_OMAP_PALMTC
+	bool "Palm Tungsten C"
+	select PXA25x
+	help
+	Say Y here if you intend to run this kernel on a
+	Palm Tungsten C. Currently there is only basic support
+	for this PDA.
+
+config PALMTC_KEYBOARD
+	tristate "Palm Tungsten C keyboard driver"
+	depends on MACH_OMAP_PALMTC
+	help
+		This driver translates button presses on a Palm 
+		Tungsten C to Linux input subsystem events
+
+config PALMTC_UCB1400
+        tristate "Palm Tungsten C ucb1400 support (touchscreen/battery/led/vibra)"
+        depends on MACH_OMAP_PALMTC
+	default y
+	help
+		This driver handles the UCB1400 AC97 codec,
+		which enables touchscreen and battery-status
+		on the device
+
+config PALMTC_PCMCIA
+	tristate "PALMTC PCMCIA"
+	depends on MACH_OMAP_PALMTC
+	help
+		This enables support for PCMCIA/CF slot embedded
+		in Palm Tungsten|C.

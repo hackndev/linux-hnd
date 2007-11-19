@@ -1,0 +1,121 @@
+config TOSHIBA_TMIO_OHCI
+	bool
+	default n
+
+menuconfig ARCH_ESERIES
+	bool "Toshiba e7xx / e8xx"
+	select BOARD_IRQ_MAP_BIG
+	select DMABOUNCE
+	select USB_ARCH_HAS_OHCI
+	select TOSHIBA_TMIO_OHCI
+
+config MACH_E330
+	bool "Toahiba e330"
+	default y
+	select PXA25x
+	depends on ARCH_ESERIES
+
+config MACH_E740
+        bool "Toshiba e740"
+	default y
+        select PXA25x
+	depends on ARCH_ESERIES
+
+config MACH_E750
+        bool "Toshiba e750"
+	default y
+        select PXA25x
+	depends on ARCH_ESERIES
+
+config MACH_E400
+	bool "Toshiba e400"
+	default y
+	select PXA25x
+	depends on ARCH_ESERIES
+
+config MACH_E800
+        bool "Toshiba e800"
+	default y
+        select PXA25x
+	depends on ARCH_ESERIES
+
+config E330_LCD
+	tristate "E330 LCD support"
+	default y
+	depends on ARCH_ESERIES
+
+config E740_LCD
+	tristate "E740 LCD support"
+	default y
+	depends on ARCH_ESERIES && BACKLIGHT_CLASS_DEVICE && LCD_CLASS_DEVICE && FB_W100
+
+config E750_LCD
+	tristate "E750 LCD support"
+	default y
+	depends on ARCH_ESERIES
+
+config E400_LCD
+	tristate "E400 LCD support"
+	default y
+	depends on ARCH_ESERIES && FB_PXA
+
+config E800_LCD
+	tristate "E800 LCD support"
+	default y
+	depends on ARCH_ESERIES && FB_W100
+
+config TMIO_OHCI
+	bool "TMIO OHCI support"
+	default y
+	depends on USB_OHCI_HCD && ARCH_ESERIES
+
+config ESERIES_UDC
+	tristate "USB Gadget support"
+	default y
+	depends on ARCH_ESERIES && (MACH_E740 || MACH_E750 || MACH_E400 || MACH_E800)
+	help
+	  Choose this option to allow your PDA to act as a USB device.
+	  This driver supports the e740, e750, e400 and e800.
+
+config E330_TC6387XB
+	tristate "E330 TC6387XB platform support"
+	default y
+	depends on ARCH_ESERIES && MACH_E330
+config E740_T7L66XB
+	tristate "E740 T7L66XB platform support"
+	default y
+	depends on ARCH_ESERIES && MACH_E740
+
+config E400_T7L66XB
+	tristate "E400 T7L66XB platform support"
+	default y
+	depends on ARCH_ESERIES && MACH_E400
+
+config E750_E800_TC6393XB
+	tristate "E750 and E800 TC6393XB platform support"
+	default y
+	depends on ARCH_ESERIES && (MACH_E750 || MACH_E800)
+
+config E740_PCMCIA
+	tristate "E740 PCMCIA support"
+	default y
+	depends on ARCH_ESERIES && MACH_E740 && PCMCIA_PXA2XX
+	help
+	  Choose this option to allow your PDA to access its CF and WiFi
+          devices.
+
+config E750_PCMCIA
+	tristate "E750 PCMCIA support"
+	default y
+	depends on ARCH_ESERIES && MACH_E750 && PCMCIA_PXA2XX
+	help
+	  Choose this option to allow your PDA to access its CF slot.
+
+config E800_PCMCIA
+	tristate "E800 PCMCIA support"
+	default y
+	depends on ARCH_ESERIES && MACH_E800 && PCMCIA_PXA2XX
+	help
+	  Choose this option to allow your PDA to access its CF and WiFi
+	  devices.
+

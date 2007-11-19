@@ -1,0 +1,20 @@
+menuconfig MACH_HTCALPINE
+	bool "HTC Alpine"
+	select PXA27x
+	help
+		Say Y here if you intend to run this kernel on a
+		HTC Alpine. Currently there is only basic support
+		for this PDA.
+
+config HTCALPINE_CPLD
+	tristate "HTC Alpine CPLD driver"
+	depends on MACH_HTCALPINE
+	help
+	  This driver is supposed to test the Alpine's CPLD.
+
+config HTCALPINE_PHONE
+	tristate "HTC Alpine Phone driver"
+	depends on MACH_HTCALPINE
+	help
+	  Experimental driver for the Alpine's GSM chipset connected
+	  to BTUART(cmd) and ASIC5 uart(data).

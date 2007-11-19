@@ -1,0 +1,40 @@
+# arch/arm/mach-s3c2442/Kconfig
+#
+# Copyright 2007 Simtec Electronics
+#
+# Licensed under GPLv2
+
+config CPU_S3C2442
+	bool
+	depends on ARCH_S3C2420
+	select S3C2410_CLOCK
+	select S3C2410_GPIO
+	select S3C2410_PM if PM
+	select CPU_S3C244X
+	help
+	  Support for S3C2442 Samsung Mobile CPU based systems.
+
+
+menu "S3C2442 Machines"
+
+config SMDK2440_CPU2442
+	bool "SMDM2440 with S3C2442 CPU module"
+	depends on ARCH_S3C2440
+	select CPU_S3C2442
+
+config MACH_RX1950
+        bool "HP iPAQ rx1950"
+        select CPU_S3C2442
+        select CPU_S3C2440
+        select PM_H1940 if PM
+        help
+          Say Y here if you are using the HP iPAQ rx1950.
+
+          See <http://www.handhelds.org/moin/moin.cgi/HpIpaqRx1950> for more
+          information on this project
+
+source "arch/arm/mach-s3c2442/htchermes/Kconfig"
+source "arch/arm/mach-s3c2442/htctrinity/Kconfig"
+
+endmenu
+

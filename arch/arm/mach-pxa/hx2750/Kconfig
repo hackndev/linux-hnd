@@ -1,0 +1,8 @@
+menuconfig MACH_HX2750
+	bool "HP iPAQ hx2750"
+	select PXA27x
+	select KEYBOARD_GPIO
+	select SOC_TSC2101
+	help
+	  This enables support for the HP iPAQ HX2750 handheld.
+	  

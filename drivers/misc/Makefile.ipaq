@@ -1,0 +1,22 @@
+#
+# Makefile for the linux kernel.
+#
+# Note! Dependencies are done automagically by 'make dep', which also
+# removes any old dependencies. DON'T put your own dependencies here
+# unless it's something special (ie not a .c file).
+#
+
+obj-y := 
+obj-m :=
+obj-n :=
+obj-  :=
+
+obj-$(CONFIG_IPAQ_HAL) = ipaq_hal.o ipaq-mtd-asset.o
+obj-$(CONFIG_IPAQ_MTD_ASSET) += ipaq-mtd-asset.o
+obj-$(CONFIG_IPAQ_SLEEVE) += ipaq-sleeve.o
+
+obj-$(CONFIG_IPAQ_ASIC2_SLEEVE) += asic2_sleeve.o
+obj-$(CONFIG_IPAQ_ASIC2_OWM) += asic2_owm.o
+
+obj-$(CONFIG_IPAQ_SAMCOP_FSI) += samcop_fsi.o fsi_drv.o
+obj-$(CONFIG_IPAQ_SAMCOP_SLEEVE) += samcop_sleeve.o

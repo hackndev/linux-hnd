@@ -1,0 +1,7 @@
+config SND_UDA1380
+	depends on SND && I2C
+	tristate
+
+config SND_AK4641
+	depends on SND && I2C
+	tristate

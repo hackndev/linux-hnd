@@ -1,0 +1,63 @@
+menuconfig MACH_H4700
+	bool "HP iPAQ hx4700"
+	select PXA27x
+	select BOARD_IRQ_MAP_BIG
+	select INPUT_KEYBOARD
+	select KEYBOARD_GPIO
+	select IWMMXT
+	select PXA_SUSPEND_SAVE_EXTRA_REGS
+	help
+	  This enables support for the HP iPAQ hx4700 handheld.
+	  
+config HX4700_NAVPOINT
+	tristate "HP iPAQ hx4700 NavPoint"
+	depends on MACH_H4700
+	select INPUT_MOUSE
+	select MOUSE_NAVPOINT
+	help
+	  This device enables support for iPAQ hx4700 NavPoint (tm)
+	  navigation pointer (touchpad).
+
+config HX4700_CORE
+	tristate "HP iPAQ hx4700 Core"
+	depends on MACH_H4700 && HTC_ASIC3
+	help
+	  This selection enables support for iPAQ hx4700 Core
+	  Hardware support (ASIC3 and EGPIOs).
+
+config HX4700_BLUETOOTH
+	tristate "HP iPAQ hx4700 Bluetooth"
+	depends on MACH_H4700 && HX4700_CORE
+	help
+	  Enables support for the TI BRF6150 Bluetooth Module
+	  in the iPAQ hx4700.
+
+config HX4700_PCMCIA
+	tristate "HP iPAQ hx4700 PCMCIA"
+	depends on MACH_H4700 && HX4700_CORE && PCMCIA_PXA2XX
+	help
+	  This enables support for using PCMCIA (CompactFlash) cards
+	  on HP iPAQ hx4700. You will also need to enable PXA2xx PCMCIA
+	  support in the PCMCIA/Cardbus support menu.
+
+config HX4700_LCD
+	tristate "HP iPAQ hx4700 LCD"
+	depends on MACH_H4700
+	select FB_W100
+	help
+	  This enables support for the ATI graphics chip on the hx4700.
+	  You will also need to enable the W100FB framebuffer driver.
+
+config HX4700_LEDS
+	tristate "HP iPAQ hx4700 LEDs"
+	depends on MACH_H4700
+	select LEDS_ASIC3
+	help
+	  This enables support for HP iPAQ hx4700 color LED control
+          (via the ASIC3 chip).
+
+config HX4700_POWER2
+	tristate "HP iPAQ hx4700 Power"
+	depends on MACH_H4700
+	help
+	  This enables support for HP iPAQ hx4700 power (AC/USB).

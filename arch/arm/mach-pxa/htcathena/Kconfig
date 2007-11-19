@@ -1,0 +1,33 @@
+menuconfig MACH_HTCATHENA
+	bool "HTC Athena"
+	select PXA27x
+	select PXA_SSP
+	help
+		Say Y here if you intend to run this kernel on a
+		HTC Athena. Currently there is only basic support
+		for this phone.
+
+config HTCATHENA_CPLD1
+	tristate "HTC Athena CPLD1 driver"
+	depends on MACH_HTCATHENA
+	help
+	  This driver is supposed to test the Athena's CPLD1.
+
+config HTCATHENA_CPLD2
+	tristate "HTC Athena CPLD2 driver"
+	depends on MACH_HTCATHENA
+	help
+	  This driver is supposed to test the Athena's CPLD2.
+
+
+#config HTCATHENA_PHONE
+#	tristate "HTC Alpine Phone driver"
+#	depends on MACH_HTCATHENA
+#	help
+#	  Experimental driver for the Athena's MSM6275 UMTS chipset.
+
+config HTCATHENA_VSFB
+	tristate "HTC Athena VSFB LCD support"
+	depends on MACH_HTCATHENA && LCD_CLASS_DEVICE
+	help
+	  This driver provides primitive support for HTC Athena LCD display.

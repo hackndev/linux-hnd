@@ -1,0 +1,30 @@
+menuconfig MACH_ZIRE31
+	bool "Palm Zire 31" 
+	select PXA25x
+	help
+	Say Y here if you are going to run this kernel on a Palm Zire 31.
+
+config PALMZ31_BUTTONS
+        tristate "Palm Zire 31 buttons driver"
+        depends on MACH_ZIRE31
+	default y
+	help
+		This driver translates button presses on a Palm 
+		Tungsten E2 to Linux input subsystem events.
+
+
+config GPIOED
+       tristate "GPIOED"
+       depends on MACH_ZIRE31
+       default n
+       help
+    	    Gpioed: only for debuging and testing!
+
+
+config GPIOEDNG
+       tristate "GPIOEDNG"
+       depends on MACH_ZIRE31
+       default n
+       help
+    	    Gpioed-ng: only for debuging and testing!
+

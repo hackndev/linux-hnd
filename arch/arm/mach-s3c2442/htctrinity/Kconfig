@@ -1,0 +1,16 @@
+
+config MACH_HTC_TRINITY
+	bool "HTC Trinity"
+	select CPU_S3C2440
+	select CPU_S3C2442
+	help
+	  Say Y here if you are using the HTC Trinity.
+
+	  See <http://wiki.xda-developers.com/index.php?pagename=Hermes_Linux> for more
+	  information on this project
+
+config HTCTRINITY_LCD
+	tristate "HTC Trinity VSFB LCD support"
+	depends on MACH_HTC_TRINITY && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for HTC Trinity LCD display.

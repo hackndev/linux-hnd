@@ -1,0 +1,23 @@
+menuconfig MACH_X30
+	bool "Dell Axim X30 (non-functional)"
+	select PXA27x
+	select KEYBOARD_GPIO
+	depends HTC_ASIC3
+	help
+	  Enable this if you plan to boot the kernel on the Dell Axim X30
+	  series of PDAs. Currently there is only basic support for this
+	  type of PDAs.
+
+config X30_CORE
+        tristate "Dell Axim X30 Core"
+        depends on MACH_X30 && HTC_ASIC3
+        help
+          This selection enables support for Dell Axim X30 Core
+	            Hardware support (ASIC3 and EGPIOs).
+
+config AXIMX30_LCD
+	tristate "Dell Axim X30 LCD"
+	depends on MACH_X30 && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for changing power and brightness
+	  on Dell Axim X30 LCD display.

@@ -1,0 +1,45 @@
+menuconfig MACH_XSCALE_PALMLD
+	bool "Palm LifeDrive"
+	select PXA27x
+	select KEYBOARD_PXA27x
+	help
+		Say Y here if you intend to run this kernel on a Palm 
+		LifeDrive. Currently there is only basic support for 
+		this PDA.
+
+config PALMLD_PCMCIA
+        tristate "Palm LifeDrive PCMCIA driver"
+        depends on MACH_XSCALE_PALMLD
+	help
+		This driver handles the CF/PCCARD/PCMCIA bus which is not used to
+		connect the microdrive.
+
+config PALMLD_USB
+        tristate "Palm LifeDrive USB driver"
+        depends on MACH_XSCALE_PALMLD
+
+config PALMLD_IDE
+	tristate "Palm LifeDrive IDE driver"
+	depends on MACH_XSCALE_PALMLD
+
+config PALMLD_BATTERY
+	tristate "Palm LifeDrive Battery support"
+	select TOUCHSCREEN_WM97XX
+	depends on MACH_XSCALE_PALMLD
+	default m
+	help
+		Enable support for PalmOne LifeDrive battery to APM.
+		ATM use it only as module, otherwise it hangs.
+
+config PALMLD_PM
+	tristate "Palm LifeDrive Power Management support"
+	depends on MACH_XSCALE_PALMLD
+	default y if MACH_XSCALE_PALMLD
+	help
+		Enable support for suspend/resume the PalmOne LifeDrive PDA.
+
+config PALMLD_BORDER
+	tristate "Palm LifeDrive Display border switch"
+	depends on MACH_XSCALE_PALMLD
+	help
+		Enable support for turning LCD border on/off

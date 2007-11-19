@@ -1,0 +1,13 @@
+menuconfig ARCH_H1900
+	bool "HP iPAQ h1910/h1915"
+	depends on ARCH_PXA
+	select PXA25x
+	select BOARD_IRQ_MAP_BIG
+
+config IPAQ_H1900_LCD
+	tristate "HP iPAQ h1910/h1915 LCD and Backlight low level driver"
+	depends on ARCH_H1900 && LCD_CLASS_DEVICE && FB_PXA
+
+config IPAQ_H1900_BUTTONS
+	tristate "HP iPAQ h1910/h1915 Buttons"
+	depends on ARCH_H1900

@@ -1,0 +1,12 @@
+menuconfig MACH_RECON
+	bool "TDS Recon"
+	select PXA25x
+	help
+	    This selection enables support for the TDS Recon.
+
+config RECON_X
+	bool "TDS Recon X"
+	depends MACH_RECON
+	help
+	    This selection enables support for the TDS Recon X.
+

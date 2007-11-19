@@ -1,0 +1,148 @@
+comment "LAB modules"
+	depends on LAB
+
+config LAB_BOOTLOGO
+	bool "Logo shown on boot without fbcon"
+	depends on LAB
+	default y
+	help
+	  Adds an initial image to be displayed while the device boots.
+	  
+	  Unless you have a ROM space crisis, say y.
+
+config LAB_DUMMY
+	depends on LAB
+	tristate "LAB Dummy module"
+
+config LAB_PM
+	depends on LAB && PM
+	tristate "LAB power management module"
+
+config LAB_DMESG
+	depends on LAB
+	tristate "LAB dmesg module"
+
+config LAB_DEBUGLOG
+	depends on LAB
+	tristate "LAB debug log module"
+
+config LAB_DEVMEM
+	depends on LAB
+	tristate "LAB devmem module"
+
+config LAB_CRC
+	depends on LAB
+	tristate "LAB CRC module"
+
+config LAB_XMODEM
+	depends on LAB && LAB_CRC
+	tristate "LAB XMODEM send module"
+
+config LAB_YMODEM
+	depends on LAB && LAB_CRC
+	tristate "LAB YMODEM receive module"
+
+config LAB_MTD
+	depends on LAB && MTD_PARTITIONS
+	tristate "LAB MTD partitioning module"
+
+config LAB_ERASEMTD
+	depends on LAB && MTD
+	tristate "LAB MTD erase module"
+
+config LAB_COPY
+	depends on LAB
+	tristate "LAB copy module"
+
+config LAB_COPY_YMODEM
+	depends on LAB_COPY && LAB_YMODEM
+	tristate "YMODEM copy source"
+
+config LAB_COPY_XMODEM
+	depends on LAB_COPY && LAB_XMODEM
+	tristate "XMODEM copy target"
+
+config LAB_COPY_FLASH
+	depends on LAB_COPY && MTD
+	tristate "Flash copy source/target"
+
+config LAB_COPY_NAND
+	depends on LAB_COPY && MTD_NAND
+	tristate "NAND flash copy source/target"
+
+config LAB_COPY_FS
+	depends on LAB_COPY
+	tristate "Filesystem copy source/target"
+
+config LAB_COPY_BUF
+	depends on LAB_COPY
+	tristate "Vmalloc buffer copy source/target"
+
+config LAB_COPY_DUMMY
+	depends on LAB_COPY
+	tristate "Dummy copy source/target"
+
+config LAB_COPY_WRAPPER
+	depends on LAB_COPY
+	tristate "Compatibility wrappers (e.g. load root)"
+
+config LAB_INSMOD
+	depends on LAB_COPY=y && MODULES
+	bool "LAB insmod module"
+
+config LAB_RMMOD
+	depends on LAB_INSMOD && MODULE_UNLOAD
+	bool "LAB rmmod module"
+
+config LAB_MOUNT
+	depends on LAB
+	bool "LAB mount module"
+
+config LAB_MKNOD
+	depends on LAB
+	bool "LAB mknod module"
+
+config LAB_MKDIR
+	depends on LAB
+	bool "LAB mkdir module"
+
+config ARMBOOT
+	depends on LAB && ARM
+	bool "ARMBoot kernel loader"
+
+config ARMBOOT_LBL_SYSCALL
+	depends on ARMBOOT
+	bool "ARMBoot LBL syscall support"
+
+config LAB_ARMBOOT
+	depends on LAB_COPY && ARMBOOT
+	tristate "LAB ARMBoot module"
+
+config LAB_NANDDUMP
+	depends on LAB && MTD_NAND
+	tristate "NAND dumper module"
+
+config LAB_NANDCHECK
+	depends on LAB && MTD_NAND
+	tristate "NAND checker module"
+
+config LAB_RUN
+	depends on LAB
+	tristate "LAB script module"
+
+config LAB_CAT
+	depends on LAB
+	tristate "LAB cat module"
+
+config LAB_HEXDUMP
+	depends on LAB
+	tristate "LAB hexdump module"
+
+config LAB_LS
+	depends on LAB
+	tristate "LAB ls module"
+
+config LAB_LSBLK
+	depends on LAB
+	tristate "LAB ls block devices module"
+

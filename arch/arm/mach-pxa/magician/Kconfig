@@ -1,0 +1,37 @@
+menuconfig MACH_MAGICIAN
+	bool "HTC Magician"
+	depends on ARCH_PXA
+	select PXA27x
+	select IWMMXT
+	select BOARD_IRQ_MAP_SMALL
+	select HTC_EGPIO
+	help
+	  This enables support for the HTC Magician handheld.
+
+config MAGICIAN_PM
+	tristate "HTC Magician power management"
+	depends on MACH_MAGICIAN
+	select PXA_SUSPEND_SAVE_EXTRA_REGS
+	help
+	  This selection enables HTC Magician power
+	  management support.
+
+config MAGICIAN_TS
+	tristate "HTC Magician touchscreen"
+	depends on MACH_MAGICIAN
+	help
+	  Enable support for the HTC Magician touchscreen panel.
+
+config MAGICIAN_LCD
+	tristate "HTC Magician LCD"
+	depends on MACH_MAGICIAN
+	help
+	  This driver provides support for changing power and brightness
+	  of the HTC Magician LCD display and backlight.
+
+config MAGICIAN_PHONE
+	tristate "HTC Magician Phone driver"
+	depends on MACH_MAGICIAN
+	help
+	  Experimental driver for the Magician's GSM chipset connected
+	  to BTUART(cmd) and FFUART(data).

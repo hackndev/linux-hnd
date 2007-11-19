@@ -1,0 +1,23 @@
+menuconfig MACH_PALMZ72
+	bool "Palm Zire 72"
+	select PXA27x
+	select KEYBOARD_PXA27x
+	help
+	  This enables support for PalmOne Zire 72 handheld.
+
+config  PALMZ72_PM
+        tristate "Palm Zire 72 Power Management support"
+	depends on MACH_PALMZ72
+	default y if MACH_PALMZ72
+	help
+	    Enable support for suspend/resume the PalmOne Zire 72 PDA.
+
+config  PALMZ72_BATTERY
+        tristate "Palm Zire 72 Battery support"
+	select TOUCHSCREEN_WM97XX
+	select POWER_SUPPLY
+	depends on MACH_PALMZ72
+	default m
+	help
+	    Enable support for PalmOne Zire 72 battery to APM.
+	    ATM use it only as module, otherwise it hangs.

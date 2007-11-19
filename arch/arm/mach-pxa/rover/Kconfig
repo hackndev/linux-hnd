@@ -1,0 +1,34 @@
+menuconfig ARCH_ROVERP1
+	bool "RoverP1 (Mitac Mio 336)"
+	select PXA25x
+	select BOARD_IRQ_MAP_BIG
+	help
+	  Enable this if you plan to boot the kernel on the Rover P1 (Mitac Mio 336) machine.	
+
+config ROVERP1_LCD
+	tristate "RoverP1 (Mitac Mio336) frame buffer LCD"
+	depends on ARCH_ROVERP1 && BACKLIGHT_CLASS_DEVICE && LCD_CLASS_DEVICE && FB_PXA
+        help
+          LCD support for RoverP1 (Mitac Mio336) device.
+	
+menuconfig ARCH_ROVERP5P
+	bool "RoverP5+"
+	select PXA25x
+	select BOARD_IRQ_MAP_BIG
+	help
+	  Enable this if you plan to boot the kernel on the Rover P5+ machine.
+	
+config ROVERP5P_LCD
+	tristate "Rover P5+ MediaQ 1188 LCD"
+	depends on ARCH_ROVERP5P && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for changing power, brightness
+	  and contrast on Rover P5+ LCD display.
+
+config ROVERP5P_PCMCIA
+	tristate "Rover P5+ PCMCIA"
+	depends on ARCH_ROVERP5P
+	help
+	  This enables support for using PCMCIA (CompactFlash) cards
+	  on Rover P5+. You will also need to enable PXA2xx PCMCIA
+	  support in the PCMCIA/Cardbus support menu.

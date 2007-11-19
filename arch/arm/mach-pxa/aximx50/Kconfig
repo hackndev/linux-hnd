@@ -1,0 +1,38 @@
+menuconfig MACH_X50
+	bool "Dell Axim X50/X51(v)"
+	select PXA27x
+	select KEYBOARD_GPIO
+	help
+	  Enable this if you plan to boot the kernel on the Dell Axim X50/X51(v)
+	  series of PDAs. Currently there is only basic support for this
+	  type of PDAs.
+
+config X50_VGA
+    bool "Dell Axim X50 series VGA display"
+    depends on MACH_X50
+    default true
+    help
+      Set this if you have the "v" variant of the DELL Axim X50 series.
+
+config X50_BUTTONS
+	tristate "X50/X51(v) buttons support"
+	depends on MACH_X50
+	select KEYBOARD_PXA27x
+	help
+	  X50/X51(v) buttons support.
+
+config X50_TS
+	tristate "ADS7846 / TSC2046 touchscreen support"
+	depends on MACH_X50
+	select TOUCHSCREEN_ADC
+	help
+	  X50/X51(v) touchscreen support.
+
+config DRAM_BASE
+	hex '(S)DRAM Base Address'
+	depends on MACH_X50
+	default 0xa8000000
+	help
+	  On the Dell Axim X50/X51(v), RAM starts at 0xa8000000. You should not 
+          need to modify this value.
+

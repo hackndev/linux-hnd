@@ -1,0 +1,17 @@
+menuconfig MACH_XSCALE_PALMTREO650
+	bool "Palm Treo 650"
+	select PXA27x
+	select KEYBOARD_PXA27x
+	help
+		Say Y here if you intend to run this kernel on a
+		Palm Treo 650. Currently there is only basic support
+		for this PDA.
+
+config PALMT650_GSM
+	tristate "Palm Treo 650 GSM baseband processor"
+	depends on MACH_XSCALE_PALMTREO650
+	default y
+	help
+		This module provides support for controlling power to
+		the GSM baseband processor in the Treo 650.  Say Y here
+		if you are unsure.

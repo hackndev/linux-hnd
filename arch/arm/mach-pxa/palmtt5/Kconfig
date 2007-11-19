@@ -1,0 +1,21 @@
+menuconfig MACH_XSCALE_PALMTT5
+	bool "Palm Tungsten|T5"
+	select PXA27x
+	help
+	  This enables support for Palm Tungsten|T5 handheld.
+
+config  PALMTT5_BATTERY
+        tristate "Palm Tungsten|T5 Battery support"
+	select TOUCHSCREEN_WM97XX
+	depends on MACH_XSCALE_PALMTT5
+	default m
+	help
+	    Enable support for Palm Tungsten|T5 battery to APM.
+	    
+config  PALMTT5_PM
+        tristate "Palm Tungsten|T5 Power Management support"
+	depends on MACH_XSCALE_PALMTT5
+	default y if MACH_PALMTT5
+	help
+	    Enable support for suspend/resume the Palm Tungsten|T5 PDA.
+

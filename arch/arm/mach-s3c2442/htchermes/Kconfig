@@ -1,0 +1,16 @@
+
+config MACH_HTCHERMES
+	bool "HTC Hermes aka TyTN"
+	select CPU_S3C2440
+	select CPU_S3C2442
+	help
+	  Say Y here if you are using the HTC Hermes.
+
+	  See <http://wiki.xda-developers.com/index.php?pagename=Hermes_Linux> for more
+	  information on this project
+
+config HTCHERMES_LCD
+	tristate "HTC Hermes VSFB LCD support"
+	depends on MACH_HTCHERMES && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for HTC Hermes LCD display.

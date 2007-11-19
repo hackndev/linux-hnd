@@ -1,0 +1,27 @@
+menuconfig MACH_HW6900
+	bool "HTC Sable (hPaq hw69xx)"
+	select PXA27x
+	select BOARD_IRQ_MAP_BIG
+	select KEYBOARD_GPIO
+	select KEYBOARD_PXA27x
+	help
+		Say Y here if you intend to run this kernel on a
+		HTC Sable (iPAQ hw691x). Currently there is only basic support
+		for this PDA.
+
+config HTCSABLE_LCD
+	tristate "HTC Sable LCD"
+	depends on MACH_HW6900 && HTC_ASIC3 && LCD_CLASS_DEVICE
+	help
+		This driver provides support for changing power and brightness
+		on HTC Sable LCD display.
+
+
+config HTCSABLE_BACKLIGHT
+	bool "HTC Sable Backlight"
+	depends on MACH_HW6900 && HTC_ASIC3 && BACKLIGHT_CLASS_DEVICE
+	help
+		This driver provides support for changing power and brightness
+		on HTC Sable LCD backlight.
+
+

@@ -1,0 +1,52 @@
+/*
+ * Definitions for the HP iPAQ h5[5,4]xx Handheld Computer
+ * Fingerprint Sensor Interface
+ *
+ * Copyright 2005 Erik Hovland
+ *
+ * Use consistent with the GNU GPL is permitted,
+ * provided that this copyright notice is
+ * preserved in its entirety in all copies and derived works.
+ *
+ */
+
+#ifndef _INCLUDE_SAMCOP_FSI_H_
+#define _INCLUDE_SAMCOP_FSI_H_
+
+#define _SAMCOP_FSI_Control		0x0000
+#define _SAMCOP_FSI_Prescaler		0x0004 
+#define _SAMCOP_FSI_DMC			0x0008
+#define _SAMCOP_FSI_FIFO_Control	0x000c
+#define _SAMCOP_FSI_STA			0x0010
+#define _SAMCOP_FSI_DAT			0x0014
+
+#define SAMCOP_FSI_Control		SAMCOP_REGISTER(FSI, Control)
+#define SAMCOP_FSI_Prescaler		SAMCOP_REGISTER(FSI, Prescaler)
+#define SAMCOP_FSI_DMC			SAMCOP_REGISTER(FSI, DMC)
+#define SAMCOP_FSI_FIFO_Control		SAMCOP_REGISTER(FSI, FIFO_Control)
+#define SAMCOP_FSI_STA			SAMCOP_REGISTER(FSI, STA)
+#define SAMCOP_FSI_DAT			SAMCOP_REGISTER(FSI, DAT)
+
+#define SAMCOP_FSI_CONTROL_RESET	(0x00)
+#define SAMCOP_FSI_FIFO_TRIGGER_SIZE_1WORD	(0<<1)
+#define SAMCOP_FSI_FIFO_TRIGGER_SIZE_70WORDS	(1<<1)
+#define SAMCOP_FSI_FIFO_TRIGGER_SIZE_140WORDS	(2<<1)
+#define SAMCOP_FSI_FIFO_TRIGGER_SIZE_FULL	(3<<1)
+#define SAMCOP_FSI_FIFO_RESET_COUNT_NORMAL_MODE	(0<<0)
+#define SAMCOP_FSI_FIFO_RESET_COUNT_NOW		(1<<0)
+#define SAMCOP_FSI_DMC_1MBSEC			1124
+#define SAMCOP_FSI_CONTROL_CLK_RST_MODE_FRAME_STOP	(0<<0)
+#define SAMCOP_FSI_CONTROL_CLK_RST_MODE_FRAME_START	(1<<0)
+#define SAMCOP_FSI_CONTROL_CLK_RST_MODE_NAP		(2<<0)
+#define SAMCOP_FSI_CONTROL_CLK_RST_MODE_FRAME_RCV	(3<<0)
+#define SAMCOP_FSI_CONTROL_TEMP_PWR_ON			(1<<2)
+#define SAMCOP_FSI_CONTROL_CLK_OUT_EN			(1<<3)
+#define SAMCOP_FSI_CONTROL_GEN_IRQ_ON_DATA_COL_EN	(1<<4)
+#define SAMCOP_FSI_CONTROL_GEN_IRQ_ON_DATA_INV_EN	(1<<5)
+#define SAMCOP_FSI_CONTROL_GEN_IRQ_ON_LAST_FRAME_EN	(1<<6)
+#define SAMCOP_FSI_CONTROL_READ_MODE_POLL		(0<<7)
+#define SAMCOP_FSI_CONTROL_READ_MODE_IRQ		(1<<7)
+#define SAMCOP_FSI_CONTROL_READ_MODE_DMA		(2<<7)
+#define SAMCOP_FSI_PRESCALE_50KHZ	19
+
+#endif /* _INCLUDE_SAMCOP_FSI_H_ */

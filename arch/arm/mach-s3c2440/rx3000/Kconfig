@@ -1,0 +1,49 @@
+config RX3000_BACKLIGHT
+        tristate "Backlight driver for the HP iPAQ RX3000"
+        depends MACH_RX3715 && BACKLIGHT_S3C2410 && HTC_ASIC3
+        help
+          Backlight driver for HP iPAQ RX3000.
+
+config RX3000_LEDS
+        tristate "LED driver for the HP iPAQ RX3000"
+        depends MACH_RX3715 && LEDS_ASIC3
+        help
+          This option enables support for the LEDs on HP iPAQ RX3000.
+
+config RX3000_BATTERY
+	tristate "Battery monitor for HP iPAQ RX3000"
+	depends on MACH_RX3715 && BATTERY_DS2760 && PDA_POWER
+	help
+	  Say Y here to enables support for HP iPAQ RX3000 series
+	  battery control.
+                                            
+config RX3000_BLUETOOTH
+        tristate "Bluetooth driver for the HP iPAQ RX3000"
+        depends on MACH_RX3715 && RX3000_LEDS
+        help
+          Bluetooth driver for HP iPAQ RX3000.
+
+config RX3000_BUTTONS
+        tristate "Buttons driver for the HP iPAQ RX3000"
+        depends on MACH_RX3715 && KEYBOARD_GPIO && KEYBOARD_ASIC3
+        help
+          Buttons driver for HP iPAQ RX3000.
+
+config RX3000_SERIAL
+        tristate "Serial port driver for the HP iPAQ RX3000"
+        depends on MACH_RX3715 && HTC_ASIC3
+        help
+          Serial port driver for HP iPAQ RX3000.
+
+config RX3000_TS
+        tristate "Touchscreen driver for the HP iPAQ RX3000"
+        depends MACH_RX3715 && TOUCHSCREEN_S3C2410
+        help
+          Touchscreen driver for HP iPAQ RX3000.
+
+config RX3000_UDC
+        tristate "USB Device controler driver for the HP iPAQ RX3000"
+        depends MACH_RX3715 && USB_GADGET_S3C2410 && HTC_ASIC3
+        help
+          USB Device controler driver for HP iPAQ RX3000.
+

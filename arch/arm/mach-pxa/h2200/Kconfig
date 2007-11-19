@@ -1,0 +1,11 @@
+menuconfig ARCH_H2200
+	bool "HP iPAQ h2200"
+	select PXA25x
+	select BOARD_IRQ_MAP_BIG
+	select KEYBOARD_GPIO
+	select PXA25x_ALTERNATE_FREQS
+	help
+	  This enables support for HP iPAQ H22xx series of handhelds.
+	  There are a number of H22xx-specific drivers under this submenu:
+	  pcmcia, lcd, battery, touchscreen
+

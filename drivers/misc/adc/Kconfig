@@ -1,0 +1,39 @@
+config ADC
+	tristate "ADC class support"
+	help
+	    This option enables ADC class device drivers.
+
+config ADC_ADS7846_SSP
+	tristate "Light-weight ADS7846 driver"
+	depends on ADC
+	help
+	    Light-weight driver for ADS7846 ADC/Touchscreen controller,
+	    communication over SSP. Suitable for touchscreen, battery,
+	    tempreture, etc. sampling.
+
+config ADC_TSC2200_SSP
+	tristate "Light-weight TSC2200 driver"
+	depends on ADC
+	help
+	    Light-weight driver for TSC2200 ADC/Touchscreen controller,
+	    communication over SSP. Suitable for touchscreen, battery,
+	    temperature, etc. sampling.
+
+config ADC_AD7877
+	tristate "Generic ADC API AD7877 driver"
+	depends on ADC
+	help
+	    Generic ADC API driver for AD7877 ADC/Touchscreen controller.
+	    Suitable for touchscreen, battery, tempreture, etc. sampling.
+
+config ADC_ASIC2
+	tristate "ASIC2 ADC driver"
+	depends on HTC_ASIC2
+	help
+	    Driver for ASIC2 ADC.
+
+config ADC_SAMCOP
+	tristate "SAMCOP/HAMCOP ADC driver"
+	depends on ADC && (SOC_SAMCOP || SOC_HAMCOP)
+	help
+	    Driver for SAMCOP/HAMCOP ADC.

@@ -1,0 +1,57 @@
+menuconfig ARCH_AXIMX5
+	bool "Dell Axim X5"
+	select PXA25x
+	select BOARD_IRQ_MAP_BIG
+	help
+	  Enable this if you plan to boot the kernel on Dell Axim X5 PDAs.
+	  You also must enable MediaQ SoC driver (found under Misc devices->
+	  SoC drivers), WM97XX AC97 codec driver (under Sound/OSS) and
+	  PXA2XX PCMCIA support in order to get all Axim-specific
+	  drivers in the submenu.
+
+config AXIMX5_MISC
+	tristate "Dell Axim X5 misc device support"
+	depends on ARCH_AXIMX5
+	help
+	  This driver is a must for Dell Axim X5. It provides the MediaQ 1132
+	  platform device, handles cradle, IrDA and USB Device Controller.
+	  It is separated into a module to make kernels meant to run on a
+	  bunch of different PDAs thinner, but in fact is a very basic driver.
+
+config AXIMX5_LCD
+	tristate "Dell Axim X5 MediaQ 1132 LCD"
+	depends on ARCH_AXIMX5 && LCD_CLASS_DEVICE
+	help
+	  This driver provides support for changing power, brightness
+	  and contrast on Dell Axim LCD display.
+
+config AXIMX5_BACKLIGHT
+	tristate "Dell Axim X5 Backlight"
+	depends on ARCH_AXIMX5 && BACKLIGHT_CORGI
+
+config AXIMX5_PCMCIA
+	tristate "Dell Axim X5 PCMCIA"
+	depends on ARCH_AXIMX5 && SOC_MQ11XX
+	help
+	  This enables support for using PCMCIA (CompactFlash) cards
+	  on Dell Axim. You will also need to enable PXA2xx PCMCIA
+	  support in the PCMCIA/Cardbus support menu.
+
+config AXIMX5_AC97
+	tristate "Dell Axim X5 AC97 controller"
+	depends on ARCH_AXIMX5 && SOUND_WM97XX
+	help
+	  Select this if you're going to use the AC97 controller on
+	  Dell Axim (most likely you want it). This includes audio,
+	  battery monitor and touchscreen. You will also need to
+	  enable the respective drivers in the Sound menu -
+	  "PXA AC97 audio" and "WM97xx codec" for proper
+	  touchscreen and battery support.
+
+config AXIMX5_BUTTONS
+	tristate "Dell Axim X5 buttons driver"
+	depends on ARCH_AXIMX5 && INPUT
+	help
+	  This driver translates Dell Axim button presses to Linux input
+	  subsystem events.
+

@@ -1,0 +1,109 @@
+#
+# Linux As Bootloader menu
+#
+
+menu "Linux As Bootloader"
+
+config LAB
+	bool "Linux As Bootloader (READ HELP!)"
+	default n
+	select LAB_ARMBOOT
+	select ARMBOOT
+	select LAB_COPY
+	select LAB_RUN
+	help
+	  Linux As Bootloader is a project to allow bootstrapping of embedded
+	  systems such as the HP/Compaq iPAQ using the Linux kernel.
+
+	  If you enable the LAB option, the resulting kernel will not be
+	  suitable as a general-purpose kernel; many unused things will be
+	  ommited from kernel in order to make it as small as possible.
+
+	  Presently, LAB is experimental.
+
+config LAB_BOOTSTRAP
+	bool "Enable bootstrap code for LAB"
+	depends on LAB
+	default y
+	help
+	  Unless you know what you're doing, say y.
+
+config LAB_DEBUG
+	bool "LAB debugging support"
+	depends on LAB_BOOTSTRAP
+	default n
+	help
+	  Enable this to add optional code to LAB startup that helps
+	  identifying and debugging problems on boot, suspend/resume
+	  and so on.
+
+choice
+	prompt "LAB debug messages device"
+	depends on LAB_DEBUG
+
+config LAB_DEBUG_JTAG
+	bool "JTAG"
+	help
+	  Output debug messages through the JTAG interface. You will need
+	  a JTAG cable and special software on the PC for this to work.
+
+config LAB_DEBUG_FFUART
+	bool "FFUART"
+	help
+	  Output debug messages through the FFUART (Fully-Featured) serial
+	  controller. Some PDA use this port for communication with PC.
+	  Under Linux this port is normally seen as /dev/ttyS0.
+
+config LAB_DEBUG_BTUART
+	bool "BTUART"
+	help
+	  Output debug messages through the BTUART (BlueTooth) serial
+	  controller. Some PDA use this port for communication with PC.
+	  Under Linux this port is normally seen as /dev/ttyS1.
+
+config LAB_DEBUG_STUART
+	bool "STUART"
+	help
+	  Output debug messages through the STUART (STandard) serial
+	  controller. Most PDA use this port for infra-red communications.
+	  This is useful if you have a infrared adapter on your PC that
+	  can work as a regular serial port. Under Linux this port is
+	  normally seen as /dev/ttyS2.
+
+config LAB_DEBUG_DISPLAY
+	bool "Display"
+	help
+	  This option has a limited use because the LCD controller needs
+	  to be initialized prior to running LAB. It is mostly useful for
+	  debugging LAB by running it from WinCE via some tool like
+	  linexec or HaRET. Also you will have to define the screen size
+	  and also the starting physical address of video memory.
+
+endchoice
+
+config LAB_DISPLAY_ADDR
+	hex "Physical video memory address"
+	depends on LAB && LAB_DEBUG_DISPLAY
+	default "0x14002000"
+
+config LAB_DISPLAY_W
+	int "Horizontal screen resolution"
+	depends on LAB && LAB_DEBUG_DISPLAY
+	default "240"
+
+config LAB_DISPLAY_H
+	int "Vertical screen resolution"
+	depends on LAB && LAB_DEBUG_DISPLAY
+	default "320"
+
+config LAB_DISPLAY_BPP
+	int "Display bytes per pixel (1, 2, 4)"
+	depends on LAB && LAB_DEBUG_DISPLAY
+	default "2"
+	range 1 4
+
+
+source "lab/modules/Kconfig"
+
+endmenu
+

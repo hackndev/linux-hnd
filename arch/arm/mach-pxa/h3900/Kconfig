@@ -1,0 +1,20 @@
+menuconfig MACH_H3900
+        bool "HP iPAQ h3900"
+        depends on ARCH_PXA
+        select PXA25x
+	select BOARD_IRQ_MAP_BIG
+        select INPUT_KEYBOARD
+        select KEYBOARD_ASIC2
+        select KEYBOARD_GPIO
+
+config IPAQ_H3900_LCD
+	tristate "HP iPAQ h3900 LCD"
+	depends on MACH_H3900 && HTC_ASIC2 && HTC_ASIC3 && LCD_CLASS_DEVICE && FB_PXA
+
+config IPAQ_H3900_BACKLIGHT
+        bool "LCD Backlight support"
+        depends on MACH_H3900 && HTC_ASIC2 && HTC_ASIC3 && BACKLIGHT_CLASS_DEVICE
+
+config IPAQ_H3900_BATTERY
+	tristate "HP iPAQ h3900 battery"
+	depends on MACH_H3900 && HTC_ASIC3

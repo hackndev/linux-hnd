@@ -1,0 +1,29 @@
+menuconfig MACH_XSCALE_PALMTX
+	bool "Palm TX"
+	select PXA27x
+	help
+	  This enables support for Palm TX handheld.
+
+config PALMTX_DEBUG
+	bool "Debug output for Palm TX"
+	depends on MACH_XSCALE_PALMTX
+	default n 
+	help
+	  Enable core debug output for Palm TX modules.
+	  
+config  PALMTX_BATTERY
+        tristate "Palm TX Battery support"
+	select TOUCHSCREEN_WM97XX
+	depends on MACH_XSCALE_PALMTX
+	default m
+	help
+	    Enable support for Palm TX battery to APM.
+	    ATM use it only as module, otherwise it hangs.
+	    
+config  PALMTX_PM
+        tristate "Palm TX Power Management support"
+	depends on MACH_XSCALE_PALMTX
+	default y if MACH_PALMTX
+	help
+	    Enable support for suspend/resume the Palm TX PDA.
+

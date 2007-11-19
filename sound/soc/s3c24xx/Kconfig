@@ -1,0 +1,40 @@
+menu "SoC Audio for the Samsung S3C24XX"
+
+config SND_S3C24XX_SOC
+	tristate "SoC Audio for the Samsung S3C24XX chips"
+	depends on ARCH_S3C2410 && SND
+	select SND_PCM
+	help
+	  Say Y or M if you want to add support for codecs attached to
+	  the S3C24XX AC97, I2S or SSP interface. You will also need
+	  to select the audio interfaces to support below.
+
+config SND_S3C24XX_SOC_I2S
+	tristate
+
+config SND_S3C24XX_SOC_SMDK2440
+	tristate "SoC I2S Audio support for SMDK2440"
+	depends on SND_S3C24XX_SOC && MACH_SMDK
+	select SND_S3C24XX_SOC_I2S
+	help
+	  Say Y if you want to add support for SoC audio on SMDK2440
+
+config SND_S3C24XX_SOC_NEO1973_WM8753
+	tristate "SoC I2S Audio support for NEO1973 - WM8753"
+	depends on SND_S3C24XX_SOC && MACH_GTA01
+	select SND_S3C24XX_SOC_I2S
+	select SND_SOC_WM8753
+	help
+	  Say Y if you want to add support for SoC audio on smdk2440
+	  with the WM8753.
+
+config SND_S3C24XX_SOC_RX3000
+	tristate "SoC I2S Audio support for RX3000"
+	depends on SND_S3C24XX_SOC && MACH_RX3715
+	select SND_S3C24XX_SOC_I2S
+	select SND_SOC_UDA1380
+	help
+	  Say Y if you want to add support for SoC audio on RX3000
+
+endmenu
+

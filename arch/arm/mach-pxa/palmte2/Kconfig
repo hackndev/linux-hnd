@@ -1,0 +1,5 @@
+menuconfig MACH_TUNGE2
+	bool "Palm Tungsten E2"
+	select PXA25x
+	help
+		This enables support for Palm Tungsten E2 handheld.

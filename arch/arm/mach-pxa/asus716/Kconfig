@@ -1,0 +1,21 @@
+menuconfig MACH_A716
+        bool "Asus MyPal 716"
+	depends on ARCH_PXA
+        select PXA25x
+	select BOARD_IRQ_MAP_BIG
+        help
+            Asus MyPal 716 kernel support
+
+config A716_LCD
+        tristate "716 frame buffer LCD"
+        depends on MACH_A716 && LCD_CLASS_DEVICE
+        help
+            LCD support for Asus MyPal 716
+
+config A716_PCMCIA
+        tristate "716 PCMCIA"
+        depends on MACH_A716
+        help
+          This enables support for using PCMCIA (CompactFlash) cards
+          on MyPal. You will also need to enable PXA2xx PCMCIA
+          support in the PCMCIA/Cardbus support menu

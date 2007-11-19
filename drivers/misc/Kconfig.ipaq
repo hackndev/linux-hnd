@@ -1,0 +1,37 @@
+menu "Compaq/iPAQ Drivers"
+
+comment "Compaq/HP iPAQ Drivers"
+
+config IPAQ_SLEEVE
+	tristate "Compaq iPAQ Handheld sleeve support"
+	help
+	  Choose this option to enable support for extension packs (sleeves)
+	  for the Compaq iPAQ H3XXX series of handheld computers.  This option
+	  is required for the CF, PCMCIA, Bluetooth and GSM/GPRS extension
+	  packs.
+
+config IPAQ_ASIC2_OWM
+	tristate "HTC ASIC2 one-wire driver"
+	depends on HTC_ASIC2 && ONEWIRE
+
+config IPAQ_ASIC2_SLEEVE
+	tristate "HTC ASIC2 sleeve driver"
+	depends on HTC_ASIC2 && IPAQ_SLEEVE
+
+config IPAQ_SAMCOP_FSI
+	tristate "HP iPAQ SAMCOP FSI driver"
+	depends on SOC_SAMCOP
+	help
+	  Provides access to the samcop portion of the fingerprint scanner
+	  on the h5[5,4]xx. It also provides the /dev/misc/fsi0 device to
+	  userspace users of the scanner.
+
+config IPAQ_SAMCOP_SLEEVE
+	tristate "HP iPAQ SAMCOP Sleeve driver"
+	depends on SOC_SAMCOP && IPAQ_SLEEVE
+	help
+	  Choose this option to enable support for extension packs (sleeves)
+	  for samcop based iPAQs (h5[5,4]xx) handheld computers. This option
+	  is required for CF, PCMCIA and other extension packs.
+
+endmenu

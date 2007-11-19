@@ -1,0 +1,158 @@
+# ALSA ARM drivers
+
+menu "ALSA ARM devices"
+	depends on SND!=n && ARM
+
+config SND_A620
+	tristate "Asus MyPal 620 driver"
+	depends on MACH_A620 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_UDA1380
+	help
+	  Say Y or M if you have a Asus MyPal 620 and want audio support
+
+config SND_A716
+	tristate "Asus MyPal 716 driver"
+	depends on MACH_A716 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_UDA1380
+	help
+	  Say Y or M if you have a Asus MyPal 716 and want audio support
+
+config SND_H1910
+	tristate "iPAQ h1910 driver"
+	depends on ARCH_H1900 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_UDA1380
+	help
+	  Say Y or M if you have a HP iPAQ h1910 and want audio support
+
+config SND_H2200
+	tristate "iPAQ h2200 driver"
+	depends on ARCH_H2200 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_UDA1380
+	help
+	  Say Y or M if you have an HP iPAQ H22xx and want audio support
+
+config SND_H4000
+	tristate "iPAQ h4000 driver"
+	depends on MACH_H4000 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_UDA1380
+	help
+	  Say Y or M if you have an HP iPAQ H4xxx and want audio support
+
+config SND_HX4700
+	tristate "iPAQ hx4700 driver"
+	depends on MACH_H4700 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_AK4641
+	help
+	  Say Y or M if you have a HP iPAQ hx470x and want audio support
+
+config SND_HTCAPACHE
+	tristate "HTC Apache driver"
+	depends on MACH_HTCAPACHE && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_AK4641
+	help
+	  Say Y or M if you have a HTC Apache and want audio support
+
+config SND_HTCUNIVERSAL
+	tristate "HTC Universal driver"
+	depends on MACH_HTCUNIVERSAL && SND && I2C
+	select SND_PXA2xx_I2SOUND
+#	select SND_AK4641
+	select HTCUNIVERSAL_AK4641
+	help
+	  Say Y or M if you have a HTC Universal and want audio support
+	
+config SND_HTCSABLE
+	tristate "HTC Sable driver"
+	depends on MACH_HW6900 && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_AK4641
+	help
+	  Say Y or M if you have a HTC Sable and want audio support
+	
+config SND_SA11XX_UDA1341
+	tristate "SA11xx UDA1341TS driver (H31xx/H36xx/H37xx/H38xx)"
+	depends on ARCH_SA1100 && SND && L3
+	select SND_PCM
+	help
+	  Say Y here if you have a Compaq iPaq H3x00 handheld computer
+	  and want to use its Philips UDA 1341 audio chip.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called snd-sa11xx-uda1341.
+
+config SND_H5XXX_AK4535
+	tristate "PXA2xx AK4535 driver (H5xxx)"
+	depends on ARCH_H5400 && SND && I2C
+	help
+	  Say Y or M if you have a Compaq iPaq H5xxx handheld computer and want
+	  to use its AKM AK4535 audio chip.
+
+config SND_SA11X0_SSP
+	tristate
+
+config SND_UDA1341
+	tristate
+
+config SND_ARMAACI
+	tristate "ARM PrimeCell PL041 AC Link support"
+	depends on SND && ARM_AMBA
+	select SND_PCM
+	select SND_AC97_CODEC
+
+config SND_PXA2xx_I2SOUND
+	tristate "PXA2 I2Sound support"
+	depends on SND
+	select SND_PCM
+
+config SND_PXA2XX_PCM
+	tristate
+	select SND_PCM
+
+config SND_PXA2XX_AC97
+	tristate "AC97 driver for the Intel PXA2xx chip"
+	depends on ARCH_PXA && SND
+	select SND_PXA2XX_PCM
+	select SND_AC97_CODEC
+	help
+	  Say Y or M if you want to support any AC97 codec attached to
+	  the PXA2xx AC97 interface.
+
+config SND_S3C2410
+       tristate "S3C24XX Sound core"
+       depends on ARCH_S3C2410 && SND
+       select SND_PCM
+       help
+         Say Y here if you want to use the inbuilt audio controller
+         on the S3C2410 or S3C2440
+
+config SND_S3C2410_DBG
+       bool "S3C24XX sound core debug"
+       depends on SND_S3C2410
+       help
+         Say Y here to enable the debugging in the s3c24xx-iis core
+         driver.
+
+config SND_S3C2410_DBG_DMA
+       bool "S3C24XX sound core DMA debug"
+       depends on SND_S3C2410
+       help
+         Say Y here to enable the dma debugging in the s3c24xx-iis
+         driver. 
+
+config SND_RECON
+        tristate "Recon sound driver"
+	depends on ARCH_PXA && SND && I2C
+	select SND_PXA2xx_I2SOUND
+	select SND_PCM
+	select SND_HWDEP
+		help
+		Say M if you have a TDS Recon and want audio support
+
+endmenu

@@ -1,0 +1,39 @@
+menuconfig MACH_A620
+        bool "Asus 620/620BT"
+        select PXA25x
+        help
+            Asus 620/620BT kernel support
+
+config A620_LCD
+        bool "A620 frame buffer LCD"
+        depends on MACH_A620 && LCD_CLASS_DEVICE
+        help
+            LCD support for Asus A620, possibly for other Asus devices
+
+config A620_BUTTONS
+        tristate "A620 buttons driver"
+        depends on MACH_A620 && INPUT
+        help
+          This driver translates MyPal A620 button presses to Linux input
+          subsystem events.
+
+config A620_PCMCIA
+        bool "A620 PCMCIA"
+        depends on MACH_A620
+        help
+          This enables support for using PCMCIA (CompactFlash) cards
+          on MyPal. You will also need to enable PXA2xx PCMCIA
+          support in the PCMCIA/Cardbus support menu.
+
+config A620_TS
+        tristate "A620 Touchscreen"
+        depends on MACH_A620
+        help
+          This enables support for using the touchscreen
+          on MyPal.
+
+config A620_FLASHFAKE
+        tristate "A620 Disk On Chip driver (DEPRECATED)"
+        depends on MACH_A620
+        help
+          This driver simulate write command on the Disk On Chip of A620

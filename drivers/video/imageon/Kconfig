@@ -1,0 +1,7 @@
+config FB_IMAGEON
+	bool "ATI Imageon support"
+	depends on FB && ARM
+	help
+	  Frame buffer device driver for the ATI Imageon hardware
+	  found in the Toshiba e7xx and other ARM-based machines.
+	  Currently only supports e7xx/w100. If unsure, say N.

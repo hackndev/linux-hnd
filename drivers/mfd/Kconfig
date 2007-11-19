@@ -1,0 +1,144 @@
+#
+# Multifunction miscellaneous devices
+#
+
+menu "Multifunction device drivers"
+
+config MFD_SM501
+	tristate "Support for Silicon Motion SM501"
+	 ---help---
+	  This is the core driver for the Silicon Motion SM501 multimedia
+	  companion chip. This device is a multifunction device which may
+	  provide numerous interfaces including USB host controller USB gadget,
+	  Asyncronous Serial ports, Audio functions and a dual display video
+	  interface. The device may be connected by PCI or local bus with
+	  varying functions enabled.
+
+config IPAQ_MICRO
+	tristate "Atmel Micro ASIC (iPAQ h3600) Support"
+	depends on SA1100_H3600
+
+config HTC_ASIC2
+	tristate "HTC ASIC2 (iPAQ h3800/h3900) SoC support"
+
+config HTC_ASIC3
+	tristate "HTC ASIC3 (iPAQ h1900/h3900/h4000/hx4700/rx3000) support"
+
+config HTC_PASIC3
+	tristate "HTC PASIC3 (HTC Blueangel/Magician) support"
+
+config HTC_EGPIO
+	tristate "HTC EGPIO support"
+	help
+	    This driver supports the CPLD egpio chip present on
+	    several HTC phones.  It provides basic support for input
+	    pins, output pins, and irqs.
+
+config HTC_ASIC3_DS1WM
+	bool "Support HTC ASIC3 builtin DS1WM block"
+	help
+	    Choose Y here if you want to include support for ASIC3's builtin
+	    W1 controller. Some devices do not use it, and yet other have
+	    separate DS1WM controller. For them, choose N.
+
+config SOC_SAMCOP
+	tristate "Samsung SAMCOP/S3CA400A01 (iPAQ h5000) driver"
+
+config SOC_HAMCOP
+	tristate "Samsung HAMCOP/S3CA410X01 (iPAQ h2200) driver"
+	select DMABOUNCE
+
+config SOC_SAMCOP_DMA
+	tristate "Samsung SAMCOP/HAMCOP DMA driver"
+	depends on (SOC_SAMCOP || SOC_HAMCOP)
+
+config SOC_SAMCOP_DMA_DEBUG
+	bool "Samsung SAMCOP/HAMCOP DMA debugging"
+	depends on SOC_SAMCOP_DMA
+
+config SOC_MQ11XX
+	tristate "MediaQ 1100/32/68/78/88 SoC support"
+	---help---
+	  MediaQ 1100/32/68/78/88 are system-on-chips that implement a
+	  graphics engine, flat panel controller, USB function controller,
+	  OHCI-compliant USB host controller (1132 only), I2S and SPI
+	  controllers (also 1132 only).
+
+	  This driver implements only the basic support for MediaQ chips;
+	  after you select this option the subdevice drivers will appear
+	  in the respective submenus: MediaQ 1100/32/68/78/88 framebuffer
+	  support, Dell Axim X5 LCD support and so on.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called mq11xx_base.o.
+
+config SOC_T7L66XB
+	bool "Toshiba T7L66XB SoC support"
+	depends on ARCH_PXA
+	---help---
+	  This driver supports the T7L66XB, which incorporates SD/MMC, and
+	  USB host functionality. associated subdevices are:
+	      tmio_mmc
+	      tmio_ohci
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called t7l66xb.ko. 
+
+config SOC_TC6387XB
+	bool "Toshiba TC6387XB SoC support"
+	---help---
+	  This driver supports the TC6393XB, which incorporates SD/MMC, NAND,
+	  Video, and USB host functionality. associated subdevices are:
+	      tmio_mmc
+
+config SOC_TC6393XB
+	bool "Toshiba TC6393XB SoC support"
+	depends on ARCH_PXA
+	---help---
+	  This driver supports the TC6393XB, which incorporates SD/MMC, NAND,
+	  Video, and USB host functionality. associated subdevices are:
+	      tmio_mmc
+	      tmio_nand
+	      tmio_fb
+	      tmio_ohci
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called t7l66xb.ko.
+
+config SOC_TSC2101
+	tristate "Support for TI TSC2101 Touchscreen and Audio Codec"
+	depends TOUCHSCREEN_TSC2101 && SOUND && SND && SND_PXA2xx_I2SOUND
+#	depends TOUCHSCREEN_TSC2101
+#	select SND_PXA2xx_I2SOUND
+	default m
+	help
+	  Support for TI TSC2101 Touchscreen and Audio Codec
+
+config SOC_TSC2200
+	tristate "Support for TI TSC2200 Touchscreen, Battery and Keypad"
+	help
+	  Support for TI TSC2200 Touchscreen, Battery and Keypad
+endmenu
+
+menu "Multimedia Capabilities Port drivers"
+	depends on ARCH_SA1100
+
+config MCP
+	tristate
+
+# Interface drivers
+config MCP_SA11X0
+	tristate "Support SA11x0 MCP interface"
+	depends on ARCH_SA1100
+	select MCP
+
+# Chip drivers
+config MCP_UCB1200
+	tristate "Support for UCB1200 / UCB1300"
+	depends on MCP
+
+config MCP_UCB1200_TS
+	tristate "Touchscreen interface support"
+	depends on MCP_UCB1200 && INPUT
+
+endmenu

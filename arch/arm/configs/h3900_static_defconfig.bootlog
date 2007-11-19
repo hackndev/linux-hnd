@@ -1,0 +1,98 @@
+[    0.000000] Linux version 2.6.20-hh6 (pfalcon@colinux) (gcc version 4.1.2) #4 Sat Apr 14 09:00:25 UTC 2007
+[    0.000000] CPU: XScale-PXA250 [69052904] revision 4 (ARMv5TE), cr=0000397f
+[    0.000000] Machine: HP iPAQ H3900
+[    0.000000] Memory policy: ECC disabled, Data cache writeback
+[    0.000000] On node 0 totalpages: 16384
+[    0.000000]   DMA zone: 128 pages used for memmap
+[    0.000000]   DMA zone: 0 pages reserved
+[    0.000000]   DMA zone: 16256 pages, LIFO batch:3
+[    0.000000]   Normal zone: 0 pages used for memmap
+[    0.000000] Memory clock: 99.53MHz (*27)
+[    0.000000] Run Mode clock: 199.07MHz (*2)
+[    0.000000] Turbo Mode clock: 398.13MHz (*2.0, active)
+[    0.000000] CPU0: D VIVT undefined 5 cache
+[    0.000000] CPU0: I cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+[    0.000000] CPU0: D cache: 32768 bytes, associativity 32, 32 byte lines, 32 sets
+[    0.000000] Built 1 zonelists.  Total pages: 16256
+[    0.000000] Kernel command line: root=/dev/ram0 rw ip=192.168.2.202:192.168.2.200:192.168.2.200:255.255.255.0:ipaq:usb0 console=ttyS0,115200n8 console=tty0 ramdisk_size=8192 init=/linuxrc
+[    0.000000] PID hash table entries: 256 (order: 8, 1024 bytes)
+[    0.000000] start_kernel(): bug: interrupts were enabled early
+[    0.000000] Console: colour dummy device 80x30
+[    0.090000] Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+[    0.100000] Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.110000] Memory: 64MB = 64MB total
+[    0.120000] Memory: 59500KB available (2376K code, 257K data, 96K init)
+[    0.120000] Calibrating delay loop... 397.31 BogoMIPS (lpj=1986560)
+[    0.340000] Mount-cache hash table entries: 512
+[    0.340000] CPU: Testing write buffer coherency: ok
+[    0.350000] NET: Registered protocol family 16
+[    0.380000] asic2: using irq 108-123 on irq 33
+[    0.390000] SoC: registering asic2-gpio
+[    0.390000] SoC: registering asic2-keys
+[    0.400000] SoC: registering asic2-spi
+[    0.400000] SoC: registering asic2-adc
+[    0.410000] SoC: registering asic2-owm
+[    0.420000] irda_init()
+[    0.420000] NET: Registered protocol family 23
+[    0.420000] Bluetooth: Core ver 2.11
+[    0.430000] NET: Registered protocol family 31
+[    0.430000] Bluetooth: HCI device and connection manager initialized
+[    0.440000] Bluetooth: HCI socket layer initialized
+[    0.450000] NET: Registered protocol family 2
+[    0.560000] IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.560000] TCP established hash table entries: 2048 (order: 1, 8192 bytes)
+[    0.570000] TCP bind hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.580000] TCP: Hash tables configured (established 2048 bind 1024)
+[    0.580000] TCP reno registered
+[    0.620000] checking if image is initramfs...it isn't (no cpio magic); looks like an initrd
+[    1.810000] Freeing initrd memory: 2634K
+[    1.850000] PXA CPU frequency change support initialized
+[    1.860000] NetWinder Floating Point Emulator V0.97 (double precision)
+[    1.870000] io scheduler noop registered
+[    1.870000] io scheduler anticipatory registered (default)
+[    1.880000] io scheduler deadline registered
+[    1.890000] Corgi Backlight Driver Initialized.
+[    1.900000] Console: switching to colour frame buffer device 80x40
+[    2.040000] pxa2xx-uart.0: ttyS0 at MMIO 0x40100000 (irq = 15) is a FFUART
+[    2.050000] pxa2xx-uart.1: ttyS1 at MMIO 0x40200000 (irq = 14) is a BTUART
+[    2.060000] pxa2xx-uart.2: ttyS2 at MMIO 0x40700000 (irq = 13) is a STUART
+[    2.060000] pxa2xx-uart.3: ttyS3 at MMIO 0x41600000 (irq = 0) is a HWUART
+[    2.070000] pxa2xx-ir-serial: Initialized
+[    2.080000] RAMDISK driver initialized: 4 RAM disks of 8192K size 1024 blocksize
+[    2.090000] input: asic2 ts as /class/input/input0
+[    2.100000] pxa2xx_udc: version 4-May-2005
+[    2.100000] ether gadget: using random self ethernet address
+[    2.110000] ether gadget: using random host ethernet address
+[    2.120000] usb0: Ethernet Gadget, version: May Day 2005
+[    2.130000] usb0: using pxa2xx_udc, OUT ep2out-bulk IN ep1in-bulk STATUS ep6in-bulk
+[    2.150000] usb0: MAC 1e:c5:fd:a6:65:3e
+[    2.150000] usb0: HOST MAC 2a:96:a8:06:2f:e5
+[    2.160000] usb0: RNDIS ready
+[    2.170000] input: gpio-keys as /class/input/input1
+[    2.180000] input: asic2 keyboard as /class/input/input2
+[    2.190000] sa1100-rtc sa1100-rtc: rtc intf: sysfs
+[    2.190000] sa1100-rtc sa1100-rtc: rtc intf: proc
+[    2.200000] sa1100-rtc sa1100-rtc: rtc intf: dev (254:0)
+[    2.200000] sa1100-rtc sa1100-rtc: rtc core: registered sa1100-rtc as rtc0
+[    2.230000] min dma period: 1768312 ps, new clock 398100 kHz
+[    2.230000] min dma period: 1768312 ps, new clock 398100 kHz
+[    2.250000] TCP cubic registered
+[    2.260000] NET: Registered protocol family 1
+[    2.270000] NET: Registered protocol family 17
+[    2.280000] IrCOMM protocol (Dag Brattli)
+[    2.320000] XScale DSP coprocessor detected.
+[    2.330000] sa1100-rtc sa1100-rtc: setting the system clock to 1993-05-01 12:23:30 (736259010)
+[    2.350000] asic3_mmc: ASIC3 MMC/SD Driver, controller at 0x14000000
+[    2.360000] h3900_mmc: clock enabled
+[    3.100000] usb0: full speed config #1: 100 mA, Ethernet Gadget, using CDC Ethernet Subset
+[    3.660000] mmcblk0: mmc0:6069 S128B 125440KiB 
+[    3.660000]  mmcblk0: p1 p2
+[    4.450000] IP-Config: Complete:
+[    4.450000]       device=usb0, addr=192.168.2.202, mask=255.255.255.0, gw=192.168.2.200,
+[    4.460000]      host=ipaq, domain=, nis-domain=(none),
+[    4.470000]      bootserver=192.168.2.200, rootserver=192.168.2.200, rootpath=
+[    4.490000] RAMDISK: Compressed image found at block 0
+[    5.820000] EXT2-fs warning: mounting unchecked fs, running e2fsck is recommended
+[    5.830000] VFS: Mounted root (ext2 filesystem).
+[    5.840000] Freeing init memory: 96K
+[    8.110000] usb0: full speed config #1: 100 mA, Ethernet Gadget, using CDC Ethernet Subset

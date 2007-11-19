@@ -1,0 +1,37 @@
+menuconfig MACH_T3XSCALE
+	bool "Palm Tungsten|T3"
+	select PXA25x
+	help
+	  This enables support for Palm Tungsten|T3 handheld.
+
+config PALMTT3_DISABLE_BORDER
+	bool "Disable display border"
+	depends on MACH_T3XSCALE
+	help
+	  Some displays can disable white border. This could allow it. This makes screen bigger for 4 pixels in both directions.
+
+config PALMTT3_BUTTONS
+	tristate "Buttons support"
+	depends on MACH_T3XSCALE
+	help
+	  Adds support for Palm T|T3 buttons and navpad.
+
+config PALMTT3_BATTERY
+	tristate "Battery monitoring support"
+	depends on MACH_T3XSCALE && TPS65010 && SOC_TSC2101
+	help
+	  Adds battery driver support
+
+config PALMTT3_BLUETOOTH
+	tristate "Bluetooth support for Palm Tungsten|T3"
+	depends on MACH_T3XSCALE && BT && TPS65010 && BT_BCM2035UART
+	default m if TPS65010=m && BT_BCM2035UART=m
+	default y if TPS65010=y || BT_BCM2035UART=y
+	help
+	  Adds bluetooth support for Palm Tungsten|T3
+
+config PALMTT3_FBKEYBOARD
+	bool "On-screen keyboard (BROKEN)"
+	depends on PALMTT3_TSC2101
+	help
+	  On-screen framebuffer keyboard

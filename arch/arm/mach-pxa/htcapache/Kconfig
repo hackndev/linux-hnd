@@ -1,0 +1,15 @@
+menuconfig MACH_HTCAPACHE
+	bool "HTC Apache"
+	select PXA27x
+	select BOARD_IRQ_MAP_SMALL
+        select KEYBOARD_GPIO
+        select KEYBOARD_PXA27x
+        select PXA_SSP
+        select NEW_LEDS
+        select LEDS_CLASS
+        select ADC
+        select HTC_EGPIO
+	help
+		Say Y here if you intend to run this kernel on a
+		HTC Apache. Currently there is only basic support
+		for this PDA.

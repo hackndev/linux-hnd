@@ -1,0 +1,8 @@
+config ARMBOOT_PROC
+	bool "ARMBoot Linux booting Linux"
+	depends on ARM
+	help
+	  ARMBoot allows you to boot another kernel using
+	  interface in /proc/armboot.
+	  
+	  Usage: echo -ne '/zImage\0' > /proc/armboot

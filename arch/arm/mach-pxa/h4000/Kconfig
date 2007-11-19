@@ -1,0 +1,51 @@
+menuconfig MACH_H4000
+        bool "HP iPAQ h4000"
+        depends on ARCH_PXA
+        select PXA25x
+	select BOARD_IRQ_MAP_BIG
+	select PXA_SSP
+
+config MACH_H4300
+        bool "Support for HP iPAQ h4300 model"
+        depends on MACH_H4000
+
+config IPAQ_H4000_IRDA
+        tristate "IrDA port support"
+        depends on MACH_H4000 && HTC_ASIC3
+
+config IPAQ_H4000_LCD
+        tristate "LCD support"
+        depends on MACH_H4000 && HTC_ASIC3 && LCD_CLASS_DEVICE && FB_PXA
+
+config IPAQ_H4000_BACKLIGHT
+        bool "LCD Backlight support"
+        depends on MACH_H4000 && HTC_ASIC3 && BACKLIGHT_CLASS_DEVICE
+
+config IPAQ_H4000_PCMCIA
+        tristate "PCMCIA support"
+	default n
+        depends on MACH_H4000 && HTC_ASIC3 && PCMCIA_PXA2XX
+        help
+          Enables h4000 specific functions for the PXA2xx PCMCIA driver.
+	  This driver is required to get builtin WiFi working.
+
+config IPAQ_H4000_BUTTONS
+        tristate "Buttons support"
+        depends on MACH_H4000 && HTC_ASIC3
+
+config IPAQ_H4000_LEDS
+	tristate "HP iPAQ h4000 LEDs"
+	depends on MACH_H4000
+	select NEW_LEDS
+	select LEDS_ASIC3
+	help
+	  This enables support for HP iPAQ h4000 color LED control
+          (via the ASIC3 chip).
+
+config IPAQ_H4000_BT
+        tristate "Bluetooth support"
+        depends on MACH_H4000 && HTC_ASIC3
+
+config IPAQ_H4300_KBD
+        tristate "Keyboard support for h4300 model"
+        depends on MACH_H4300 && HTC_ASIC3

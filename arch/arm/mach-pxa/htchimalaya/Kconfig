@@ -1,0 +1,42 @@
+menuconfig MACH_HIMALAYA
+        bool "HTC Himalaya"
+        depends on ARCH_PXA
+        select PXA25x
+        select PXA26x
+	select BOARD_IRQ_MAP_BIG
+
+config MACH_HIMALAYA_ASIC3
+	tristate "HTC Himalaya ASIC3 support"
+	depends on MACH_HIMALAYA
+	help
+	  LCD Screen enable on HTC Himalaya.  
+
+config MACH_HIMALAYA_LCD
+	tristate "HTC Himalaya LCD support"
+	depends on MACH_HIMALAYA_ASIC3 && MACH_HIMALAYA
+	help
+	  LCD Screen enable on HTC Himalaya.  
+
+config MACH_HIMALAYA_UDC
+	tristate "HTC Himalaya UDC support"
+	depends on MACH_HIMALAYA_ASIC3 && MACH_HIMALAYA
+	help
+	  Module to handle USB client enable and disable.
+
+config MACH_HIMALAYA_ROM
+	tristate "HTC Himalaya flash rom support"
+	depends on MACH_HIMALAYA
+	---help---
+	Read and write (be careful!) support of the pxa flash rom
+
+config HIMALAYA_KP
+	tristate "HTC Himalaya Keypad (TI TSC2200, ASIC3)"
+	depends on HTC_ASIC3 && MACH_HIMALAYA && TSC2200 && INPUT && HIMALAYA_INPUT
+	help
+	  Module to handle HTC Himalaya buttons.
+
+config HIMALAYA_LEDS
+	tristate "HTC Himalaya LEDs"
+	depends on HTC_ASIC3 && MACH_HIMALAYA
+	help
+	  Module to handle colour LEDs on and off (via the ASIC3 chip).
