@@ -25,6 +25,7 @@
 #include <linux/input.h>
 #include <linux/delay.h>
 #include <linux/irq.h>
+#include <linux/gpio_keys.h>
 #include <linux/corgi_bl.h>
 
 #include <asm/mach-types.h>
@@ -152,6 +153,27 @@ static struct platform_device palmtx_keypad = {
 		.platform_data	= &palmtx_kbd_data,
 	},
 };
+
+/**************
+ * HotSync    *
+ **************/
+#ifdef CONFIG_KEYBOARD_GPIO
+static struct gpio_keys_button palmtx_pxa_buttons[] = {
+	{KEY_CONNECT, GPIO_NR_PALMTX_HOTSYNC_BUTTON_N, 0, "HotSync Button" },
+};
+
+static struct gpio_keys_platform_data palmtx_pxa_keys_data = {
+	.buttons = palmtx_pxa_buttons,
+	.nbuttons = ARRAY_SIZE(palmtx_pxa_buttons),
+};
+
+static struct platform_device palmtx_pxa_keys = {
+	.name = "gpio-keys",
+	.dev = {
+		.platform_data = &palmtx_pxa_keys_data,
+	},
+};
+#endif
 
 /**************
  * LCD Border *
@@ -376,6 +398,9 @@ struct platform_device palmtx_pm = {
 
 static struct platform_device *devices[] __initdata = {
          &palmtx_keypad, 
+#ifdef CONFIG_KEYBOARD_GPIO
+         &palmtx_pxa_keys,
+#endif
 	 &palmtx_ac97,
 	 &palmtx_pm,
 	 &palmtx_backlight,
