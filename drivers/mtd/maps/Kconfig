@@ -515,7 +515,7 @@ config MTD_PALMTC
 
 config MTD_PALMTX
 	tristate "Palm T|X flash driver !UNTESTED, DANGEROUS!"
-	depends on MTD_CFI && MACH_XSCALE_PALMTX
+	depends on MTD_CFI && MACH_XSCALE_PALMTX && MTD_PARTITIONS
 	help
 	  This MTD map describes how flash memory on Palm T|X is organized.
 	  With this driver you can read and probably also write into device's
