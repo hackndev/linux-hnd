@@ -18,7 +18,7 @@
 #include <linux/device.h>
 #include <linux/platform_device.h>
 #include <linux/fb.h>
-#include <linux/input.h>
+#include <linux/palm_keys.h>
 #include <linux/delay.h>
 #include <linux/irq.h>
 #include <linux/corgi_bl.h>
@@ -104,25 +104,25 @@ static struct pxa27x_keyboard_platform_data palmtt5_kbd_data = {
 	.nr_cols = 3,
 	.keycodes = {
 		{	/* row 0 */
-			KEY_F8,
-			KEY_F9,
-			KEY_ENTER,
+			PALM_KEY_POWER,
+			PALM_KEY_HOME,
+			PALM_KEY_DPAD_CENTER,
 		},
 		{	/* row 1 */
-			KEY_F10,
-			KEY_F11,
-			KEY_F12,
+			PALM_KEY_CALENDAR,
+			PALM_KEY_CONTACTS,
+			PALM_KEY_FOLDER,
 		},
 		{	/* row 2 */
-			KEY_UP,
+			PALM_KEY_DPAD_UP,
 			-1,
-			KEY_DOWN,
+			PALM_KEY_DPAD_DOWN,
 		},
 		{
 			/* row 3 */
-			KEY_RIGHT,
+			PALM_KEY_DPAD_RIGHT,
 			-1,
-			KEY_LEFT,
+			PALM_KEY_DPAD_LEFT,
 		},
 
 	},
