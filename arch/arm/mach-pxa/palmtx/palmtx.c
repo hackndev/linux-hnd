@@ -115,23 +115,23 @@ static struct pxa27x_keyboard_platform_data palmtx_kbd_data = {
 		{	/* row 0 */
 			PALM_KEY_POWER,
 			PALM_KEY_HOME,
-			PALM_DPAD_CENTER,
+			PALM_KEY_DPAD_CENTER,
 		},
 		{	/* row 1 */
 			PALM_KEY_CALENDAR,
-			PALM_KEY_CONTACS,
+			PALM_KEY_CONTACTS,
 			PALM_KEY_WEB,
 		},
 		{	/* row 2 */
-			PALM_DPAD_UP,
+			PALM_KEY_DPAD_UP,
 			-1,
-			PALM_DPAD_DOWN,
+			PALM_KEY_DPAD_DOWN,
 		},
 		{
 			/* row 3 */
-			PALM_DPAD_RIGHT,
+			PALM_KEY_DPAD_RIGHT,
 			-1,
-			PALM_DPAD_LEFT,
+			PALM_KEY_DPAD_LEFT,
 		},
 
 	},
