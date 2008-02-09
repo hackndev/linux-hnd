@@ -18,6 +18,13 @@ config  PALMTX_PM
 	help
 	    Enable support for suspend/resume the Palm TX PDA.
 
+config PALMTX_DISABLE_BORDER
+	bool "Disable display border"
+	depends on MACH_XSCALE_PALMTX
+	help
+	  Some displays can disable white border. This could allow it.
+	  This makes screen bigger for 4 pixels in both directions.
+
 config  PALMTX_PCMCIA
         tristate "Palm TX PCMCIA driver"
         depends on MACH_XSCALE_PALMTX

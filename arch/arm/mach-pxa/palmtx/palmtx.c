@@ -175,6 +175,9 @@ static struct platform_device palmtx_pxa_keys = {
 };
 #endif
 
+
+#ifndef CONFIG_PALMTX_DISABLE_BORDER
+
 /**************
  * LCD Border *
  **************/
@@ -190,6 +193,8 @@ struct platform_device palmtx_border = {
         	.platform_data	= &border_machinfo,
         },
 };
+
+#endif
 
 /*************
  * Batery    *
@@ -405,7 +410,9 @@ static struct platform_device *devices[] __initdata = {
 	 &palmtx_pm,
 	 &palmtx_backlight,
 	 &bcm2035_bt,
+#ifndef CONFIG_PALMTX_DISABLE_BORDER
 	 &palmtx_border,
+#endif
 	 &palmtx_udc,
 };
 
@@ -427,18 +434,27 @@ static struct platform_device *devices[] __initdata = {
 static struct pxafb_mode_info palmtx_lcd_modes[] = {
     {
 	.pixclock		= 0,	
-	.xres			= 320,	/* PPL + 1 */
-	.yres			= 480,	/* LPP + 1 */
 	.bpp			= 16,	/* BPP */
-
-					/* linux    palmos */
-	.left_margin		= 32,	/* BLW + 1  (BLW=31) */
-	.right_margin		= 1,	/* ELW + 1  (ELW=3) */
-	.upper_margin		= 7,	/* BFW + 1  (BFW=7) */
-	.lower_margin		= 1,	/* EFW + 1  (EFW=8) */
-
-	.hsync_len              = 4,	/* HSW + 1  (HSW=3) */
-	.vsync_len              = 1,	/* VSW + 1  (VSW=0) */
+#ifndef CONFIG_PALMTX_DISABLE_BORDER
+	.xres			= 320,
+	.yres			= 480,
+	.left_margin		= 32,
+	.right_margin		= 1,
+	.upper_margin		= 7,
+	.lower_margin		= 1,
+	.hsync_len		= 4,
+	.vsync_len		= 1,
+#else
+	.xres			= 324,
+	.yres			= 484,
+	.left_margin		= 28,
+	.right_margin		= 8,
+	.upper_margin		= 3,
+	.lower_margin		= 6,
+	.hsync_len		= 6,
+	.vsync_len		= 3,
+	.sync			= FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
+#endif
     },
 };
 
