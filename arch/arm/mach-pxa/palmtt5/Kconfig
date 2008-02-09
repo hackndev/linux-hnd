@@ -4,6 +4,14 @@ menuconfig MACH_XSCALE_PALMTT5
 	help
 	  This enables support for Palm Tungsten|T5 handheld.
 
+config PALMTT5_DISABLE_BORDER
+	bool "Disable display border"
+	depends on MACH_XSCALE_PALMTT5
+	help
+	  Some displays can disable white border. This could allow it.
+	  This makes screen bigger for 4 pixels in both directions.
+
+
 config  PALMTT5_PM
         tristate "Palm Tungsten|T5 Power Management support"
 	depends on MACH_XSCALE_PALMTT5
