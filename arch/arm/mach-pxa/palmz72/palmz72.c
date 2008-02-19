@@ -44,6 +44,7 @@
 #include <asm/arch/pxa2xx_udc_gpio.h>
 #include <asm/arch/palmlcd-border.h>
 #include <asm/arch/palm-battery.h>
+#include <linux/palm_keys.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -158,25 +159,25 @@ static struct pxa27x_keyboard_platform_data palmz72_kbd_data = {
 	.nr_cols = 3,
 	.keycodes = {
 		{	/* row 0 */
-			KEY_F8,			/* Power key 	*/
-			KEY_F11,		/* Photos  	*/
-			KEY_ENTER,		/* DPAD Center	*/
+			PALM_KEY_POWER,		/* Power key 	*/
+			PALM_KEY_PHOTOS,	/* Photos  	*/
+			PALM_KEY_DPAD_CENTER,	/* DPAD Center	*/
 		},
 		{	/* row 1 */
-			KEY_F9,			/* Calendar	*/
-			KEY_F10,		/* Contacts 	*/
-			KEY_F12,		/* Media 	*/
+			PALM_KEY_CALENDAR,	/* Calendar	*/
+			PALM_KEY_CONTACTS,	/* Contacts 	*/
+			PALM_KEY_MUSIC,		/* Music 	*/
 		},
 		{	/* row 2 */
-			KEY_UP,			/* D-PAD UP	*/
+			PALM_KEY_DPAD_UP,	/* D-PAD UP	*/
 			0,			/* unused 	*/
-			KEY_DOWN,		/* D-PAD DOWN 	*/
+			PALM_KEY_DPAD_DOWN,	/* D-PAD DOWN 	*/
 		},
 		{
 			/* row 3 */
-			KEY_RIGHT,		/* D-PAD RIGHT 	*/
+			PALM_KEY_DPAD_RIGHT,	/* D-PAD RIGHT 	*/
 			0,			/* unused 	*/
-			KEY_LEFT,		/* D-PAD LEFT 	*/
+			PALM_KEY_DPAD_LEFT,	/* D-PAD LEFT 	*/
 		},
 	},
 	.gpio_modes = {
@@ -204,7 +205,7 @@ static struct platform_device palmz72_keypad = {
  ********************************/
 #ifdef CONFIG_KEYBOARD_GPIO
 static struct gpio_keys_button palmz72_pxa_buttons[] = {
-	{KEY_F7, GPIO_NR_PALMZ72_KP_DKIN7, 0, "Voice Memo Button" },
+	{PALM_KEY_VOICE_MEMO, GPIO_NR_PALMZ72_KP_DKIN7, 0, "Voice Memo Button" },
 };
 
 static struct gpio_keys_platform_data palmz72_pxa_keys_data = {
