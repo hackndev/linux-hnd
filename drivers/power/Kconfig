@@ -32,7 +32,7 @@ config BATTERY_PALM
 	tristate "Palm battery driver"
 	select TOUCHSCREEN_WM97XX
 	depends on APM_POWER
-	default m
+	default n
 	help
 	  Say Y here to enable support for batteries in Palm devices.
 
