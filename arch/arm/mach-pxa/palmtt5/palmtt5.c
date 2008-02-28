@@ -21,6 +21,7 @@
 #include <linux/palm_keys.h>
 #include <linux/delay.h>
 #include <linux/irq.h>
+#include <linux/gpio_keys.h>
 #include <linux/corgi_bl.h>
 
 #include <asm/mach-types.h>
@@ -144,6 +145,28 @@ static struct platform_device palmtt5_keypad = {
 		.platform_data	= &palmtt5_kbd_data,
 	},
 };
+
+/**************
+ * HotSync    *
+ **************/
+#ifdef CONFIG_KEYBOARD_GPIO
+static struct gpio_keys_button palmtt5_pxa_buttons[] = {
+	{PALM_KEY_HOTSYNC, GPIO_NR_PALMTT5_HOTSYNC_BUTTON_N, 1, "HotSync Button" },
+};
+
+static struct gpio_keys_platform_data palmtt5_pxa_keys_data = {
+	.buttons = palmtt5_pxa_buttons,
+	.nbuttons = ARRAY_SIZE(palmtt5_pxa_buttons),
+};
+
+static struct platform_device palmtt5_pxa_keys = {
+	.name = "gpio-keys",
+	.dev = {
+		.platform_data = &palmtt5_pxa_keys_data,
+	},
+};
+#endif
+
 
 /*************
  * Battery   *
@@ -361,7 +384,10 @@ struct platform_device palmtt5_pm = {
 };
 
 static struct platform_device *devices[] __initdata = {
-         &palmtt5_keypad, 
+         &palmtt5_keypad,
+#ifdef CONFIG_KEYBOARD_GPIO
+         &palmtt5_pxa_keys,
+#endif 
 	 &palmtt5_ac97,
 	 &palmtt5_pm,
 	 &palmtt5_backlight,
