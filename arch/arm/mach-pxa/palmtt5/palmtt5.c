@@ -1,7 +1,7 @@
 /*
  * $Id: palmtt5.c 1074 2007-06-26 07:01:26Z marex_z71 $
  * 
- * Hardware definitions for Palm T5
+ * Hardware definitions for Palm T|T5
  *
  * Authors: Marek Vasut <marek.vasut@gmail.com>
  * 
@@ -195,8 +195,6 @@ EXPORT_SYMBOL_GPL(palm_battery_info);
 static void palmtt5_bl_power(int on)
 {
 	if(GET_PALMTT5_GPIO(BL_POWER)!=on) {
-		SET_PALMTT5_GPIO(LCD_POWER, on);
-		SET_PALMTT5_GPIO(BL_POWER, on);
 		pxa_set_cken(CKEN0_PWM0, on);
 		pxa_set_cken(CKEN1_PWM1, on);
     	}
@@ -437,6 +435,13 @@ static struct pxafb_mode_info palmtt5_lcd_modes[] = {
     },
 };
 
+static void palmtt5_pxafb_lcd_power(int on, struct fb_var_screeninfo *var)
+{
+	SET_PALMTT5_GPIO(LCD_POWER, on ? 1 : 0);
+	SET_PALMTT5_GPIO(BL_POWER, on ? 1 : 0);
+}
+
+
 static struct pxafb_mach_info palmtt5_lcd_screen = {
 	.modes                  = palmtt5_lcd_modes,
 	.num_modes              = ARRAY_SIZE(palmtt5_lcd_modes),
@@ -448,6 +453,7 @@ static struct pxafb_mach_info palmtt5_lcd_screen = {
         .lccr3                  = LCCR3_PixClkDiv(2) | LCCR3_HorSnchL | LCCR3_VrtSnchL |
                                   LCCR3_PixFlEdg     | LCCR3_Bpp(4),
 	.pxafb_backlight_power	= NULL,
+	.pxafb_lcd_power	= palmtt5_pxafb_lcd_power,
 };
 
 static struct map_desc palmtt5_io_desc[] __initdata = {
