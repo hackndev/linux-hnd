@@ -512,6 +512,41 @@ static irqreturn_t tps65010_irq(int irq, void *_tps)
 
 static struct tps65010 *the_tps;
 
+void tps65010_lock(void) {
+	mutex_lock(&the_tps->lock);	
+}
+
+EXPORT_SYMBOL(tps65010_lock);
+
+void tps65010_unlock(void) {
+	mutex_unlock(&the_tps->lock);	
+}
+
+
+EXPORT_SYMBOL(tps65010_unlock);
+
+void tps65010_report_gpio_status(void) {
+	u8 value, v2, i;
+	mutex_lock(&the_tps->lock);
+	value = i2c_smbus_read_byte_data(&the_tps->client, TPS_DEFGPIO);
+	v2 = i2c_smbus_read_byte_data(&the_tps->client, TPS_MASK3);
+	printk(KERN_DEBUG "defgpio %02x mask3 %02x\n", value, v2);
+
+	for (i = 0; i < 4; i++) {
+		if (value & (1 << (4 + i)))
+			printk(KERN_DEBUG "  gpio%d-out %s\n", i + 1,
+				(value & (1 << i)) ? "low" : "hi ");
+		else
+			printk(KERN_DEBUG "  gpio%d-in  %s %s %s\n", i + 1,
+				(value & (1 << i)) ? "hi " : "low",
+				(v2 & (1 << i)) ? "no-irq" : "irq",
+				(v2 & (1 << (4 + i))) ? "rising" : "falling");
+	}
+	mutex_unlock(&the_tps->lock);
+}
+
+EXPORT_SYMBOL(tps65010_report_gpio_status);
+
 static int tps65010_detach_client(struct i2c_client *client)
 {
 	struct tps65010		*tps;
@@ -787,7 +822,10 @@ int tps65010_set_gpio_out_value(unsigned gpio, unsigned value)
 	int	 status;
 	unsigned defgpio;
 
+	
+	printk(KERN_DEBUG "tps65010_set_gpio_out_value\n");
 	if (!the_tps)
+	
 		return -ENODEV;
 	if ((gpio < GPIO1) || (gpio > GPIO4))
 		return -EINVAL;

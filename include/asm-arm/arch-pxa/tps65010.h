@@ -107,6 +107,8 @@
 #define LOW   0
 #define HIGH  1
 
+
+
 /*
  * ----------------------------------------------------------------------------
  * Exported functions
@@ -125,6 +127,13 @@ extern int tps65010_set_vbus_draw(unsigned mA);
  * value: LOW or HIGH
  */
 extern int tps65010_set_gpio_out_value(unsigned gpio, unsigned value);
+
+/* reports TPS65010 GPIOs statuses */
+extern void tps65010_report_gpio_status(void);
+
+extern void tps65010_lock(void);
+
+extern void tps65010_unlock(void);
 
 /* tps65010_set_led parameter:
  * led:  LED1 or LED2

@@ -45,7 +45,10 @@
 #include <asm/arch/palmtt3-init.h>
 #include <asm/arch/tps65010.h>
 
-//#include "palmtt3_bt.h"
+#if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
+#include "palmtt3_bt.h"
+#endif
+
 #include "../generic.h"
 
 #define DEBUG 1
@@ -359,33 +362,31 @@ struct platform_pxa_serial_funcs palmtt3_hwuart = {
 	.resume		= palmtt3_hwuart_resume,
 };
 
-/*** Bluetooth ***/
-#ifdef CONFIGURE_PALMTT3_BLUETOOTH
-struct bcm2035_bt_funcs {
-        void (*configure) ( int state );
+/******************************************************************************
+ * Bluetooth
+ ******************************************************************************/
+#if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
+static struct palmtt3_bt_funcs bt_funcs;
+
+static struct platform_device palmtt3_bt = {
+	.name	= "palmtt3_bt",
+	.id	= -1,
+	.dev	= {
+		.platform_data	= &bt_funcs,
+	},
 };
 
-static struct bcm2035_bt_funcs bt_funcs;
-
-static void
-bcm2035_bt_configure( int state )
+static void palmtt3_bt_configure(int state)
 {
-        if (bt_funcs.configure != NULL)
-                bt_funcs.configure( state );
+	if (bt_funcs.configure != NULL)
+		bt_funcs.configure(state);
 }
 
-static struct platform_pxa_serial_funcs bcm2035_pxa_bt_funcs = {
-        .configure = bcm2035_bt_configure,
+static struct platform_pxa_serial_funcs palmtt3_pxa_bt_funcs = {
+	.configure = palmtt3_bt_configure,
 };
+#endif
 
-static struct platform_device bcm2035_bt = {
-        .name = "bcm2035-bt",
-        .id = -1,
-        .dev = {
-                .platform_data = &bt_funcs,
-        },
-};
-#endif //CONFIG_PALMTT3_BLUETOOTH
 
 /*** Suspend/Resume ***/
 #ifdef CONFIG_PM
@@ -422,7 +423,7 @@ void palmtt3_suspend(unsigned long ret)
 	PWER  |= PWER_GPIO15;	/* Bluetooth wakeup? */
 
 	PFER  = PWER_GPIO0 | PWER_GPIO1 | PWER_GPIO11 | PWER_GPIO14;
-	PEDR  = PWER_GPIO0 | PWER_GPIO1;
+	PEDR  = PWER_GPIO0 | PWER_GPIO1 | PWER_GPIO15;
 }
 
 void palmtt3_resume(void)
@@ -454,8 +455,8 @@ static struct platform_device *devices[] __initdata = {
 	&palmtt3_backlight_device,
 	&palmtt3_led_device,
 	&palmtt3_power_button,
-#ifdef CONFIGURE_PALMTT3_BLUETOOTH
-	&bcm2035_bt,
+#if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
+	&palmtt3_bt,
 #endif
 };
 
@@ -470,8 +471,8 @@ static void __init palmtt3_init(void)
 	set_pxa_fb_info(&palmtt3_lcd_screen);
 	pxa_set_udc_info(&palmtt3_udc_mach_info);
 	pxa_set_hwuart_info(&palmtt3_hwuart);
-#ifdef CONFIGURE_PALMTT3_BLUETOOTH
-	pxa_set_btuart_info(&bcm2035_pxa_bt_funcs);
+#if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
+	pxa_set_btuart_info(&palmtt3_pxa_bt_funcs);
 #endif
 	platform_add_devices (devices, ARRAY_SIZE (devices));
 }

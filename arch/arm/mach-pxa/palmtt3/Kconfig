@@ -25,9 +25,9 @@ config PALMTT3_BATTERY
 
 config PALMTT3_BLUETOOTH
 	tristate "Bluetooth support for Palm Tungsten|T3"
-	depends on MACH_T3XSCALE && BT && TPS65010 && BT_BCM2035UART
-	default m if TPS65010=m && BT_BCM2035UART=m
-	default y if TPS65010=y || BT_BCM2035UART=y
+	depends on MACH_T3XSCALE && BT && TPS65010
+	default m if TPS65010=m 
+	default y if TPS65010=y 
 	help
 	  Adds bluetooth support for Palm Tungsten|T3
 
