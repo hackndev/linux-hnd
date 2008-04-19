@@ -40,7 +40,7 @@ void led_trigger_event_shared(struct led_trigger_shared *trig,
 
 	if (!trig) return;
 
-	read_lock(trig->trigger.leddev_list_lock);
+	read_lock(&trig->trigger.leddev_list_lock);
 	if (b == LED_FULL) {
 		trig->cnt++;
 	}
@@ -55,7 +55,7 @@ void led_trigger_event_shared(struct led_trigger_shared *trig,
 		led_set_brightness(led_cdev, b);
 	}
 return_unlock:
-	read_unlock(trig->trigger.leddev_list_lock);
+	read_unlock(&trig->trigger.leddev_list_lock);
 	return;
 }
 
