@@ -71,31 +71,38 @@ static void palmtt3_pxafb_lcd_power(int level, struct fb_var_screeninfo *var)
 
 
 /*** framebuffer ***/
-
 static struct pxafb_mode_info palmtt3_lcd_modes[] = {
     {
-	.pixclock		= 0,
-	.bpp			= 16,
+/* changing this to be able select mode in userspace... hopefully.. */
 #ifdef CONFIG_PALMTT3_DISABLE_BORDER
-	.hsync_len		= 6,
-	.vsync_len		= 3,
-	.xres			= 324,
-	.yres			= 484,
-	.left_margin		= 28,
-	.right_margin		= 8,
-	.upper_margin		= 3,
-	.lower_margin		= 6,
-#else
-	.hsync_len		= 4,
-	.vsync_len		= 1,
-	.xres			= 320,
-	.yres			= 480,
-	.left_margin		= 31,
-	.right_margin		= 3,
-	.upper_margin		= 8,
-	.lower_margin		= 7,
+        /* mode without border */
+        .pixclock               = 0,
+        .bpp                    = 16,
+        .hsync_len              = 6,
+        .vsync_len              = 3,
+        .xres                   = 324,
+        .yres                   = 484,
+        .left_margin            = 28,
+        .right_margin           = 8,
+        .upper_margin           = 3,
+        .lower_margin           = 6,
+        .sync                   = FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
+    },
+
+    {
 #endif
-	.sync			= FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
+        /* mode with border */
+        .pixclock               = 0,
+        .bpp                    = 16,
+        .hsync_len              = 4,
+        .vsync_len              = 1,
+        .xres                   = 320,
+        .yres                   = 480,
+        .left_margin            = 31,
+        .right_margin           = 3,
+        .upper_margin           = 8,
+        .lower_margin           = 7,
+        .sync                   = FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
     }
 };
 
