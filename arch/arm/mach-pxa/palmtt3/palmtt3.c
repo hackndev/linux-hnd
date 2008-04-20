@@ -44,6 +44,8 @@
 #include <asm/arch/palmtt3-gpio.h>
 #include <asm/arch/palmtt3-init.h>
 #include <asm/arch/tps65010.h>
+#include <linux/gpio_keys.h>
+
 
 #if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
 #include "palmtt3_bt.h"
@@ -206,6 +208,28 @@ static struct platform_device palmtt3_btn_device = {
 	.name = "palmtt3-btn",
 	.id = -1,
 };
+
+/**************
+ * HotSync    *
+ **************/
+#ifdef CONFIG_KEYBOARD_GPIO
+#define PALM_KEY_HOTSYNC KEY_F13
+static struct gpio_keys_button palmtt3_hotsync_button[] = {
+        {PALM_KEY_HOTSYNC, GPIO_PALMTT3_HOTSYNC_BUTTON, 0, "HotSync Button" },
+};
+
+static struct gpio_keys_platform_data palmtt3_hotsync_data = {
+        .buttons = palmtt3_hotsync_button,
+        .nbuttons = ARRAY_SIZE(palmtt3_hotsync_button),
+};
+
+static struct platform_device palmtt3_hotsync_key = {
+        .name = "gpio-keys",
+        .dev = {
+                .platform_data = &palmtt3_hotsync_data,
+        },
+};
+#endif
 
 /* Backlight ***/
 static void palmtt3_bl_power(int on)
@@ -462,6 +486,7 @@ static struct platform_device *devices[] __initdata = {
 	&palmtt3_backlight_device,
 	&palmtt3_led_device,
 	&palmtt3_power_button,
+	&palmtt3_hotsync_key,
 #if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
 	&palmtt3_bt,
 #endif
