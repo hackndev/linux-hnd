@@ -50,7 +50,7 @@
 #define PALMTT3_INIT_LCD_LCCR3 0x03700002
 */
 
-// value converted using LCCRman
+/* value converted using LCCRman */
 #define PALMTT3_INIT_LCD_LCCR0  LCCR0_ENB | LCCR0_Color | LCCR0_Sngl | LCCR0_LDM \
 	| LCCR0_SFM | LCCR0_IUM | LCCR0_EFM | LCCR0_Act | LCCR0_4PixMono | \
 	LCCR0_QDM | LCCR0_BM | LCCR0_OUM
