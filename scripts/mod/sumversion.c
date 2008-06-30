@@ -5,6 +5,7 @@
 #include <stdint.h>
 #endif
 #include <ctype.h>
+#include <linux/limits.h>
 #include <errno.h>
 #include <string.h>
 #include "modpost.h"
