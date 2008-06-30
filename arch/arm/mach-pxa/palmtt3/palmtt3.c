@@ -486,7 +486,9 @@ static struct platform_device *devices[] __initdata = {
 	&palmtt3_backlight_device,
 	&palmtt3_led_device,
 	&palmtt3_power_button,
+#if defined(CONFIG_KEYBOARD_GPIO) || defined(CONFIG_KEYBOARD_GPIO_MODULE)
 	&palmtt3_hotsync_key,
+#endif
 #if defined(CONFIG_PALMTT3_BLUETOOTH) || defined(CONFIG_PALMTT3_BLUETOOTH_MODULE)
 	&palmtt3_bt,
 #endif
