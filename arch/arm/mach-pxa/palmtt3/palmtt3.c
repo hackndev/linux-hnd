@@ -212,7 +212,7 @@ static struct platform_device palmtt3_btn_device = {
 /**************
  * HotSync    *
  **************/
-#ifdef CONFIG_KEYBOARD_GPIO
+#if defined(CONFIG_KEYBOARD_GPIO) || defined(CONFIG_KEYBOARD_GPIO_MODULE)
 #define PALM_KEY_HOTSYNC KEY_F13
 static struct gpio_keys_button palmtt3_hotsync_button[] = {
         {PALM_KEY_HOTSYNC, GPIO_PALMTT3_HOTSYNC_BUTTON, 0, "HotSync Button" },
