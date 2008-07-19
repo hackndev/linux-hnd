@@ -22,7 +22,9 @@ obj-$(CONFIG_SOC_TC6387XB)	+= tc6387xb.o soc-core.o
 obj-$(CONFIG_SOC_T7L66XB)       += t7l66xb.o soc-core.o
 obj-$(CONFIG_SOC_TC6393XB)      += tc6393xb.o soc-core.o
 
-obj-$(CONFIG_SOC_TSC2101)      += tsc2101.o
+obj-$(CONFIG_SOC_TSC2101)	+= tsc2101_core.o
+obj-$(CONFIG_SOC_TSC2101_SND)	+= tsc2101_snd.o
+obj-$(CONFIG_SOC_TSC2101_MEAS)	+= tsc2101_meas.o
 obj-$(CONFIG_SOC_TSC2200)      += tsc2200.o
 
 obj-$(CONFIG_MCP)		+= mcp-core.o

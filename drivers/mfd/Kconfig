@@ -107,12 +107,25 @@ config SOC_TC6393XB
 
 config SOC_TSC2101
 	tristate "Support for TI TSC2101 Touchscreen and Audio Codec"
-	depends TOUCHSCREEN_TSC2101 && SOUND && SND && SND_PXA2xx_I2SOUND
-#	depends TOUCHSCREEN_TSC2101
+	depends SOUND && SND && SND_PXA2xx_I2SOUND
 #	select SND_PXA2xx_I2SOUND
 	default m
 	help
 	  Support for TI TSC2101 Touchscreen and Audio Codec
+
+config SOC_TSC2101_SND
+	tristate "Audio support for TI TSC2101"
+	depends SOC_TSC2101
+	help
+	  Sound support for TI TSC2101 chip
+
+config SOC_TSC2101_MEAS
+	tristate "Measurement support for TI TSC2101"
+	depends SOC_TSC2101
+	help
+	  Measurement support for TI TSC2101 chip. You probably want this
+	  for battery status reading
+
 
 config SOC_TSC2200
 	tristate "Support for TI TSC2200 Touchscreen, Battery and Keypad"

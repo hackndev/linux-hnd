@@ -59,16 +59,30 @@ int palmtt3_battery_get_voltage(struct battery *bat)
 {
 	struct device_driver *tscdrv;
 	struct device *tscdev;
-	struct tsc2101_data *tscdata;
+	struct tsc2101 *tscdata;
 	int batv = 0;
 	
 	tscdrv = driver_find("tsc2101", &platform_bus_type);
-	if(!tscdrv) return 0;
+	if(!tscdrv) {
+		printk("PalmTT3_battery: driver tsc2101 not found\n");
+		return 0;
+	}
 	tscdev = driver_find_device(tscdrv, NULL, NULL, match_tsc);
-	if(!tscdev) return 0;
+	if(!tscdev) {
+		printk("PalmTT3_battery: device of driver tsc2101 not found\n");
+		return 0;
+	}
 	tscdata = dev_get_drvdata(tscdev);
-	if(!tscdata) return 0;
-	batv = tscdata->miscdata.bat;
+	if(!tscdata) {
+		printk("PalmTT3_battery: could not get data\n");
+		return 0;
+	}
+	if(!tscdata->meas) {
+		printk("PalmTT3_battery: could not get tsc2101_meas data\n");
+		return 0;
+	}
+	batv = ((struct tsc2101_meas *)tscdata->meas->priv)->bat;
+	printk("PalmTT3_battery: battery register value: %d\n", batv);
 	put_device(tscdev);
 	put_driver(tscdrv);
 	
