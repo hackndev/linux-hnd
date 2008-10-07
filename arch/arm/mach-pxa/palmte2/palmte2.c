@@ -96,19 +96,19 @@ static struct platform_device palmte2_backlight = {
  * Bluetooth
  */
 
-void bcm2035_bt_reset(int on)
+void palmte2_bt_reset(int on)
 {
 	printk(KERN_NOTICE "Switch BT reset %d\n", on);
 	SET_PALMTE2_GPIO(BT_RESET, on ? 1 : 0);
 }
-EXPORT_SYMBOL(bcm2035_bt_reset);
+EXPORT_SYMBOL(palmte2_bt_reset);
 
-void bcm2035_bt_power(int on)
+void palmte2_bt_power(int on)
 {
 	printk(KERN_NOTICE "Switch BT power %d\n", on);
 	SET_PALMTE2_GPIO(BT_POWER, on ? 1 : 0);
 }
-EXPORT_SYMBOL(bcm2035_bt_power);
+EXPORT_SYMBOL(palmte2_bt_power);
 
 struct bcm2035_bt_funcs {
 	void (*configure) (int state);
@@ -116,14 +116,14 @@ struct bcm2035_bt_funcs {
 
 static struct bcm2035_bt_funcs bt_funcs;
 
-static void bcm2035_bt_configure(int state)
+static void palmte2_bt_configure(int state)
 {
 	if (bt_funcs.configure != NULL)
 		bt_funcs.configure(state);
 }
 
 static struct platform_pxa_serial_funcs bcm2035_pxa_bt_funcs = {
-	.configure = bcm2035_bt_configure,
+	.configure = palmte2_bt_configure,
 };
 
 static struct platform_device bcm2035_bt = {

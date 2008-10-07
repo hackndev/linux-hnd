@@ -262,7 +262,7 @@ static struct pxaficp_platform_data palmz72_ficp_platform_data = {
  * Bluetooth * 
  *************/
 
-void bcm2035_bt_reset(int on)
+void palmz72_bt_reset(int on)
 {
 	printk(KERN_NOTICE "Switch BT reset %d\n", on);
 	if (on)
@@ -270,9 +270,9 @@ void bcm2035_bt_reset(int on)
 	else
 		SET_PALMZ72_GPIO( BT_RESET, 0 );
 }
-EXPORT_SYMBOL(bcm2035_bt_reset);
+EXPORT_SYMBOL(palmz72_bt_reset);
 
-void bcm2035_bt_power(int on)
+void palmz72_bt_power(int on)
 {
 	printk(KERN_NOTICE "Switch BT power %d\n", on);
 	if (on)
@@ -280,7 +280,7 @@ void bcm2035_bt_power(int on)
 	else
 		SET_PALMZ72_GPIO( BT_POWER, 0 );
 }
-EXPORT_SYMBOL(bcm2035_bt_power);
+EXPORT_SYMBOL(palmz72_bt_power);
 
 
 struct bcm2035_bt_funcs {
@@ -290,14 +290,14 @@ struct bcm2035_bt_funcs {
 static struct bcm2035_bt_funcs bt_funcs;
 
 static void
-bcm2035_bt_configure( int state )
+palmz72_bt_configure( int state )
 {
 	if (bt_funcs.configure != NULL)
 		bt_funcs.configure( state );
 }
 
 static struct platform_pxa_serial_funcs bcm2035_pxa_bt_funcs = {
-	.configure = bcm2035_bt_configure,
+	.configure = palmz72_bt_configure,
 };
 
 static struct platform_device bcm2035_bt = {

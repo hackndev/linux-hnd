@@ -297,19 +297,19 @@ static struct pxaficp_platform_data palmtx_ficp_platform_data = {
  *  Bluetooth *
  **************/
 
-void bcm2035_bt_reset(int on)
+void palmtx_bt_reset(int on)
 {
 	printk(KERN_NOTICE "Switch BT reset %d\n", on);
 	SET_PALMTX_GPIO( BT_RESET, on ? 1 : 0 );
 }
-EXPORT_SYMBOL(bcm2035_bt_reset);
+EXPORT_SYMBOL(palmtx_bt_reset);
 
-void bcm2035_bt_power(int on)
+void palmtx_bt_power(int on)
 {
 	printk(KERN_NOTICE "Switch BT power %d\n", on ? 1 : 0);
 	SET_PALMTX_GPIO( BT_POWER, on ? 1 : 0 );
 }
-EXPORT_SYMBOL(bcm2035_bt_power);
+EXPORT_SYMBOL(palmtx_bt_power);
 
 
 struct bcm2035_bt_funcs {
@@ -319,14 +319,14 @@ struct bcm2035_bt_funcs {
 static struct bcm2035_bt_funcs bt_funcs;
 
 static void
-bcm2035_bt_configure( int state )
+palmtx_bt_configure( int state )
 {
 	if (bt_funcs.configure != NULL)
 		bt_funcs.configure( state );
 }
 
 static struct platform_pxa_serial_funcs bcm2035_pxa_bt_funcs = {
-	.configure = bcm2035_bt_configure,
+	.configure = palmtx_bt_configure,
 };
 
 static struct platform_device bcm2035_bt = {
