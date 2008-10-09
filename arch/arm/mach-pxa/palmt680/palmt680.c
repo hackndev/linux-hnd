@@ -192,9 +192,9 @@ static struct pxa27x_keyboard_platform_data palmt680_kbd_data = {
 	.nr_cols = 7,
 	.keycodes = {
 	{	/* row 0 */
-		KEY_F4,		// "Red/Off/Power" 
+		KEY_F8,		// "Red/Off/Power" 
 		KEY_LEFT,	// "5-Way Left" },
-		KEY_RIGHTSHIFT,	// "Alternate" },
+		KEY_LEFTCTRL,	// "Alternate" },
 		KEY_L,		// "L" },
 		KEY_A,		// "A" },
 		KEY_Q,		// "Q" },
@@ -216,7 +216,7 @@ static struct pxa27x_keyboard_platform_data palmt680_kbd_data = {
 		KEY_E,		// "E" },
 		-1, // "Unused" },
 	}, {	/* row 3 */
-		KEY_F2,		// "Calendar" },
+		KEY_F10,	// "Calendar" },
 		KEY_DOWN,	// "5-Way Down" },
 		KEY_SPACE,	// "Space" },
 		KEY_C,		// "C" },
@@ -224,24 +224,24 @@ static struct pxa27x_keyboard_platform_data palmt680_kbd_data = {
 		KEY_R,		// "R" },
 		-1, // "Unused" },
 	}, {	/* row 4 */
-		KEY_F3,		// "Mail" },
-		KEY_SELECT,	// "5-Way Center" },
+		KEY_F12,	// "Mail" },
+		KEY_ENTER,	// "5-Way Center" },
 		KEY_RIGHTALT,	// "Alt" },
 		KEY_V,		// "V" },
 		KEY_G,		// "G" },
 		KEY_T,		// "T" },
 		-1, // "Unused" },
 	}, {	/* row 5 */
-		KEY_HOME,	// "Home" },
-		KEY_VOLUMEUP,	// "Volume Up" },
+		KEY_F9,		// "Home" },
+		KEY_PAGEUP,	// "Volume Up" },
 		KEY_DOT,	// "." },
 		KEY_B,		// "B" },
 		KEY_H,		// "H" },
 		KEY_Y,		// "Y" },
 		-1, // "Unused" },
 	}, {	/* row 6 */
-		KEY_F5,		// "Side Activate" },
-		KEY_VOLUMEDOWN,	// "Volume Down" },
+		KEY_TAB,	// "Side Activate" },
+		KEY_PAGEDOWN,	// "Volume Down" },
 		KEY_KPENTER,	// "Return" },
 		KEY_N,		// "N" },
 		KEY_J,		// "J" },
