@@ -29,6 +29,7 @@
 #include <asm/arch/pxafb.h>
 #include <asm/arch/pxa-regs.h>
 #include <asm/arch/palmt680-gpio.h>
+#include <asm/arch/palmt680-init.h>
 #include <asm/arch/pxa27x_keyboard.h>
 #include <asm/arch/irda.h>
 #include <asm/arch/sharpsl.h>
@@ -126,20 +127,17 @@ static struct platform_device palmt680_led = {
 static void palmt680_set_bl_intensity(int intensity)
 {
 	PWM_CTRL0 = 0;			/* pre-scalar */
-	PWM_PWDUTY0 = intensity;	/* duty cycle */
-	PWM_PERVAL0 = 0x1b1;		/* period */
-	
-	if (intensity > 0) {
-		pxa_set_cken(CKEN0_PWM0, 1);
-	} else {
-		pxa_set_cken(CKEN0_PWM0, 0);
-	}
+	PWM_PWDUTY0 = PALMT680_MAX_INTENSITY-intensity;	/* duty cycle */
+	PWM_PERVAL0 = PALMT680_BL_PERIOD;		/* period */
+
+	SET_PALMT680_GPIO(BL_POWER,!!intensity);
+	pxa_set_cken(CKEN0_PWM0, !!intensity);
 }
 
 static struct corgibl_machinfo palmt680_bl_machinfo = {
-	.max_intensity		= 0x1ad,
-	.default_intensity	= 0xe5,
-	.limit_mask		= 0x7f,
+	.max_intensity		= PALMT680_MAX_INTENSITY,
+	.default_intensity	= PALMT680_DEFAULT_INTENSITY,
+	.limit_mask		= PALMT680_LIMIT_MASK,
 	.set_bl_intensity	= palmt680_set_bl_intensity,
 };
 
@@ -149,6 +147,18 @@ static struct platform_device palmt680_bl = {
 		.platform_data = &palmt680_bl_machinfo,
 	},
 };
+
+/*********************************************************
+ * Power management
+ *********************************************************/
+struct platform_device palmt680_pm = {
+	.name = "palmt680-pm",
+	.id = -1,
+	.dev = {
+		.platform_data = NULL,
+	},
+};
+
 
 /*********************************************************
  * USB Device Controller
@@ -190,6 +200,7 @@ static struct pxa2xx_udc_mach_info palmt680_udc_mach_info = {
 static struct pxa27x_keyboard_platform_data palmt680_kbd_data = {
 	.nr_rows = 8,
 	.nr_cols = 7,
+	.debounce_ms = 32,
 	.keycodes = {
 	{	/* row 0 */
 		KEY_F8,		// "Red/Off/Power" 
@@ -287,8 +298,11 @@ static struct platform_device palmt680_kbd = {
 
 
 static struct platform_device *devices[] __initdata = {
-	&palmt680_kbd, &palmt680_ac97, &palmt680_bl,
+	&palmt680_kbd,
+	&palmt680_ac97,
+	&palmt680_bl,
 	&palmt680_led,
+	&palmt680_pm,
 };
 
 /*********************************************************
@@ -337,6 +351,7 @@ static void __init palmt680_init(void)
 {
 	/* Disable PRIRDY interrupt to avoid hanging when loading AC97 */
 	GCR &= ~GCR_PRIRDY_IEN;
+
 	set_pxa_fb_info(&palmt680_lcd);
 	pxa_set_mci_info(&palmt680_mci_platform_data);
 	pxa_set_ficp_info(&palmt680_ficp_platform_data);

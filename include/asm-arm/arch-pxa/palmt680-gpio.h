@@ -36,6 +36,7 @@
 #define GPIO_NR_PALMT680_POWER_DETECT		15
 #define GPIO_NR_PALMT680_VIBRATE_EN		26
 #define GPIO_NR_PALMT680_SILENT_SWITCH		33
+#define GPIO_NR_PALMT680_BL_POWER               38
 #define GPIO_NR_PALMT680_WM9712_IRQ		90
 #define GPIO_NR_PALMT680_SD_DETECT_N            113     /* SD card inserted; RE FE; Input */
 
