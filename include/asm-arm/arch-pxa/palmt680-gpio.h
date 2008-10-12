@@ -8,37 +8,61 @@
 
 #include <asm/arch/pxa-regs.h>
 
-/* IO mappings */
 #define PALMT680_ASIC6_PHYS		(PXA_CS2_PHYS)
 #define PALMT680_ASIC6_VIRT		(0xf0000000)
 #define PALMT680_ASIC6_SIZE		(0x00100000)
 
 /* ASIC 6 registers */
-#define __REG16(x)       (*((volatile u16 *)io_p2v(x)))
-#define ASIC6_LED0_TBS		__REG16(0x08000080)
-#define ASIC6_LED0_U1		__REG16(0x08000082) /* unknown=0 */
-#define ASIC6_LED0_PERIOD	__REG16(0x08000084)
-#define ASIC6_LED0_U2		__REG16(0x08000086) /* unknown=3 */
-#define ASIC6_LED0_DUTY		__REG16(0x08000088)
-#define ASIC6_LED0_AUTOSTOP	__REG16(0x0800008a)
-#define ASIC6_LED1_TBS		__REG16(0x08000090)
-#define ASIC6_LED1_PERIOD	__REG16(0x08000094)
-#define ASIC6_LED1_DUTY		__REG16(0x08000098)
-#define ASIC6_LED1_AUTOSTOP	__REG16(0x0800009a)
-#define ASIC6_LED2_TBS		__REG16(0x080000a0)
-#define ASIC6_LED2_PERIOD	__REG16(0x080000a4)
-#define ASIC6_LED2_DUTY		__REG16(0x080000a8)
-#define ASIC6_LED2_AUTOSTOP	__REG16(0x080000aa)
+/* Note: the naming and purpose  of these registers is just a guess. */
+
+#define __REG16(x)       (*((volatile u16 *)(x)))
+#define __ASIC6_REG(x)	__REG16(PALMT680_ASIC6_VIRT + (x))
+
+#define ASIC6_LED0_TBS		__REG(0x80)
+#define ASIC6_LED0_U1		__ASIC6_REG(0x82) /* unknown=0 */
+#define ASIC6_LED0_PERIOD	__ASIC6_REG(0x84)
+#define ASIC6_LED0_U2		__ASIC6_REG(0x86) /* unknown=3 */
+#define ASIC6_LED0_DUTY		__ASIC6_REG(0x88)
+#define ASIC6_LED0_AUTOSTOP	__ASIC6_REG(0x8a)
+#define ASIC6_LED1_TBS		__ASIC6_REG(0x90)
+#define ASIC6_LED1_PERIOD	__ASIC6_REG(0x94)
+#define ASIC6_LED1_DUTY		__ASIC6_REG(0x98)
+#define ASIC6_LED1_AUTOSTOP	__ASIC6_REG(0x9a)
+#define ASIC6_LED2_TBS		__ASIC6_REG(0xa0)
+#define ASIC6_LED2_PERIOD	__ASIC6_REG(0xa4)
+#define ASIC6_LED2_DUTY		__ASIC6_REG(0xa8)
+#define ASIC6_LED2_AUTOSTOP	__ASIC6_REG(0xaa)
+
+#define ASIC6_GPLR		__ASIC6_REG(0x48)
+#define ASIC6_GPLR_GSM_POWER	(1<<6)
+/* one of these will be reset the other power, not sure which is which */
+#define ASIC6_GPLR_BT_PW1	(1<<4)
+#define ASIC6_GPLR_BT_PW2	(1<<5)
+
+#define SET_ASIC6_GPIO(gpio, setp) \
+do { \
+if (setp) \
+		ASIC6_GPLR |= ASIC6_GPLR_ ## gpio; \
+else \
+		ASIC6_GPLR &= ~ASIC6_GPLR_ ## gpio; \
+} while (0)
+
+#define GET_ASIC6_GPIO(gpio) \
+		(ASIC6_GPLR & ASIC6_GPLR_ ## gpio)
+
 
 /* Palm Treo 680 GPIOs */
+/* these values really are from Treo 680 */
+#define GPIO_NR_PALMT680_BL_POWER               38
+#define GPIO_NR_PALMT680_POWER_DETECT		0
+#define GPIO_NR_PALMT680_SILENT_SWITCH		15
+#define GPIO_NR_PALMT680_SD_DETECT_N            113     /* SD card inserted; RE FE; Input */
+
 /* FIXME: these values are currently from 650. They will probably be
  * different for the 680. */
-#define GPIO_NR_PALMT680_POWER_DETECT		15
 #define GPIO_NR_PALMT680_VIBRATE_EN		26
-#define GPIO_NR_PALMT680_SILENT_SWITCH		33
-#define GPIO_NR_PALMT680_BL_POWER               38
 #define GPIO_NR_PALMT680_WM9712_IRQ		90
-#define GPIO_NR_PALMT680_SD_DETECT_N            113     /* SD card inserted; RE FE; Input */
+
 
 #define GPIO_NR_PALMT680_KP_MKIN0         100     
 #define GPIO_NR_PALMT680_KP_MKIN1         101     
@@ -48,7 +72,7 @@
 #define GPIO_NR_PALMT680_KP_MKIN5         99      
 #define GPIO_NR_PALMT680_KP_MKIN6         17      
 #define GPIO_NR_PALMT680_KP_MKIN7         13      
-
+0
 #define GPIO_NR_PALMT680_KP_MKOUT0        103
 #define GPIO_NR_PALMT680_KP_MKOUT1        104
 #define GPIO_NR_PALMT680_KP_MKOUT2        105
