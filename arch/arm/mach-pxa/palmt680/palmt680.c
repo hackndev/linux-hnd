@@ -18,6 +18,7 @@
 #include <linux/fb.h>
 #include <linux/input.h>
 #include <linux/irq.h>
+#include <linux/delay.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -33,6 +34,7 @@
 #include <asm/arch/pxa27x_keyboard.h>
 #include <asm/arch/irda.h>
 #include <asm/arch/sharpsl.h>
+#include <asm/arch/serial.h>
 #include <asm/arch/udc.h>
 
 #include <sound/driver.h>
@@ -101,13 +103,34 @@ static struct platform_device palmt680_ac97 = {
 
 static void palmt680_irda_transceiver_mode(struct device *dev, int mode)
 {
-#if 0
-	SET_PALMT680_GPIO(IRDA_SD, mode & IR_OFF);
-#endif
+	unsigned long flags;
+
+	local_irq_save(flags);
+
+	if (mode & IR_SIRMODE){
+		printk (KERN_INFO "IRDA: setting mode to SIR\n");
+	}
+	else if (mode & IR_FIRMODE){
+		printk (KERN_INFO "IRDA: setting mode to FIR\n");
+	}
+	if (mode & IR_OFF){
+		printk (KERN_INFO "IRDA: turning OFF\n");
+		SET_PALMT680_GPIO(IR_SD, 1);
+        }
+	else {
+		printk (KERN_INFO "IRDA: turning ON\n");
+		SET_PALMT680_GPIO(IR_SD, 0);
+		SET_PALMT680_GPIO(ICP_TXD_MD, 1);
+		mdelay(30);
+		SET_PALMT680_GPIO(ICP_TXD_MD, 0);
+	}
+
+        local_irq_restore(flags);
+
 }
 
 static struct pxaficp_platform_data palmt680_ficp_platform_data = {
-	.transceiver_cap  = IR_SIRMODE | IR_OFF,
+	.transceiver_cap  = IR_SIRMODE | IR_FIRMODE | IR_OFF,
 	.transceiver_mode = palmt680_irda_transceiver_mode,
 };
 
@@ -159,6 +182,16 @@ struct platform_device palmt680_pm = {
 	},
 };
 
+/*********************************************************
+ * GSM Baseband Processor
+ *********************************************************/
+struct platform_device palmt680_gsm = {
+	.name = "palmt680-gsm",
+	.id = -1,
+	.dev = {
+		.platform_data = NULL,
+	},
+};
 
 /*********************************************************
  * USB Device Controller
@@ -167,24 +200,23 @@ struct platform_device palmt680_pm = {
 static int udc_is_connected(void)
 {
 	/* TODO: find GPIO line for USB connected */
-	return 1;//GPLR(GPIO_PALMLD_USB_DETECT) & GPIO_bit(GPIO_PALMLD_USB_DETECT);
+	return !GET_PALMT680_GPIO(USB_PLUGGED);
 }
 
 static void udc_enable(int cmd) 
 {
-	/**
-	  * TODO: find the GPIO line which powers up the USB.
-	  */
 	switch (cmd)
 	{
 		case PXA2XX_UDC_CMD_DISCONNECT:
 			printk (KERN_NOTICE "USB cmd disconnect\n");
-			/* SET_X30_GPIO(USB_PUEN, 0); */
+			SET_PALMT680_GPIO(USB_PULLUP, 0);
 			break;
 
 		case PXA2XX_UDC_CMD_CONNECT:
 			printk (KERN_NOTICE "USB cmd connect\n");
-			/* SET_X30_GPIO(USB_PUEN, 1); */
+			SET_PALMT680_GPIO(USB_PULLUP, 0);
+			mdelay(30);
+			SET_PALMT680_GPIO(USB_PULLUP, 1);
 			break;
 	}
 }
@@ -192,6 +224,61 @@ static struct pxa2xx_udc_mach_info palmt680_udc_mach_info = {
 	.udc_is_connected = udc_is_connected,
 	.udc_command      = udc_enable,
 };
+
+/*************
+ * Bluetooth * 
+ *************/
+
+void palmt680_bt_reset(int on)
+{
+	printk(KERN_NOTICE "Switch BT reset %d\n", on);
+/*	if (on)
+		SET_PALMT680_GPIO( BT_RESET, 1 );
+	else
+		SET_PALMT680_GPIO( BT_RESET, 0 );
+*/
+}
+
+void palmt680_bt_power(int on)
+{
+	printk(KERN_NOTICE "Switch BT power %d\n", on);
+	if (on)
+		SET_PALMT680_GPIO( BT_POWER, 1 );
+	else
+		SET_PALMT680_GPIO( BT_POWER, 0 );
+}
+
+
+struct bcm2035_bt_funcs {
+	void (*configure) ( int state );
+	void (*power) ( int state );
+	void (*reset) ( int state );
+};
+
+static struct bcm2035_bt_funcs bt_funcs = {
+	.reset = palmt680_bt_reset,
+	.power = palmt680_bt_power,
+};
+
+static void
+palmt680_bt_configure( int state )
+{
+	if (bt_funcs.configure != NULL)
+		bt_funcs.configure( state );
+}
+
+static struct platform_pxa_serial_funcs bcm2035_pxa_bt_funcs = {
+	.configure = palmt680_bt_configure,
+};
+
+static struct platform_device bcm2035_bt = {
+	.name = "bcm2035-bt",
+	.id = -1,
+	.dev = {
+		.platform_data = &bt_funcs,
+	},
+};
+
 
 /*********************************************************
  * Keypad
@@ -303,6 +390,8 @@ static struct platform_device *devices[] __initdata = {
 	&palmt680_bl,
 	&palmt680_led,
 	&palmt680_pm,
+	&palmt680_gsm,
+	&bcm2035_bt,
 };
 
 /*********************************************************
@@ -355,6 +444,7 @@ static void __init palmt680_init(void)
 	set_pxa_fb_info(&palmt680_lcd);
 	pxa_set_mci_info(&palmt680_mci_platform_data);
 	pxa_set_ficp_info(&palmt680_ficp_platform_data);
+	pxa_set_btuart_info(&bcm2035_pxa_bt_funcs);
 	pxa_set_udc_info( &palmt680_udc_mach_info );
 	platform_add_devices(devices, ARRAY_SIZE(devices));
 

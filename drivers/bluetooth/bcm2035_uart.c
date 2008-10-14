@@ -34,6 +34,9 @@ extern void bcm2035_bt_reset(int on);
 
 struct bcm2035_bt_funcs {
 	void (*configure) ( int state );
+	void (*power) ( int state );
+	void (*reset) ( int state );
+
 };
 
 static void bcm2035_bt_configure( int state )
@@ -71,8 +74,8 @@ static int bcm2035_bt_probe( struct platform_device *pdev )
 	struct bcm2035_bt_funcs *funcs = pdev->dev.platform_data;
 	
 	/* power ON chip  */
-	bcm2035_bt_power(1);
-	bcm2035_bt_reset(1);
+	funcs->power(1);
+	funcs->reset(1);
 	
 	funcs->configure = bcm2035_bt_configure;
 
@@ -86,8 +89,8 @@ static int bcm2035_bt_remove( struct platform_device *pdev )
 	funcs->configure = NULL;
 	
 	/* power OFF chip */
-	bcm2035_bt_power(0);
-	bcm2035_bt_reset(0);
+	funcs->power(0);
+	funcs->reset(0);
 	
 	printk( KERN_NOTICE "bcm2035: Bluetooth driver removed\n");
 

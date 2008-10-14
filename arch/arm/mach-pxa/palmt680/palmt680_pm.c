@@ -22,7 +22,7 @@
 
 #ifdef CONFIG_PM
 
-#define RESUME_VECTOR_PHYS 0xc0000000
+#define RESUME_VECTOR_PHYS 0xa0000000
 
 static u32 *resume_vector;
 static u32 resume_vector_save[3];
@@ -40,18 +40,26 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 
 	/* wake-up enable */
 	PWER 	= PWER_RTC
-		| PWER_GPIO0  /* AC adapter */
-		| PWER_GPIO1  /* reset */
-		| (1 << 20);  /* SD detect */
+		| PWER_GPIO0		/* AC adapter */
+		| PWER_GPIO1		/* reset */
+		| PWER_GPIO9		/* not known yet */
+		| PWER_GPIO14		/* not known yet */
+		| PWER_GPIO15		/* silent switch */
+		| PWER_GPIO(20)		/* SD detect */
+		| PWER_GPIO(23);	/* headphones detect */
 	
 	/* falling-edge wake */
 	PFER 	= PWER_GPIO0
 		| PWER_GPIO1
-		| (1 << 20);  /* SD detect */
+		| PWER_GPIO9		/* not known yet */
+		| PWER_GPIO15;		/* silent switch */
+//		| PWER_GPIO(20);  /* SD detect */
 	
 	/* rising-edge wake */
 	PRER 	= PWER_GPIO0
 		| PWER_GPIO1
+		| PWER_GPIO14		/* not known yet */
+		| PWER_GPIO15		/* silent switch */
 		| (1 << 20);  /* SD detect */
 
 	/* wake-up by keypad  */
@@ -62,21 +70,24 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	 * this means only the power button will wake us up;
 	 * not any key.
 	 */
-	PKWR = PKWR_MKIN0;
+
+	/* temporary enabling everything - I'll be happy if it will resume! ;) */
+
+//	PKWR = PKWR_MKIN0;
 //	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT0 | GPIO_OUT);
-	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT1 | GPIO_OUT);
+/*	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT1 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT2 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT3 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT4 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT5 | GPIO_OUT);
-	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT6 | GPIO_OUT);
+	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT6 | GPIO_OUT);*/
 //	SET_PALMT680_GPIO(KP_MKOUT0, 0);
-	SET_PALMT680_GPIO(KP_MKOUT1, 0);
-	SET_PALMT680_GPIO(KP_MKOUT2, 0); 
-	SET_PALMT680_GPIO(KP_MKOUT3, 0); 
-	SET_PALMT680_GPIO(KP_MKOUT4, 0); 
-	SET_PALMT680_GPIO(KP_MKOUT5, 0); 
-	SET_PALMT680_GPIO(KP_MKOUT6, 0); 
+// 	SET_PALMT680_GPIO(KP_MKOUT1, 0);
+// 	SET_PALMT680_GPIO(KP_MKOUT2, 0); 
+// 	SET_PALMT680_GPIO(KP_MKOUT3, 0); 
+// 	SET_PALMT680_GPIO(KP_MKOUT4, 0); 
+// 	SET_PALMT680_GPIO(KP_MKOUT5, 0); 
+// 	SET_PALMT680_GPIO(KP_MKOUT6, 0); 
 
 	KPC &= ~KPC_ASACT;
 	KPC |= KPC_AS;
@@ -86,13 +97,28 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	/* ensure USB connection is broken */
 	SET_PALMT680_GPIO(USB_PULLUP, 0); 
 
-	/* hold current GPIO levels for now
+	/* PalmOS values
 	 * TODO: find out what we can disable.
 	 */
-	PGSR0 = GPLR0;
-	PGSR1 = GPLR1;
-	PGSR2 = GPLR2;
-	PGSR3 = GPLR3;
+
+	PGSR0	= 0
+		| (1 << 26)	/* GPIO26 - not known yet */
+		| (1 << 25);	/* GPIO26 - not known yet */
+	PGSR1	= 0
+		| (1 << 17)	/* GPIO49 - not known yet */
+		| (1 << 9)	/* GPIO41 - FFRTS? */
+		| (1 << 8)	/* GPIO40 - KP_MKOUT6? */
+		| (1 << 7)	/* GPIO39 - FFTXD */
+		| (1 << 2);	/* GPIO34 - FFRXD */
+	PGSR2	= 0
+		| (1 << 31)	/* GPIO95 - AC97_RESET? */
+		| (1 << 23)	/* GPIO87 - not known yet */
+		| (1 << 19)	/* GPIO83 - not known yet */
+		| (1 << 18)	/* GPIO82 - not known yet */
+		| (1 << 16);	/* GPIO80 - not known yet */
+	PGSR3	= 0
+		| (1 << 19)	/* GPIO115 - not known yet */
+		| (1 << 7);	/* GPIO103 - KP_MKOUT0 */
 	
 	PCFR |= PCFR_OPDE; /* low power: disable oscillator */
 
