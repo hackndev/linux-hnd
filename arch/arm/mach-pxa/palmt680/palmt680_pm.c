@@ -22,21 +22,21 @@
 
 #ifdef CONFIG_PM
 
-#define RESUME_VECTOR_PHYS 0xa0000000
+#define RESUME_VECTOR_PHYS 0xc0000000
 
 static u32 *resume_vector;
 static u32 resume_vector_save[3];
 
 static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 {
-// 	resume_vector_save[0] = resume_vector[0];
-// 	resume_vector_save[1] = resume_vector[1];
-// 	resume_vector_save[2] = resume_vector[2];
-// 
-// 	/* write jump to PSPR */
-// 	resume_vector[0] = 0xe3a00121; /* mov     r0, #0x40000008   */
-// 	resume_vector[1] = 0xe280060f; /* add     r0, r0, #0xf00000 */
-// 	resume_vector[2] = 0xe590f000; /* ldr     pc, [r0]	  */
+ 	resume_vector_save[0] = resume_vector[0];
+ 	resume_vector_save[1] = resume_vector[1];
+ 	resume_vector_save[2] = resume_vector[2];
+ 
+ 	/* write jump to PSPR */
+ 	resume_vector[0] = 0xe3a00121; /* mov     r0, #0x40000008   */
+ 	resume_vector[1] = 0xe280060f; /* add     r0, r0, #0xf00000 */
+ 	resume_vector[2] = 0xe590f000; /* ldr     pc, [r0]	  */
 
 	/* wake-up enable */
 	PWER 	= PWER_RTC
@@ -55,21 +55,23 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 		| (1 << 20);  /* SD detect */
 
 	/* wake-up by keypad  */
-	//PKWR = PKWR_MKIN0 | PKWR_MKIN1 | PKWR_MKIN2 | PKWR_MKIN3 |
-	//       PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7;
+	PKWR = PKWR_MKIN0 | PKWR_MKIN1 | PKWR_MKIN2 | PKWR_MKIN3 |
+	      PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7;
 	
-	/* disable all inputs and outputs except in 5 and out 0.
+	/* disable all inputs and outputs except in 0 and out 0.
 	 * this means only the power button will wake us up;
 	 * not any key.
 	 */
 	PKWR = PKWR_MKIN0;
+//	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT0 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT1 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT2 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT3 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT4 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT5 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT6 | GPIO_OUT);
-	SET_PALMT680_GPIO(KP_MKOUT1, 0); 
+//	SET_PALMT680_GPIO(KP_MKOUT0, 0);
+	SET_PALMT680_GPIO(KP_MKOUT1, 0);
 	SET_PALMT680_GPIO(KP_MKOUT2, 0); 
 	SET_PALMT680_GPIO(KP_MKOUT3, 0); 
 	SET_PALMT680_GPIO(KP_MKOUT4, 0); 
@@ -105,10 +107,10 @@ static void palmt680_pxa_ll_pm_resume(void)
 {
 	/* re-enable GPIO reset */
 	PCFR |= PCFR_GPR_EN;
-/*
+
 	resume_vector[0] = resume_vector_save[0];
 	resume_vector[1] = resume_vector_save[1];
-	resume_vector[2] = resume_vector_save[2];*/
+	resume_vector[2] = resume_vector_save[2];
 }
 
 struct pxa_ll_pm_ops palmt680_ll_pm_ops = {
@@ -118,7 +120,7 @@ struct pxa_ll_pm_ops palmt680_ll_pm_ops = {
 
 void palmt680_pxa_ll_pm_init(void)
 {
-	resume_vector = phys_to_virt(0xa0000000);
+	resume_vector = phys_to_virt(RESUME_VECTOR_PHYS);
 	pxa_pm_set_ll_ops(&palmt680_ll_pm_ops);
 }
 #endif
