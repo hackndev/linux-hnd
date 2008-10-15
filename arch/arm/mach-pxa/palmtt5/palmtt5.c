@@ -312,7 +312,6 @@ void palmtt5_bt_reset(int on)
         else
                 SET_PALMTT5_GPIO( BT_RESET, 0 );
 }
-EXPORT_SYMBOL(palmtt5_bt_reset);
 
 void palmtt5_bt_power(int on)
 {
@@ -322,14 +321,18 @@ void palmtt5_bt_power(int on)
         else
                 SET_PALMTT5_GPIO( BT_POWER, 0 );
 }
-EXPORT_SYMBOL(palmtt5_bt_power);
 
 
 struct bcm2035_bt_funcs {
         void (*configure) ( int state );
+	void (*power) ( int state );
+	void (*reset) ( int state );
 };
 
-static struct bcm2035_bt_funcs bt_funcs;
+static struct bcm2035_bt_funcs bt_funcs = {
+	.reset = palmtt5_bt_reset,
+	.power = palmtt5_bt_power,
+};
 
 static void
 palmtt5_bt_configure( int state )

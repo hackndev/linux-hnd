@@ -270,7 +270,6 @@ void palmz72_bt_reset(int on)
 	else
 		SET_PALMZ72_GPIO( BT_RESET, 0 );
 }
-EXPORT_SYMBOL(palmz72_bt_reset);
 
 void palmz72_bt_power(int on)
 {
@@ -280,14 +279,18 @@ void palmz72_bt_power(int on)
 	else
 		SET_PALMZ72_GPIO( BT_POWER, 0 );
 }
-EXPORT_SYMBOL(palmz72_bt_power);
 
 
 struct bcm2035_bt_funcs {
 	void (*configure) ( int state );
+	void (*power) ( int state );
+	void (*reset) ( int state );
 };
 
-static struct bcm2035_bt_funcs bt_funcs;
+static struct bcm2035_bt_funcs bt_funcs = {
+	.reset = palmz72_bt_reset,
+	.power = palmz72_bt_power,
+};
 
 static void
 palmz72_bt_configure( int state )

@@ -101,21 +101,24 @@ void palmld_bt_reset(int on)
         printk(KERN_NOTICE "Switch BT reset %d\n", on);
         SET_PALMLD_GPIO( BT_RESET, on ? 1 : 0 );
 }
-EXPORT_SYMBOL(palmld_bt_reset);
 
 void palmld_bt_power(int on)
 {
         printk(KERN_NOTICE "Switch BT power %d\n", on);
         SET_PALMLD_GPIO( BT_POWER, on ? 1 : 0 );
 }
-EXPORT_SYMBOL(palmld_bt_power);
 
 
 struct bcm2035_bt_funcs {
         void (*configure) ( int state );
+	void (*power) ( int state );
+	void (*reset) ( int state );
 };
 
-static struct bcm2035_bt_funcs bt_funcs;
+static struct bcm2035_bt_funcs bt_funcs = {
+	.reset = palmld_bt_reset,
+	.power = palmld_bt_power,
+};
 
 static void
 palmld_bt_configure( int state )
