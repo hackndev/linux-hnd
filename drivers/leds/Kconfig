@@ -148,6 +148,13 @@ config LEDS_PALMT650
 	help
 	  This option enables support for the LEDs on Palm Treo 650.
 
+config LEDS_PALMT680
+	tristate "LED Support for Palm Treo 680"
+	depends LEDS_CLASS && MACH_XSCALE_TREO680
+	help
+	  This option enables support for the LEDs on Palm Treo 680.
+
+
 config LEDS_H1940
 	tristate "LED Support for iPAQ H1940 device"
 	depends LEDS_CLASS && ARCH_H1940

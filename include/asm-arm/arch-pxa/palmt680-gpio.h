@@ -8,20 +8,27 @@
 
 #include <asm/arch/pxa-regs.h>
 
+
 #define PALMT680_ASIC6_PHYS		(PXA_CS2_PHYS)
 #define PALMT680_ASIC6_VIRT		(0xf0000000)
 #define PALMT680_ASIC6_SIZE		(0x00100000)
 
+#define PALMT680_USB_PHYS		(PXA_CS2_PHYS)
+#define PALMT680_USB_VIRT		(0xfa000000)
+#define PALMT680_USB_SIZE		(0x00100000)
+
+
 /* ASIC 6 registers */
 /* Note: the naming and purpose  of these registers is just a guess. */
 
+/*
 #define __REG16(x)       (*((volatile u16 *)(x)))
 #define __ASIC6_REG(x)	__REG16(PALMT680_ASIC6_VIRT + (x))
 
 #define ASIC6_LED0_TBS		__REG(0x80)
-#define ASIC6_LED0_U1		__ASIC6_REG(0x82) /* unknown=0 */
+#define ASIC6_LED0_U1		__ASIC6_REG(0x82)
 #define ASIC6_LED0_PERIOD	__ASIC6_REG(0x84)
-#define ASIC6_LED0_U2		__ASIC6_REG(0x86) /* unknown=3 */
+#define ASIC6_LED0_U2		__ASIC6_REG(0x86)
 #define ASIC6_LED0_DUTY		__ASIC6_REG(0x88)
 #define ASIC6_LED0_AUTOSTOP	__ASIC6_REG(0x8a)
 #define ASIC6_LED1_TBS		__ASIC6_REG(0x90)
@@ -35,7 +42,8 @@
 
 #define ASIC6_GPLR		__ASIC6_REG(0x48)
 #define ASIC6_GPLR_GSM_POWER	(1<<6)
-/* one of these will be reset the other power, not sure which is which */
+
+
 #define ASIC6_GPLR_BT_PW1	(1<<4)
 #define ASIC6_GPLR_BT_PW2	(1<<5)
 
@@ -49,6 +57,8 @@ else \
 
 #define GET_ASIC6_GPIO(gpio) \
 		(ASIC6_GPLR & ASIC6_GPLR_ ## gpio)
+*/
+
 
 
 /* Palm Treo 680 GPIOs */
@@ -99,6 +109,8 @@ else \
 #define GPIO_NR_PALMT680_KP_MKIN5         99      
 #define GPIO_NR_PALMT680_KP_MKIN6         17      
 #define GPIO_NR_PALMT680_KP_MKIN7         13      
+#define GPIO_NR_PALMT680_KP_DKIN0         93
+
 
 #define PKWR_MKIN0 (1<<17)
 #define PKWR_MKIN1 (1<<18)
@@ -108,6 +120,7 @@ else \
 #define PKWR_MKIN5 (1<<16)
 #define PKWR_MKIN6 (1<<2)
 #define PKWR_MKIN7 (1<<0)
+#define PKWR_DKIN0 (1<<10)
 
 #define GPIO_NR_PALMT680_KP_MKOUT0        103
 #define GPIO_NR_PALMT680_KP_MKOUT1        104

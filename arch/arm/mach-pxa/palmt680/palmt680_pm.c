@@ -24,6 +24,8 @@
 
 #define RESUME_VECTOR_PHYS 0xa0000000
 
+#define PUCR		__REG(0x40F0004C)	/*Power Manager USIM Card Control/Status Register */
+
 static u32 *resume_vector;
 static u32 resume_vector_save[3];
 
@@ -42,11 +44,12 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	PWER 	= PWER_RTC
 		| PWER_GPIO0		/* AC adapter */
 		| PWER_GPIO1		/* reset */
-		| PWER_GPIO9		/* not known yet */
-		| PWER_GPIO14		/* not known yet */
+		| PWER_GPIO9		/* not known yet - GSM HOST WAKE? */
+//		| PWER_GPIO14		/* not known yet */
 		| PWER_GPIO15		/* silent switch */
 		| PWER_GPIO(20)		/* SD detect */
-		| PWER_GPIO(23);	/* headphones detect */
+		| PWER_GPIO(23)		/* headphones detect */
+		| PWER_RTC;		/* Real time clock alarm */
 	
 	/* falling-edge wake */
 	PFER 	= PWER_GPIO0
@@ -58,13 +61,17 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	/* rising-edge wake */
 	PRER 	= PWER_GPIO0
 		| PWER_GPIO1
-		| PWER_GPIO14		/* not known yet */
-		| PWER_GPIO15		/* silent switch */
-		| (1 << 20);  /* SD detect */
+//		| PWER_GPIO14		/* not known yet - BT wake? */
+		| PWER_GPIO15;		/* silent switch */
+//		| (1 << 20);  /* SD detect */
+
+	PEDR	= PWER_RTC;
+
+	PCFR	= PCFR_FVC | PCFR_PI2CEN;
 
 	/* wake-up by keypad  */
-	PKWR = PKWR_MKIN0 | PKWR_MKIN1 | PKWR_MKIN2 | PKWR_MKIN3 |
-	      PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7;
+	PKWR = PKWR_MKIN0 | /* PKWR_MKIN1 | */ PKWR_MKIN2 | PKWR_MKIN3 |
+	      PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7 | PKWR_DKIN0;
 	
 	/* disable all inputs and outputs except in 0 and out 0.
 	 * this means only the power button will wake us up;
@@ -100,6 +107,12 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	/* PalmOS values
 	 * TODO: find out what we can disable.
 	 */
+	PSSR	= PSSR_OTGPH | PSSR_SSS;
+	PSLR	= 0xff000004;
+	PSTR	= 0;
+	PVCR	= 0x14;
+	PUCR	= 0;
+
 
 	PGSR0	= 0
 		| (1 << 26)	/* GPIO26 - not known yet */
@@ -112,7 +125,7 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 		| (1 << 2);	/* GPIO34 - FFRXD */
 	PGSR2	= 0
 		| (1 << 31)	/* GPIO95 - AC97_RESET? */
-		| (1 << 23)	/* GPIO87 - not known yet */
+//		| (1 << 23)	/* GPIO87 - not known yet */
 		| (1 << 19)	/* GPIO83 - not known yet */
 		| (1 << 18)	/* GPIO82 - not known yet */
 		| (1 << 16);	/* GPIO80 - not known yet */

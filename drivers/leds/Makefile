@@ -29,6 +29,8 @@ obj-$(CONFIG_LEDS_PALMLD)             += leds-palmld.o
 obj-$(CONFIG_LEDS_PALMTT3)            += leds-palmtt3.o
 obj-$(CONFIG_LEDS_PALMZ72)            += led-palmz72.o
 obj-$(CONFIG_LEDS_PALMT650)           += leds-palmt650.o
+obj-$(CONFIG_LEDS_PALMT680)           += leds-palmt680.o
+
 
 # LED Triggers
 obj-$(CONFIG_LEDS_TRIGGER_TIMER)	+= ledtrig-timer.o

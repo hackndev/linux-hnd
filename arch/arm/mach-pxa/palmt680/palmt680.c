@@ -36,6 +36,7 @@
 #include <asm/arch/sharpsl.h>
 #include <asm/arch/serial.h>
 #include <asm/arch/udc.h>
+#include <asm/arch/ohci.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -182,16 +183,6 @@ struct platform_device palmt680_pm = {
 	},
 };
 
-/*********************************************************
- * GSM Baseband Processor
- *********************************************************/
-struct platform_device palmt680_gsm = {
-	.name = "palmt680-gsm",
-	.id = -1,
-	.dev = {
-		.platform_data = NULL,
-	},
-};
 
 /*********************************************************
  * USB Device Controller
@@ -225,59 +216,50 @@ static struct pxa2xx_udc_mach_info palmt680_udc_mach_info = {
 	.udc_command      = udc_enable,
 };
 
-/*************
- * Bluetooth * 
- *************/
+/*********************************************************
+ * USB Host
+ *********************************************************/
 
-void palmt680_bt_reset(int on)
+static int palmt680_ohci_init(struct device *dev)
 {
-	printk(KERN_NOTICE "Switch BT reset %d\n", on);
-/*	if (on)
-		SET_PALMT680_GPIO( BT_RESET, 1 );
-	else
-		SET_PALMT680_GPIO( BT_RESET, 0 );
-*/
+	/* FIXME: how to switch also port 1 and 3? */
+// 	pxa_gpio_mode(GPIO_NR_PALMT680_USB_PLUGGED | GPIO_IN);
+// 	pxa_gpio_mode(GPIO_NR_PALMT680_USB_HOST | GPIO_OUT);
+// 	pxa_gpio_mode(GPIO_NR_PALMT680_USB_DEVICE | GPIO_IN);
+
+//	UP2OCR = UP2OCR_HXS | UP2OCR_HXOE | UP2OCR_DPPDE | UP2OCR_DMPDE;
+
+//	SET_PALMT680_GPIO(USB_HOST, 1);
+	UHCHCON = UHCHCON_HCFS_USBOPERATIONAL | UHCHCON_CLE | UHCHCON_BLE | UHCHCON_PLE | UHCHCON_IE;
+	UHCINTE = UHCINT_MIE | UHCINT_FNO | UHCINT_UE | UHCINT_RD | UHCINT_WDH | UHCINT_SO;
+	UHCINTD = UHCINT_MIE | UHCINT_FNO | UHCINT_UE | UHCINT_RD | UHCINT_WDH | UHCINT_SO;
+	UHCFMI = 0x27782edf;
+	UHCPERS = 0x00002a2f;
+	UHCLS = 0x00000628;
+	UHCRHDB = 0;
+	UHCRHS = 0;
+	UHCRHPS1 = 0x101;
+	UHCRHPS2 = 0x100;
+	UHCRHPS3 = 0x100;
+	UHCSTAT = 0x00004000;
+	UHCHR = UHCHR_CGR;
+	UHCHIE = 0;
+	UHCHIT = 0;
+
+	UHCHR = (UHCHR) &
+		~(UHCHR_SSEP1 | UHCHR_SSEP2 | UHCHR_SSEP3 | UHCHR_SSE);
+
+	UHCRHDA |= UHCRHDA_NOCP;
+
+	return 0;
 }
 
-void palmt680_bt_power(int on)
-{
-	printk(KERN_NOTICE "Switch BT power %d\n", on);
-	if (on)
-		SET_PALMT680_GPIO( BT_POWER, 1 );
-	else
-		SET_PALMT680_GPIO( BT_POWER, 0 );
-}
-
-
-struct bcm2035_bt_funcs {
-	void (*configure) ( int state );
-	void (*power) ( int state );
-	void (*reset) ( int state );
+static struct pxaohci_platform_data palmt680_ohci_platform_data = {
+	.port_mode	= PMM_PERPORT_MODE,
+	.init		= palmt680_ohci_init,
+	.power_budget	= 150,
 };
 
-static struct bcm2035_bt_funcs bt_funcs = {
-	.reset = palmt680_bt_reset,
-	.power = palmt680_bt_power,
-};
-
-static void
-palmt680_bt_configure( int state )
-{
-	if (bt_funcs.configure != NULL)
-		bt_funcs.configure( state );
-}
-
-static struct platform_pxa_serial_funcs bcm2035_pxa_bt_funcs = {
-	.configure = palmt680_bt_configure,
-};
-
-static struct platform_device bcm2035_bt = {
-	.name = "bcm2035-bt",
-	.id = -1,
-	.dev = {
-		.platform_data = &bt_funcs,
-	},
-};
 
 
 /*********************************************************
@@ -390,8 +372,6 @@ static struct platform_device *devices[] __initdata = {
 	&palmt680_bl,
 	&palmt680_led,
 	&palmt680_pm,
-	&palmt680_gsm,
-	&bcm2035_bt,
 };
 
 /*********************************************************
@@ -421,8 +401,9 @@ static struct pxafb_mach_info palmt680_lcd = {
 	.modes			= &palmt680_lcd_mode,
 };
 
+
 static struct map_desc palmt680_io_desc[] __initdata = {
-  	{	/* Devs */
+  	{
 		.virtual	= PALMT680_ASIC6_VIRT,
 		.pfn		= __phys_to_pfn(PALMT680_ASIC6_PHYS),
 		.length		= PALMT680_ASIC6_SIZE,
@@ -436,16 +417,22 @@ static void __init palmt680_map_io(void)
 	iotable_init(palmt680_io_desc, ARRAY_SIZE(palmt680_io_desc));
 }
 
+
 static void __init palmt680_init(void)
 {
 	/* Disable PRIRDY interrupt to avoid hanging when loading AC97 */
 	GCR &= ~GCR_PRIRDY_IEN;
 
+	SET_PALMT680_GPIO(GREEN_LED,0);
+//	SET_PALMT680_GPIO(RED_LED,0);
+	SET_PALMT680_GPIO(KEYB_BL,0);
+	SET_PALMT680_GPIO(VIBRA,0);
+
 	set_pxa_fb_info(&palmt680_lcd);
 	pxa_set_mci_info(&palmt680_mci_platform_data);
 	pxa_set_ficp_info(&palmt680_ficp_platform_data);
-	pxa_set_btuart_info(&bcm2035_pxa_bt_funcs);
 	pxa_set_udc_info( &palmt680_udc_mach_info );
+	pxa_set_ohci_info(&palmt680_ohci_platform_data);
 	platform_add_devices(devices, ARRAY_SIZE(devices));
 
 #if 0
