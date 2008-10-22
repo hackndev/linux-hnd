@@ -28,6 +28,7 @@
 #include <asm/arch/hardware.h>
 #include <asm/arch/mmc.h>
 #include <asm/arch/pxafb.h>
+#include <linux/fb.h>
 #include <asm/arch/pxa-regs.h>
 #include <asm/arch/palmt680-gpio.h>
 #include <asm/arch/palmt680-init.h>
@@ -219,7 +220,7 @@ static struct pxa2xx_udc_mach_info palmt680_udc_mach_info = {
 /*********************************************************
  * USB Host
  *********************************************************/
-
+#define UP3OCR		  __REG(0x40600024)  /* USB Port 2 Output Control register */
 static int palmt680_ohci_init(struct device *dev)
 {
 	/* FIXME: how to switch also port 1 and 3? */
@@ -245,9 +246,12 @@ static int palmt680_ohci_init(struct device *dev)
 	UHCHR = UHCHR_CGR;
 	UHCHIE = 0;
 	UHCHIT = 0;
+	/* enable port 2 */
+//	UP2OCR = UP2OCR_HXS | UP2OCR_HXOE;
+	UP3OCR = 0; //UP2OCR_HXS | UP2OCR_HXOE;
 
 	UHCHR = (UHCHR) &
-		~(UHCHR_SSEP1 | UHCHR_SSEP2 | UHCHR_SSEP3 | UHCHR_SSE);
+		~(UHCHR_SSEP1 | /* UHCHR_SSEP2 | */ UHCHR_SSEP3 | UHCHR_SSE);
 
 	UHCRHDA |= UHCRHDA_NOCP;
 
@@ -257,10 +261,63 @@ static int palmt680_ohci_init(struct device *dev)
 static struct pxaohci_platform_data palmt680_ohci_platform_data = {
 	.port_mode	= PMM_PERPORT_MODE,
 	.init		= palmt680_ohci_init,
-	.power_budget	= 150,
+	.power_budget	= 100,
+};
+
+/*********************************************************
+ * GSM Baseband Processor
+ *********************************************************/
+#ifdef CONFIG_PALMT680_GSM
+struct platform_device palmt680_gsm = {
+	.name = "palmt680-gsm",
+	.id = -1,
+	.dev = {
+		.platform_data = NULL,
+	},
 };
 
 
+#else
+
+int palmt680_ffuart_state;
+
+void palmt680_ffuart_configure(int state)
+{
+	switch (state) {
+		case PXA_UART_CFG_PRE_STARTUP:
+			break;
+		case PXA_UART_CFG_POST_STARTUP:
+			palmt680_ffuart_state = 1;
+			break;
+		case PXA_UART_CFG_PRE_SHUTDOWN:
+			palmt680_ffuart_state = 0;
+			break;
+		case PXA_UART_CFG_POST_SHUTDOWN:
+			break;
+		default:
+			printk("palmt680_ffuart_configure: bad request %d\n",state);
+			break;
+	}
+}
+
+static int palmt680_ffuart_suspend(struct platform_device *dev, pm_message_t state)
+{
+	palmt680_ffuart_configure(PXA_UART_CFG_PRE_SHUTDOWN);
+	return 0;
+}
+
+static int palmt680_ffuart_resume(struct platform_device *dev)
+{
+	palmt680_ffuart_configure(PXA_UART_CFG_POST_STARTUP);
+	return 0;
+}
+
+struct platform_pxa_serial_funcs palmt680_ffuart = {
+	.configure	= palmt680_ffuart_configure,
+	.suspend	= palmt680_ffuart_suspend,
+	.resume		= palmt680_ffuart_resume,
+};
+#endif
 
 /*********************************************************
  * Keypad
@@ -372,6 +429,9 @@ static struct platform_device *devices[] __initdata = {
 	&palmt680_bl,
 	&palmt680_led,
 	&palmt680_pm,
+#ifdef CONFIG_PALMT680_GSM
+	&palmt680_gsm,
+#endif
 };
 
 /*********************************************************
@@ -395,8 +455,10 @@ static struct pxafb_mode_info palmt680_lcd_mode = {
 };
 
 static struct pxafb_mach_info palmt680_lcd = {
-	.lccr0			= 0x4000080,
+//	.lccr0			= 0x4000080,
+	.lccr0			= 0x4000000 | LCCR0_Act,
 	.lccr3			= 0x4700003,
+//	.lccr3			= 0x4000000 | LCCR3_PixFlEdg | LCCR0_Pcd(2);
 	.num_modes		= 1,
 	.modes			= &palmt680_lcd_mode,
 };
@@ -432,6 +494,9 @@ static void __init palmt680_init(void)
 	pxa_set_mci_info(&palmt680_mci_platform_data);
 	pxa_set_ficp_info(&palmt680_ficp_platform_data);
 	pxa_set_udc_info( &palmt680_udc_mach_info );
+#ifndef CONFIG_PALMT680_GSM
+	pxa_set_ffuart_info(&palmt680_ffuart);
+#endif
 	pxa_set_ohci_info(&palmt680_ohci_platform_data);
 	platform_add_devices(devices, ARRAY_SIZE(devices));
 

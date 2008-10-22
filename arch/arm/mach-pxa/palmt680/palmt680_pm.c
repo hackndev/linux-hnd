@@ -65,14 +65,11 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 		| PWER_GPIO15;		/* silent switch */
 //		| (1 << 20);  /* SD detect */
 
-	PEDR	= PWER_RTC;
-
-	PCFR	= PCFR_FVC | PCFR_PI2CEN;
-
 	/* wake-up by keypad  */
 	PKWR = PKWR_MKIN0 | /* PKWR_MKIN1 | */ PKWR_MKIN2 | PKWR_MKIN3 |
 	      PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7 | PKWR_DKIN0;
 	
+	PCMD0 = 0x00000416;
 	/* disable all inputs and outputs except in 0 and out 0.
 	 * this means only the power button will wake us up;
 	 * not any key.
@@ -102,12 +99,13 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	PKSR = 0xffffffff; /* clear */
 
 	/* ensure USB connection is broken */
-	SET_PALMT680_GPIO(USB_PULLUP, 0); 
+//	SET_PALMT680_GPIO(USB_PULLUP, 0); 
+	/* break USB connection is not good idea since GSM and BT are connected through */
 
 	/* PalmOS values
 	 * TODO: find out what we can disable.
 	 */
-	PSSR	= PSSR_OTGPH | PSSR_SSS;
+	PSSR	= PSSR_OTGPH | PSSR_SSS | PSSR_STS;
 	PSLR	= 0xff000004;
 	PSTR	= 0;
 	PVCR	= 0x14;
@@ -133,7 +131,7 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 		| (1 << 19)	/* GPIO115 - not known yet */
 		| (1 << 7);	/* GPIO103 - KP_MKOUT0 */
 	
-	PCFR |= PCFR_OPDE; /* low power: disable oscillator */
+	PCFR |= PCFR_PI2CEN | PCFR_OPDE | PCFR_RO; /* low power: disable oscillator */
 
 	/* ensure oscillator is stable (see 3.6.8.1) */
 	while(!(OSCC & OSCC_OOK));

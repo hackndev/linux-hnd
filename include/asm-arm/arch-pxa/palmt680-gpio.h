@@ -76,7 +76,7 @@ else \
 #define GPIO_NR_PALMT680_GREEN_LED		20
 #define GPIO_NR_PALMT680_RED_LED		79
 #define GPIO_NR_PALMT680_KEYB_BL		24
-
+#define GPIO_NR_PALMT680_LCD_POWER		25
 
 #define GPIO_NR_PALMT680_IR_SD			57
 #define GPIO_NR_PALMT680_ICP_TXD		47
@@ -89,8 +89,12 @@ else \
 
 /* FIXME: these values are currently from 650. They will probably be
  * different for the 680. */
+//40 = FFDTR?
+//87?
 #define GPIO_NR_PALMT680_GSM_WAKE		40 /* 40, 87? */
-#define GPIO_NR_PALMT680_GSM_HOST_WAKE		14
+#define GPIO_NR_PALMT680_GSM_HOST_WAKE		10
+#define GPIO_NR_PALMT680_GSM_POWER		79
+/*14*/
 #define GPIO_NR_PALMT680_VIBRATE_EN		26
 #define GPIO_NR_PALMT680_WM9712_IRQ		90
 
