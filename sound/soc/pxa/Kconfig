@@ -169,13 +169,13 @@ config SND_PXA2XX_SOC_H5000
 	  H5000 iPAQs.
 
 config SND_PXA2XX_SOC_PALMT650
-	tristate "SoC Audio support for Palm Treo 650"
-	depends on SND_PXA2XX_SOC && MACH_XSCALE_PALMTREO650
+	tristate "SoC Audio support for Palm Treo 650/680"
+	depends on SND_PXA2XX_SOC && ( MACH_XSCALE_PALMTREO650 || MACH_XSCALE_TREO680 )
 	select SND_PXA2XX_SOC_AC97
 	select SND_SOC_WM9712
 	help
 	  Say Y if you want to add support for SoC audio on
-	  the Palm Treo 650.
+	  the Palm Treo 650/680.
 
 
 endmenu

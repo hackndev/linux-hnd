@@ -68,7 +68,7 @@ else \
 #define GPIO_NR_PALMT680_SILENT_SWITCH		15	/* mute 1, not mute 0 */
 #define GPIO_NR_PALMT680_SD_DETECT_N            113     /* SD card inserted; RE FE; Input */
 
-#define GPIO_NR_PALMT680_USB_PLUGGED		1
+#define GPIO_NR_PALMT680_USB_DETECT		1
 #define GPIO_NR_PALMT680_USB_PULLUP		114
 #define GPIO_NR_PALMT680_HEADPHONES_DETECT	116
 #define GPIO_NR_PALMT680_BT_POWER		43
@@ -91,9 +91,9 @@ else \
  * different for the 680. */
 //40 = FFDTR?
 //87?
-#define GPIO_NR_PALMT680_GSM_WAKE		40 /* 40, 87? */
-#define GPIO_NR_PALMT680_GSM_HOST_WAKE		10
-#define GPIO_NR_PALMT680_GSM_POWER		79
+#define GPIO_NR_PALMT680_GSM_WAKE		79 /* 40, 87? */
+#define GPIO_NR_PALMT680_GSM_HOST_WAKE		14 /* 10 */
+#define GPIO_NR_PALMT680_GSM_POWER		87
 /*14*/
 #define GPIO_NR_PALMT680_VIBRATE_EN		26
 #define GPIO_NR_PALMT680_WM9712_IRQ		90
@@ -177,5 +177,8 @@ else \
 
 #define GET_GPIO(gpio) (GPLR(gpio) & GPIO_bit(gpio))
 
+#define	PALMT680_BAT_MIN_VOLTAGE	3550
+#define	PALMT680_BAT_MAX_VOLTAGE	4200
+#define PALMT680_MAX_LIFE_MINS		300
 
 #endif /* _PALMT680_GPIO_H_ */

@@ -38,6 +38,7 @@
 #include <asm/arch/serial.h>
 #include <asm/arch/udc.h>
 #include <asm/arch/ohci.h>
+#include <asm/arch/palm-battery.h>
 
 #include <sound/driver.h>
 #include <sound/core.h>
@@ -192,7 +193,7 @@ struct platform_device palmt680_pm = {
 static int udc_is_connected(void)
 {
 	/* TODO: find GPIO line for USB connected */
-	return !GET_PALMT680_GPIO(USB_PLUGGED);
+	return !GET_PALMT680_GPIO(USB_DETECT);
 }
 
 static void udc_enable(int cmd) 
@@ -318,6 +319,24 @@ struct platform_pxa_serial_funcs palmt680_ffuart = {
 	.resume		= palmt680_ffuart_resume,
 };
 #endif
+/*********************************************************
+ * Battery
+ *********************************************************/
+
+int palmt680_ac_is_connected (void){
+	return ((GET_PALMT680_GPIO(POWER_DETECT)) &&
+		!(GET_PALMT680_GPIO(USB_DETECT)));
+}
+
+static struct palm_battery_data palm_battery_info = {
+	.bat_min_voltage	= PALMT680_BAT_MIN_VOLTAGE,
+	.bat_max_voltage	= PALMT680_BAT_MAX_VOLTAGE,
+	.bat_max_life_mins	= PALMT680_MAX_LIFE_MINS,
+	.ac_connected		= &palmt680_ac_is_connected,
+};
+
+EXPORT_SYMBOL_GPL(palm_battery_info);
+
 
 /*********************************************************
  * Keypad
