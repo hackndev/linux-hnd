@@ -44,8 +44,8 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	PWER 	= PWER_RTC
 		| PWER_GPIO0		/* AC adapter */
 		| PWER_GPIO1		/* reset */
-		| PWER_GPIO9		/* not known yet - GSM HOST WAKE? */
-//		| PWER_GPIO14		/* not known yet */
+//		| PWER_GPIO9		/* not known yet */
+		| PWER_GPIO14		/* not known yet - GSM HOST WAKE */
 		| PWER_GPIO15		/* silent switch */
 		| PWER_GPIO(20)		/* SD detect */
 		| PWER_GPIO(23)		/* headphones detect */
@@ -56,18 +56,18 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 		| PWER_GPIO1
 		| PWER_GPIO9		/* not known yet */
 		| PWER_GPIO15;		/* silent switch */
-//		| PWER_GPIO(20);  /* SD detect */
+		| PWER_GPIO(20);	/* SD detect */
 	
 	/* rising-edge wake */
 	PRER 	= PWER_GPIO0
 		| PWER_GPIO1
 //		| PWER_GPIO14		/* not known yet - BT wake? */
-		| PWER_GPIO15;		/* silent switch */
-//		| (1 << 20);  /* SD detect */
+		| PWER_GPIO15		/* silent switch */
+		| (1 << 20);		/* SD detect */
 
 	/* wake-up by keypad  */
-	PKWR = PKWR_MKIN0 | /* PKWR_MKIN1 | */ PKWR_MKIN2 | PKWR_MKIN3 |
-	      PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7 | PKWR_DKIN0;
+//	PKWR = PKWR_MKIN0 | /* PKWR_MKIN1 | */ PKWR_MKIN2 | PKWR_MKIN3 |
+//	      PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7 | PKWR_DKIN0;
 	
 	PCMD0 = 0x00000416;
 	/* disable all inputs and outputs except in 0 and out 0.
@@ -77,7 +77,7 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 
 	/* temporary enabling everything - I'll be happy if it will resume! ;) */
 
-//	PKWR = PKWR_MKIN0;
+	PKWR = PKWR_MKIN0;
 //	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT0 | GPIO_OUT);
 /*	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT1 | GPIO_OUT);
 	pxa_gpio_mode(GPIO_NR_PALMT680_KP_MKOUT2 | GPIO_OUT);
@@ -114,16 +114,16 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 
 	PGSR0	= 0
 		| (1 << 26)	/* GPIO26 - not known yet */
-		| (1 << 25);	/* GPIO26 - not known yet */
+		| (1 << 25);	/* GPIO25 - not known yet */
 	PGSR1	= 0
 		| (1 << 17)	/* GPIO49 - not known yet */
-		| (1 << 9)	/* GPIO41 - FFRTS? */
-		| (1 << 8)	/* GPIO40 - KP_MKOUT6? */
+		| (1 << 9)	/* GPIO41 - FFRTS */
+		| (1 << 8)	/* GPIO40 - FFDTR */
 		| (1 << 7)	/* GPIO39 - FFTXD */
 		| (1 << 2);	/* GPIO34 - FFRXD */
 	PGSR2	= 0
 		| (1 << 31)	/* GPIO95 - AC97_RESET? */
-//		| (1 << 23)	/* GPIO87 - not known yet */
+//		| (1 << 23)	/* GPIO87 - GSM_POWER */
 		| (1 << 19)	/* GPIO83 - not known yet */
 		| (1 << 18)	/* GPIO82 - not known yet */
 		| (1 << 16);	/* GPIO80 - not known yet */
@@ -143,7 +143,7 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 static void palmt680_pxa_ll_pm_resume(void)
 {
 	/* re-enable GPIO reset */
-	PCFR |= PCFR_GPR_EN;
+//	PCFR |= PCFR_GPR_EN;
 
 	resume_vector[0] = resume_vector_save[0];
 	resume_vector[1] = resume_vector_save[1];

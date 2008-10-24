@@ -504,8 +504,17 @@ static void __init palmt680_init(void)
 	/* Disable PRIRDY interrupt to avoid hanging when loading AC97 */
 	GCR &= ~GCR_PRIRDY_IEN;
 
+	/* FFUART/GSM port setup */
+	pxa_gpio_mode(14 | GPIO_IN);
+	pxa_gpio_mode(GPIO34_FFRXD_MD);
+	pxa_gpio_mode(GPIO35_FFCTS_MD);
+	pxa_gpio_mode(GPIO37_FFDSR_MD);
+	pxa_gpio_mode(GPIO39_FFTXD_MD);
+	pxa_gpio_mode(GPIO41_FFRTS_MD);
+	pxa_gpio_mode(GPIO40_FFDTR | GPIO_OUT);
+
+	/* disable leds */	
 	SET_PALMT680_GPIO(GREEN_LED,0);
-//	SET_PALMT680_GPIO(RED_LED,0);
 	SET_PALMT680_GPIO(KEYB_BL,0);
 	SET_PALMT680_GPIO(VIBRA,0);
 
