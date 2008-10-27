@@ -54,8 +54,8 @@ static void palmt650_pxa_ll_pm_suspend(unsigned long resume_addr)
 		| (1 << 20);  /* SD detect */
 
 	/* wake-up by keypad  */
-	//PKWR = PKWR_MKIN0 | PKWR_MKIN1 | PKWR_MKIN2 | PKWR_MKIN3 |
-	//       PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7;
+	/*PKWR = PKWR_MKIN0 | PKWR_MKIN1 | PKWR_MKIN2 | PKWR_MKIN3 |
+	       PKWR_MKIN4 | PKWR_MKIN5 | PKWR_MKIN6 | PKWR_MKIN7;*/
 	
 	/* disable all inputs and outputs except in 5 and out 0.
 	 * this means only the power button will wake us up;
