@@ -55,7 +55,7 @@ static void palmt680_pxa_ll_pm_suspend(unsigned long resume_addr)
 	PFER 	= PWER_GPIO0
 		| PWER_GPIO1
 		| PWER_GPIO9		/* not known yet */
-		| PWER_GPIO15;		/* silent switch */
+		| PWER_GPIO15		/* silent switch */
 		| PWER_GPIO(20);	/* SD detect */
 	
 	/* rising-edge wake */
