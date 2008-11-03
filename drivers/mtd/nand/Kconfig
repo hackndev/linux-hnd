@@ -52,10 +52,12 @@ config MTD_NAND_H1900
 	  This enables the driver for the iPAQ h1900 flash.
 
 config MTD_NAND_PALMTX
-	tristate "Palm T|X NAND flash (!UNTESTED!)"
+	tristate "Palm T|X NAND flash (DANGEROUS)"
 	depends on MTD_NAND && ARCH_PXA && MTD_PARTITIONS
 	help
-	  This enables the driver for the Palm T|X NAND flash.
+	  This enables the driver for the Palm T|X NAND flash. Erasing all
+	  NAND damage PalmOS for sure, so use writing only if you are sure
+	  that you know what are you doing.
 
 config MTD_NAND_SPIA
 	tristate "NAND Flash device on SPIA board"
